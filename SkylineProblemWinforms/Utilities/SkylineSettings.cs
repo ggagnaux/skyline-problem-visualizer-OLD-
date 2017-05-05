@@ -101,6 +101,24 @@ namespace SkylineProblemWinforms
             }
         }
 
+
+        [UserScopedSetting]
+        [DefaultSettingValue("5.0")]
+        public float SkylineBorderWidth
+        {
+            get
+            {
+                return ((float)this["SkylineBorderWidth"]);
+            }
+
+            set
+            {
+                this["SkylineBorderWidth"] = (float)value;
+            }
+        }
+
+
+
         [UserScopedSetting]
         [DefaultSettingValue("0")]
         public int CanvasMarginInPixels

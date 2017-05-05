@@ -12,7 +12,7 @@ namespace SkylineProblemWinforms
 {
     public partial class FormDataPoints : Form
     {
-        public List<BuildingCoordinates> _data;
+        public IList<BuildingCoordinates> _data;
 
         public FormDataPoints(MainForm parent)
         {
@@ -20,7 +20,7 @@ namespace SkylineProblemWinforms
             this.Owner = parent;
         }
 
-        public void SetData(List<BuildingCoordinates> data)
+        public void SetData(IList<BuildingCoordinates> data)
         {
             this._data = data;
 

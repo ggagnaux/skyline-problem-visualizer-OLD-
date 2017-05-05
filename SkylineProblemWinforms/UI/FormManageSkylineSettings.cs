@@ -32,7 +32,6 @@ namespace SkylineProblemWinforms
             }
         }
 
-
         public FormManageSkylineSettings(MainForm parent, SkylineSettings s)
         {
             InitializeComponent();
@@ -43,7 +42,7 @@ namespace SkylineProblemWinforms
 
         protected override void OnLoad(EventArgs e)
         {
-            EnableSkylineBorderColorPicker(Settings.HighlightSkyline);
+            EnableSkylineSettings(Settings.HighlightSkyline);
             EnableGridColorPicker(Settings.ShowGrid);
 
             panelSkylineBorderColorSwatch.BackColor =  ColorUtilities.GetColorFromHexRGBString(Settings.SkylineBorderColor);
@@ -66,6 +65,7 @@ namespace SkylineProblemWinforms
             this.textBoxCanvasMarginInPixels.DataBindings.Add("Text", Settings, "CanvasMarginInPixels", false, DataSourceUpdateMode.OnPropertyChanged);
             this.checkBoxShowGrid.DataBindings.Add("Checked", Settings, "ShowGrid", false, DataSourceUpdateMode.OnPropertyChanged);
             this.textBoxCanvasGridColor.DataBindings.Add("Text", Settings, "GridColor", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxSkylineBorderWidth.DataBindings.Add("Text", Settings, "SkylineBorderWidth", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void SetColorSwatch(Color currentColor, Panel swatchPanel, TextBox textBoxHexRGB)
@@ -87,12 +87,14 @@ namespace SkylineProblemWinforms
             return c;
         }
 
-        private void EnableSkylineBorderColorPicker(bool enable)
+        private void EnableSkylineSettings(bool enable)
         {
             EnableColorPickerComponents(enable, 
                                         labelSkylineBorderColor, 
                                         panelSkylineBorderColorSwatch,
                                         textBoxSkylineBorderColor);
+            labelSkylineBorderWidth.Enabled = enable;
+            textBoxSkylineBorderWidth.Enabled = enable;
         }
 
         private void EnableGridColorPicker(bool enable)
@@ -125,12 +127,25 @@ namespace SkylineProblemWinforms
 
         private void checkBoxHighlightSkyline_CheckedChanged(object sender, EventArgs e)
         {
-            EnableSkylineBorderColorPicker(checkBoxHighlightSkyline.Checked);
+            // Note - This ensures that this method isn't run
+            // during application startup
+            if (!checkBoxHighlightSkyline.IsHandleCreated)
+                return;
+
+            bool flag = checkBoxHighlightSkyline.Checked;
+            EnableSkylineSettings(flag);
+            labelSkylineBorderWidth.Enabled = flag;
+            textBoxSkylineBorderWidth.Enabled = flag;
             ParentForm.OptionsUpdated();
         }
 
         private void checkBoxShowDataPointWindow_CheckedChanged(object sender, EventArgs e)
         {
+            // Note - This ensures that this method isn't run
+            // during application startup
+            if (!checkBoxShowDataPointWindow.IsHandleCreated)
+                return;
+
             bool flag = checkBoxShowDataPointWindow.Checked;
             Settings.ShowDataPointWindow = flag;
             ParentSettings.ShowDataPointWindow = flag;
@@ -139,6 +154,11 @@ namespace SkylineProblemWinforms
 
         private void checkBoxShowXAxis_CheckedChanged(object sender, EventArgs e)
         {
+            // Note - This ensures that this method isn't run
+            // during application startup
+            if (!checkBoxShowXAxis.IsHandleCreated)
+                return;
+
             bool flag = checkBoxShowXAxis.Checked;
             Settings.ShowXAxis = flag;
             ParentSettings.ShowXAxis = flag;
@@ -147,6 +167,11 @@ namespace SkylineProblemWinforms
 
         private void checkBoxShowYAxis_CheckedChanged(object sender, EventArgs e)
         {
+            // Note - This ensures that this method isn't run
+            // during application startup
+            if (!checkBoxShowYAxis.IsHandleCreated)
+                return;
+
             bool flag = checkBoxShowYAxis.Checked;
             Settings.ShowYAxis = flag;
             ParentSettings.ShowYAxis = flag;
@@ -155,6 +180,11 @@ namespace SkylineProblemWinforms
 
         private void checkBoxShowCoordinates_CheckedChanged(object sender, EventArgs e)
         {
+            // Note - This ensures that this method isn't run
+            // during application startup
+            if (!checkBoxShowCoordinates.IsHandleCreated)
+                return;
+
             bool flag = checkBoxShowCoordinates.Checked;
             Settings.ShowCoordinates = flag;
             ParentSettings.ShowCoordinates = flag;
@@ -163,6 +193,11 @@ namespace SkylineProblemWinforms
 
         private void checkBoxShowGrid_CheckedChanged(object sender, EventArgs e)
         {
+            // Note - This ensures that this method isn't run
+            // during application startup
+            if (!checkBoxShowGrid.IsHandleCreated)
+                return;
+
             var flag = checkBoxShowGrid.Checked;
             Settings.ShowGrid = flag;
             ParentSettings.ShowGrid = flag;
@@ -190,7 +225,16 @@ namespace SkylineProblemWinforms
                            panelCanvasGridColorSwatch,
                            textBoxCanvasGridColor);
         }
-        
+
+        private void textBoxSkylineBorderWidth_TextChanged(object sender, EventArgs e)
+        {
+            if (float.TryParse(textBoxSkylineBorderWidth.Text, out float f))
+            {
+                Settings.SkylineBorderWidth = f;
+                ParentSettings.SkylineBorderWidth = f;
+                ParentForm.OptionsUpdated();
+            }
+        }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
@@ -198,6 +242,5 @@ namespace SkylineProblemWinforms
         }
 
         #endregion
-
     }
 }

@@ -1,31 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using SkylineProblemWinforms.Utilities;
 using KohdAndArt.Toolkit;
+using SkylineProblemWinforms.UI;
+using SkylineProblemWinforms.Utilities;
 
 namespace SkylineProblemWinforms
 {
     public partial class MainForm : Form
-    {   
+    {
+        #region External Imports
+        [DllImport(@"gdiplus.dll")]
+        public static extern int GdipWindingModeOutline(HandleRef path, IntPtr matrix, float flatness);
+        #endregion
+
+        #region Public Properties
         public SkylineSettings              Settings { get; set; }
         public FormDataPoints               FormDataPoints { get; set; }
         public ChartCanvasManager           CanvasManager { get; set; }
-        public List<BuildingCoordinates>    DataList { get; set; }
+        public IList<BuildingCoordinates>   DataList { get; set; }
         public DataManager                  DataManager { get; set; }
+        #endregion
 
-        //List<BuildingCoordinates> _dataList;
-
+        #region Private Variables
         // Setup our pens and brushes
         Pen[] _pens = new Pen[] {
                 new Pen(Color.LightSeaGreen, 1f),
@@ -40,17 +42,10 @@ namespace SkylineProblemWinforms
                 new Pen(Color.Purple, 1f),
             };
 
-        Pen _axisPen = new System.Drawing.Pen(Color.AliceBlue, 2.0F);
-        Pen pen1 = new Pen(Color.White, 1F);
-        Pen pen2 = new Pen(Color.Red, 1F);
-        Brush brush1 = new SolidBrush(Color.FromArgb(99, 255, 0, 0));
-        Brush brush2 = new SolidBrush(Color.FromArgb(99, 0, 0, 255));
-        int _XMax = 0;
-        int _YMax = 0;
-        int _panelWidth, _panelHeight;
         Point _centerPoint = new Point();
+        #endregion
 
-
+        #region Constructor(s)
         public MainForm()
         {
             LoadConfigurationSettings();
@@ -67,24 +62,30 @@ namespace SkylineProblemWinforms
             this.UpdateStyles();
 
             // Create the canvas manager
-            CanvasManager = new ChartCanvasManager(_panelWidth, _panelHeight);
+            CanvasManager = new ChartCanvasManager(panelCanvas.Width, panelCanvas.Height);
 
             // Create the Data Manager and Load the data
             DataManager = new DataManager(Settings.DefaultDataFile);
 
+            // Create and optionally display the data window
             FormDataPoints = new FormDataPoints(this);
+            FormDataPoints.SetData(DataManager.Data);
             if (Settings.ShowDataPointWindow)
             {
                 FormDataPoints.Show();
             }
 
             UpdateConfigurationSettingsUI();
-            LoadAndParseDataFile();
-        }
 
+            buttonToggleData.BackColor = Color.FromArgb(100, 0, 0, 0);
+            buttonToggleData.ForeColor = Color.FromArgb(100, 255, 0, 0);
+        }
+        #endregion
+
+        #region Private Methods
         private void UpdateConfigurationSettingsUI()
         {
-            textBoxFilename.Text = Settings.DefaultDataFile;
+            labelDefaultDataFile.Text = Settings.DefaultDataFile;
         }
 
         private void LoadConfigurationSettings()
@@ -92,12 +93,10 @@ namespace SkylineProblemWinforms
             Settings = SkylineSettings.GetInstance();
         }
 
-        private void LoadAndParseDataFile()
+        private void ReloadData()
         {
-            // Load data from file and send to 
-            // data points window for display 
-            DataList = LoadData();
-            FormDataPoints.SetData(_dataList);
+            DataManager.Filename = Settings.DefaultDataFile;
+            FormDataPoints.SetData(DataManager.Data);
         }
 
         private void DrawRawData()
@@ -105,66 +104,64 @@ namespace SkylineProblemWinforms
             panelCanvas.Invalidate();
         }
 
-        //private List<BuildingCoordinates> LoadData()
-        //{
-        //    string filename = Settings.DefaultDataFile;
-        //    //string filename = Properties.Settings.Default.DefaultDataFile;
-        //    const char itemSeparator = ' ';
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ReinitializeValues()
+        {
+            var w = panelCanvas.Width - Settings.CanvasMarginInPixels;
+            var h = panelCanvas.Height - Settings.CanvasMarginInPixels;
+            _centerPoint.X = w / 2;
+            _centerPoint.Y = h / 2;
+            CanvasManager?.SetCanvasDimensions(w, h);
+        }
 
-        //    if (filename.Length == 0 || File.Exists(filename) == false)
-        //        throw new ArgumentException($"Filename not specified or file '{filename}' not found.");
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ReinitializeWindow()
+        {
+            ReinitializeValues();
+            panelCanvas.Invalidate();
+        }
+        #endregion
 
-        //    var line = string.Empty;
-        //    var list = new List<BuildingCoordinates>();
-
-        //    using (var file = new StreamReader(filename))
-        //    {
-        //        while ((line = file.ReadLine()) != null && (line.Length > 0))
-        //        {
-        //            string[] temp = line.Split(itemSeparator);
-        //            var l = Convert.ToInt32(temp[0]);
-        //            var h = Convert.ToInt32(temp[1]);
-        //            var r = Convert.ToInt32(temp[2]);
-        //            BuildingCoordinates d = new BuildingCoordinates(l, h, r);
-        //            list.Add(d);
-
-        //            // Determine the maximum X and Y for all of the data
-        //            if (_XMax < r) { _XMax = r; }
-        //            if (_YMax < h) { _YMax = h; }
-        //        }
-        //    }
-        //    return list;
-        //}
-
-        [DllImport(@"gdiplus.dll")]
-        public static extern int GdipWindingModeOutline(HandleRef path, IntPtr matrix, float flatness);
-
+        #region Event Handlers
         private void panelCanvas_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
+            CanvasManager.Graphics = g;
 
             // Set the canvas background color
             panelCanvas.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.CanvasBackgroundColor);
 
             // Set the coordinate transformation (Flip the Y Axis)
-            TransformCanvas(g);
+            CanvasManager.TransformCanvas();
 
             // Ensure the canvas dimensions are correct and optionally
             // display the X and/or Y Axis.
-            CanvasManager.SetCanvasDimensions(_panelWidth, _panelHeight);
+            CanvasManager.SetCanvasDimensions(panelCanvas.Width, panelCanvas.Height);
             CanvasManager.ShowXAxis = Settings.ShowXAxis;
             CanvasManager.ShowYAxis = Settings.ShowYAxis;
             CanvasManager.RenderXAndYAxis();
+
+            // Show the optional grid
+            CanvasManager.ShowGrid = Settings.ShowGrid;
+            CanvasManager.GridColor = ColorUtilities.GetColorFromHexRGBString(Settings.GridColor);
+            CanvasManager.RenderGrid();
 
 
             GraphicsPath gp = new GraphicsPath();
             //gp.SetMarkers();
 
-            int penIndex = 0;
-            foreach (var b in _dataList)
+            var penIndex = 0;
+            foreach (var b in DataManager.Data)
             {
                 // Scale the data to fit nicely in the panel
-                var a = b.GetScaledCoordinates(_panelWidth, _panelHeight, _XMax, _YMax);
+                var a = b.GetScaledCoordinates(CanvasManager.Width,
+                                               CanvasManager.Height,
+                                               DataManager.MaximumX,
+                                               DataManager.MaximumY);
 
                 // Get the data
                 var l = a.Left;
@@ -172,7 +169,10 @@ namespace SkylineProblemWinforms
                 var r = a.Right;
                 var w = a.Width;
 
-                Rectangle rect1 = b.GetScaledRectangle(_panelWidth, _panelHeight, _XMax, _YMax);
+                Rectangle rect1 = b.GetScaledRectangle(CanvasManager.Width,
+                                                       CanvasManager.Height,
+                                                       DataManager.MaximumX,
+                                                       DataManager.MaximumY);
 
                 gp.AddRectangle(rect1);
 
@@ -186,6 +186,8 @@ namespace SkylineProblemWinforms
                     g.DrawRectangle(_pens[penIndex], l, 0, w, h);
                 }
 
+                // Get the next pen in the list of pens
+                // for the next building rectangle
                 penIndex++;
                 if (penIndex >= _pens.Length)
                 {
@@ -195,12 +197,12 @@ namespace SkylineProblemWinforms
 
             if (Settings.HighlightSkyline)
             {
-                Color skylineBorderColor = ColorUtilities.GetColorFromHexRGBString(Settings.SkylineBorderColor);
+                var color = ColorUtilities.GetColorFromHexRGBString(Settings.SkylineBorderColor);
+                var penWidth = Settings.SkylineBorderWidth;
+                g.DrawPath(new Pen(color, penWidth), gp);
 
-                g.DrawPath(new Pen(skylineBorderColor, 5.0F), gp);
-
-                Brush theBrush = new HatchBrush(HatchStyle.LargeGrid, 
-                                                Color.FromArgb(50, 255, 255, 255), 
+                Brush theBrush = new HatchBrush(HatchStyle.LargeGrid,
+                                                Color.FromArgb(50, 255, 255, 255),
                                                 Color.FromArgb(10, 255, 255, 255));
 
                 g.FillPath(theBrush, gp);
@@ -236,45 +238,144 @@ namespace SkylineProblemWinforms
             PointF[] pathPoints = gp.PathData.Points;
         }
 
-        private void TransformCanvas(Graphics g)
-        {
-            Matrix myMatrix = new Matrix(1, 0, 0, -1, 0, 0);
-            g.Transform = myMatrix;
-            g.TranslateTransform(0, _panelHeight, MatrixOrder.Append);
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainForm_Resize(object sender, EventArgs e)
         {
             ReinitializeWindow();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void panelCanvas_Resize(object sender, EventArgs e)
         {
             ReinitializeWindow();
         }
 
-        private void ReinitializeValues()
-        {
-            _panelWidth = panelCanvas.Width - Settings.CanvasMarginInPixels;
-            _panelHeight = panelCanvas.Height - Settings.CanvasMarginInPixels;
-            _centerPoint.X = _panelWidth / 2;
-            _centerPoint.Y = _panelHeight / 2;
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Settings.Save();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonOptions_Click(object sender, EventArgs e)
         {
             new FormManageSkylineSettings(this, Settings).ShowDialog();
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new FormManageSkylineSettings(this, Settings).ShowDialog();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new AboutBox().ShowDialog();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Title = "Open Skyline Dataset File...";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string filename = openFileDialog1.FileName;
+                if (filename.Length > 0 && File.Exists(filename))
+                {
+                    labelDefaultDataFile.Text = filename;
+                    Settings.DefaultDataFile = filename;
+                    OptionsUpdated();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonToggleData_Click(object sender, EventArgs e)
+        {
+            if (Settings.ShowDataPointWindow == true)
+            {
+                FormDataPoints.Hide();
+                Settings.ShowDataPointWindow = false;
+            }
+            else
+            {
+                FormDataPoints.Show();
+                Settings.ShowDataPointWindow = true;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void panelCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            // Get mouse coordinates
+            var x = e.X;
+            var y = e.Y;
+
+            // We have to flip the Y-Axis to match the actual chart
+            var height = panelCanvas.Height;
+            y = height - y;
+
+            string text = $"{x} : {y}";
+            labelMouseCoordinates.Text = text;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// 
+        /// </summary>
         public void OptionsUpdated()
         {
             UpdateConfigurationSettingsUI();
-            LoadAndParseDataFile();
+            ReloadData();
             DrawRawData();
             ReinitializeWindow();
 
@@ -287,11 +388,6 @@ namespace SkylineProblemWinforms
                 FormDataPoints.Hide();
             }
         }
-
-        private void ReinitializeWindow()
-        {
-            ReinitializeValues();
-            panelCanvas.Invalidate();
-        }
+        #endregion
     }
 }

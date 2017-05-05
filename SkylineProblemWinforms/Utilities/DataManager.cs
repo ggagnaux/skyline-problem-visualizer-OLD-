@@ -10,7 +10,24 @@ namespace SkylineProblemWinforms.Utilities
     public class DataManager
     {
         public IList<BuildingCoordinates>   Data { get; set; }
-        public string                       Filename { get; set; }
+
+        private string _filename;
+        public string Filename
+        {
+            get
+            {
+                return _filename;
+            }
+            set
+            {
+                _filename = value;
+                if (_filename.Length > 0)
+                {
+                    Load();
+                }
+            }
+        }
+
         public int                          MaximumX { get; set; }
         public int                          MaximumY { get; set; }
 
