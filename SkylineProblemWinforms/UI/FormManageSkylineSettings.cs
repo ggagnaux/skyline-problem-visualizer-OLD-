@@ -44,10 +44,14 @@ namespace SkylineProblemWinforms
         {
             EnableSkylineSettings(Settings.HighlightSkyline);
             EnableGridColorPicker(Settings.ShowGrid);
+            EnableXAxisSettings(Settings.ShowXAxis);
+            EnableYAxisSettings(Settings.ShowYAxis);
 
             panelSkylineBorderColorSwatch.BackColor =  ColorUtilities.GetColorFromHexRGBString(Settings.SkylineBorderColor);
             panelCanvasGridColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.GridColor);
             panelCanvasBackgroundColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.CanvasBackgroundColor);
+            panelXAxisColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.XAxisColor);
+            panelYAxisColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.YAxisColor);
 
             base.OnLoad(e);
         }
@@ -55,17 +59,36 @@ namespace SkylineProblemWinforms
         private void SetBindings()
         {
             this.textBoxDefaultDataFile.DataBindings.Add("Text", Settings, "DefaultDataFile", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.checkBoxShowDataPointWindow.DataBindings.Add("Checked", Settings, "ShowDataPointWindow", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            // Skyline Border Settings
             this.checkBoxHighlightSkyline.DataBindings.Add("Checked", Settings, "HighlightSkyline", false, DataSourceUpdateMode.OnPropertyChanged);
             this.textBoxSkylineBorderColor.DataBindings.Add("Text", Settings, "SkylineBorderColor", false, DataSourceUpdateMode.OnPropertyChanged);
-            this.checkBoxShowCoordinates.DataBindings.Add("Checked", Settings, "ShowCoordinates", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxSkylineBorderWidth.DataBindings.Add("Text", Settings, "SkylineBorderWidth", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            // Axis Settings
             this.checkBoxShowXAxis.DataBindings.Add("Checked", Settings, "ShowXAxis", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxXAxisColor.DataBindings.Add("Text", Settings, "XAxisColor", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxXAxisWidth.DataBindings.Add("Text", Settings, "XAxisWidth", false, DataSourceUpdateMode.OnPropertyChanged);
+
             this.checkBoxShowYAxis.DataBindings.Add("Checked", Settings, "ShowYAxis", false, DataSourceUpdateMode.OnPropertyChanged);
-            this.textBoxCanvasBackgroundColor.DataBindings.Add("Text", Settings, "CanvasBackgroundColor", false, DataSourceUpdateMode.OnPropertyChanged);
-            this.checkBoxShowDataPointWindow.DataBindings.Add("Checked", Settings, "ShowDataPointWindow", false, DataSourceUpdateMode.OnPropertyChanged);
-            this.textBoxCanvasMarginInPixels.DataBindings.Add("Text", Settings, "CanvasMarginInPixels", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxYAxisColor.DataBindings.Add("Text", Settings, "YAxisColor", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxYAxisWidth.DataBindings.Add("Text", Settings, "YAxisWidth", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            // Grid Settings
             this.checkBoxShowGrid.DataBindings.Add("Checked", Settings, "ShowGrid", false, DataSourceUpdateMode.OnPropertyChanged);
             this.textBoxCanvasGridColor.DataBindings.Add("Text", Settings, "GridColor", false, DataSourceUpdateMode.OnPropertyChanged);
-            this.textBoxSkylineBorderWidth.DataBindings.Add("Text", Settings, "SkylineBorderWidth", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            // Canvas Settings
+            this.textBoxCanvasBackgroundColor.DataBindings.Add("Text", Settings, "CanvasBackgroundColor", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxMarginLeft.DataBindings.Add("Text", Settings, "CanvasMarginLeft", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxMarginRight.DataBindings.Add("Text", Settings, "CanvasMarginRight", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxMarginTop.DataBindings.Add("Text", Settings, "CanvasMarginTop", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxMarginBottom.DataBindings.Add("Text", Settings, "CanvasMarginBottom", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            // Other Settings
+            this.checkBoxShowDataCoordinates.DataBindings.Add("Checked", Settings, "ShowDataCoordinates", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.checkBoxShowInfoPanel.DataBindings.Add("Checked", Settings, "ShowInfoPanel", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void SetColorSwatch(Color currentColor, Panel swatchPanel, TextBox textBoxHexRGB)
@@ -96,6 +119,27 @@ namespace SkylineProblemWinforms
             labelSkylineBorderWidth.Enabled = enable;
             textBoxSkylineBorderWidth.Enabled = enable;
         }
+
+        private void EnableXAxisSettings(bool enable)
+        {
+            EnableColorPickerComponents(enable,
+                                        labelXAxisColor,
+                                        panelXAxisColorSwatch,
+                                        textBoxXAxisColor);
+            labelXAxisWidth.Enabled = enable;
+            textBoxXAxisWidth.Enabled = enable;
+        }
+
+        private void EnableYAxisSettings(bool enable)
+        {
+            EnableColorPickerComponents(enable,
+                                        labelYAxisColor,
+                                        panelYAxisColorSwatch,
+                                        textBoxYAxisColor);
+            labelYAxisWidth.Enabled = enable;
+            textBoxYAxisWidth.Enabled = enable;
+        }
+
 
         private void EnableGridColorPicker(bool enable)
         {
@@ -134,8 +178,6 @@ namespace SkylineProblemWinforms
 
             bool flag = checkBoxHighlightSkyline.Checked;
             EnableSkylineSettings(flag);
-            labelSkylineBorderWidth.Enabled = flag;
-            textBoxSkylineBorderWidth.Enabled = flag;
             ParentForm.OptionsUpdated();
         }
 
@@ -160,8 +202,7 @@ namespace SkylineProblemWinforms
                 return;
 
             bool flag = checkBoxShowXAxis.Checked;
-            Settings.ShowXAxis = flag;
-            ParentSettings.ShowXAxis = flag;
+            EnableXAxisSettings(flag);
             ParentForm.OptionsUpdated();
         }
 
@@ -173,8 +214,7 @@ namespace SkylineProblemWinforms
                 return;
 
             bool flag = checkBoxShowYAxis.Checked;
-            Settings.ShowYAxis = flag;
-            ParentSettings.ShowYAxis = flag;
+            EnableYAxisSettings(flag);
             ParentForm.OptionsUpdated();
         }
 
@@ -182,12 +222,12 @@ namespace SkylineProblemWinforms
         {
             // Note - This ensures that this method isn't run
             // during application startup
-            if (!checkBoxShowCoordinates.IsHandleCreated)
+            if (!checkBoxShowDataCoordinates.IsHandleCreated)
                 return;
 
-            bool flag = checkBoxShowCoordinates.Checked;
-            Settings.ShowCoordinates = flag;
-            ParentSettings.ShowCoordinates = flag;
+            bool flag = checkBoxShowDataCoordinates.Checked;
+            Settings.ShowDataCoordinates = flag;
+            ParentSettings.ShowDataCoordinates = flag;
             ParentForm.OptionsUpdated();
         }
 
@@ -241,6 +281,105 @@ namespace SkylineProblemWinforms
             this.Close();
         }
 
+        private void textBoxXAxisWidth_TextChanged(object sender, EventArgs e)
+        {
+            if (float.TryParse(textBoxXAxisWidth.Text, out float f))
+            {
+                Settings.XAxisWidth = f;
+                ParentSettings.XAxisWidth = f;
+                ParentForm.OptionsUpdated();
+            }
+        }
+
+        private void textBoxYAxisWidth_TextChanged(object sender, EventArgs e)
+        {
+            if (float.TryParse(textBoxYAxisWidth.Text, out float f))
+            {
+                Settings.YAxisWidth = f;
+                ParentSettings.YAxisWidth = f;
+                ParentForm.OptionsUpdated();
+            }
+        }
+
+        private void panelXAxisColorSwatch_Click(object sender, EventArgs e)
+        {
+            SetColorSwatch(panelXAxisColorSwatch.BackColor,
+                           panelXAxisColorSwatch,
+                           textBoxXAxisColor);
+        }
+
+        private void panelYAxisColorSwatch_Click(object sender, EventArgs e)
+        {
+            SetColorSwatch(panelYAxisColorSwatch.BackColor,
+                           panelYAxisColorSwatch,
+                           textBoxYAxisColor);
+        }
+
+        private void checkBoxShowMouseCoordinates_CheckedChanged(object sender, EventArgs e)
+        {
+            // Note - This ensures that this method isn't run
+            // during application startup
+            if (!checkBoxShowMouseCoordinates.IsHandleCreated)
+                return;
+
+            var flag = checkBoxShowMouseCoordinates.Checked;
+            Settings.ShowMouseCoordinates = flag;
+            ParentSettings.ShowMouseCoordinates = flag;
+            ParentForm.OptionsUpdated();
+        }
+
+        private void textBoxMarginLeft_TextChanged(object sender, EventArgs e)
+        {
+            if (int.TryParse(textBoxMarginLeft.Text, out int i))
+            {
+                Settings.CanvasMarginLeft = i;
+                ParentSettings.CanvasMarginLeft = i;
+                ParentForm.OptionsUpdated();
+            }
+        }
+
+        private void textBoxMarginRight_TextChanged(object sender, EventArgs e)
+        {
+            if (int.TryParse(textBoxMarginRight.Text, out int i))
+            {
+                Settings.CanvasMarginRight = i;
+                ParentSettings.CanvasMarginRight = i;
+                ParentForm.OptionsUpdated();
+            }
+        }
+
+        private void textBoxMarginTop_TextChanged(object sender, EventArgs e)
+        {
+            if (int.TryParse(textBoxMarginTop.Text, out int i))
+            {
+                Settings.CanvasMarginTop = i;
+                ParentSettings.CanvasMarginTop = i;
+                ParentForm.OptionsUpdated();
+            }
+        }
+
+        private void textBoxMarginBottom_TextChanged(object sender, EventArgs e)
+        {
+            if (int.TryParse(textBoxMarginBottom.Text, out int i))
+            {
+                Settings.CanvasMarginBottom = i;
+                ParentSettings.CanvasMarginBottom = i;
+                ParentForm.OptionsUpdated();
+            }
+        }
         #endregion
+
+        private void checkBoxShowInfoPanel_CheckedChanged(object sender, EventArgs e)
+        {
+            // Note - This ensures that this method isn't run
+            // during application startup
+            if (!checkBoxShowInfoPanel.IsHandleCreated)
+                return;
+
+            bool flag = checkBoxShowInfoPanel.Checked;
+            Settings.ShowInfoPanel = flag;
+            ParentSettings.ShowInfoPanel = flag;
+            ParentForm.OptionsUpdated();
+        }
     }
 }

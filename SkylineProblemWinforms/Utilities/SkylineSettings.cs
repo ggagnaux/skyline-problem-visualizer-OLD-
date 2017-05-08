@@ -53,8 +53,42 @@ namespace SkylineProblemWinforms
             }
         }
 
+        [UserScopedSetting]
+        [DefaultSettingValue("2.0")]
+        public float XAxisWidth
+        {
+            get
+            {
+                return ((float)this["XAxisWidth"]);
+            }
+
+            set
+            {
+                this["XAxisWidth"] = (float)value;
+            }
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("ff0000")]
+        public string XAxisColor
+        {
+            get
+            {
+                return (string)this["XAxisColor"];
+            }
+
+            set
+            {
+                this["XAxisColor"] = value;
+            }
+        }
+
+
+
+
+
         /// <summary>
-        /// Show or Hide the X Axis
+        /// Show or Hide the Y Axis
         /// </summary>
         [UserScopedSetting]
         [DefaultSettingValue("True")]
@@ -72,17 +106,48 @@ namespace SkylineProblemWinforms
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("False")]
-        public bool ShowCoordinates
+        [DefaultSettingValue("2.0")]
+        public float YAxisWidth
         {
             get
             {
-                return ((bool)this["ShowCoordinates"]);
+                return ((float)this["YAxisWidth"]);
             }
 
             set
             {
-                this["ShowCoordinates"] = (bool)value;
+                this["YAxisWidth"] = (float)value;
+            }
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("ff0000")]
+        public string YAxisColor
+        {
+            get
+            {
+                return (string)this["YAxisColor"];
+            }
+
+            set
+            {
+                this["YAxisColor"] = value;
+            }
+        }
+
+
+        [UserScopedSetting]
+        [DefaultSettingValue("False")]
+        public bool ShowDataCoordinates
+        {
+            get
+            {
+                return ((bool)this["ShowDataCoordinates"]);
+            }
+
+            set
+            {
+                this["ShowDataCoordinates"] = (bool)value;
             }
         }
 
@@ -121,17 +186,34 @@ namespace SkylineProblemWinforms
 
         [UserScopedSetting]
         [DefaultSettingValue("0")]
-        public int CanvasMarginInPixels
+        public int CanvasMarginLeft
         {
-            get
-            {
-                return ((int)this["CanvasMarginInPixels"]);
-            }
+            get { return ((int)this["CanvasMarginLeft"]); }
+            set { this["CanvasMarginLeft"] = (int)value; }
+        }
 
-            set
-            {
-                this["CanvasMarginInPixels"] = (int)value;
-            }
+        [UserScopedSetting]
+        [DefaultSettingValue("0")]
+        public int CanvasMarginRight
+        {
+            get { return ((int)this["CanvasMarginRight"]); }
+            set { this["CanvasMarginRight"] = (int)value; }
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("0")]
+        public int CanvasMarginTop
+        {
+            get { return ((int)this["CanvasMarginTop"]); }
+            set { this["CanvasMarginTop"] = (int)value; }
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("0")]
+        public int CanvasMarginBottom
+        {
+            get { return ((int)this["CanvasMarginBottom"]); }
+            set { this["CanvasMarginBottom"] = (int)value; }
         }
 
 
@@ -207,7 +289,7 @@ namespace SkylineProblemWinforms
         /// Canvas Background Color
         /// </summary>
         [UserScopedSetting]
-        [DefaultSettingValue("000000")]
+        [DefaultSettingValue("000010")]
         public string CanvasBackgroundColor
         {
             get
@@ -221,5 +303,40 @@ namespace SkylineProblemWinforms
             }
         }
 
+        /// <summary>
+        /// Show the mouse coordinates?
+        /// </summary>
+        [UserScopedSetting]
+        [DefaultSettingValue("True")]
+        public bool ShowMouseCoordinates
+        {
+            get
+            {
+                return (bool)this["ShowMouseCoordinates"];
+            }
+
+            set
+            {
+                this["ShowMouseCoordinates"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Show the information panel?
+        /// </summary>
+        [UserScopedSetting]
+        [DefaultSettingValue("True")]
+        public bool ShowInfoPanel
+        {
+            get
+            {
+                return (bool)this["ShowInfoPanel"];
+            }
+
+            set
+            {
+                this["ShowInfoPanel"] = value;
+            }
+        }
     }
 }

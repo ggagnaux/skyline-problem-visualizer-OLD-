@@ -25,6 +25,7 @@ namespace SkylineProblemWinforms
         public ChartCanvasManager           CanvasManager { get; set; }
         public IList<BuildingCoordinates>   DataList { get; set; }
         public DataManager                  DataManager { get; set; }
+        public InfoPanel                    InfoPanel { get; set; }
         #endregion
 
         #region Private Variables
@@ -43,6 +44,9 @@ namespace SkylineProblemWinforms
             };
 
         Point _centerPoint = new Point();
+
+        float _canvasZoomFactor = 1.0f;
+        bool _ctrlPressed = false;
         #endregion
 
         #region Constructor(s)
@@ -75,10 +79,27 @@ namespace SkylineProblemWinforms
                 FormDataPoints.Show();
             }
 
+            // Create and optionally display the info panel
+            InfoPanel = new InfoPanel(this);
+            if (Settings.ShowInfoPanel)
+            {
+                InfoPanel.Show();
+            }
+
+
             UpdateConfigurationSettingsUI();
 
             buttonToggleData.BackColor = Color.FromArgb(100, 0, 0, 0);
             buttonToggleData.ForeColor = Color.FromArgb(100, 255, 0, 0);
+
+            // Ensure that the primary canvas doesn't flicker when refreshed
+            panelCanvas.SetDoubleBuffered();
+
+            // Setup keyboard handler
+            this.KeyPreview = true;
+            this.KeyDown += new KeyEventHandler(MainForm_KeyDown);
+
+            infoPanelToolStripMenuItem.Checked = Settings.ShowInfoPanel;
         }
         #endregion
 
@@ -109,8 +130,8 @@ namespace SkylineProblemWinforms
         /// </summary>
         private void ReinitializeValues()
         {
-            var w = panelCanvas.Width - Settings.CanvasMarginInPixels;
-            var h = panelCanvas.Height - Settings.CanvasMarginInPixels;
+            var w = panelCanvas.Width;
+            var h = panelCanvas.Height;
             _centerPoint.X = w / 2;
             _centerPoint.Y = h / 2;
             CanvasManager?.SetCanvasDimensions(w, h);
@@ -129,20 +150,60 @@ namespace SkylineProblemWinforms
         #region Event Handlers
         private void panelCanvas_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
+            var g = e.Graphics;
             CanvasManager.Graphics = g;
 
             // Set the canvas background color
             panelCanvas.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.CanvasBackgroundColor);
 
-            // Set the coordinate transformation (Flip the Y Axis)
-            CanvasManager.TransformCanvas();
+
+
+            //// The last two arguments may be used for a zoom about center if you want to zoom.
+            //var m = new Matrix(1, 0, 0, -1, 0, 0);
+
+            //// Use the scale method to adjust both x and y scale.
+            //// Use variables if you want to zoom 
+            //m.Scale(0.5f, 0.5f); // Double scale I think
+
+
+            //// Use the translate method to move the origin
+            //// Use variables to Pan  
+            //m.Translate(0.0f, -(0.0f));
+
+            //// We reset the graphics matrix to default settings before we apply
+            //// our new matrix.  Remember this whole routne occurs everytime windows 
+            //// refreshes the graphics.  If you are panning and zooming this is important.
+            //g.Transform.Reset();
+
+            //// Apply your custom matrix
+            //g.Transform = m;
+
+            // Get rid of jaggy graphics
+            g.SmoothingMode = SmoothingMode.HighQuality;
+
+
+            //// Set the coordinate transformation (Flip the Y Axis)
+            ////CanvasManager.TransformCanvas();
+            CanvasManager.FlipYAxis();
+
+            //// Set the Zoom factor
+            CanvasManager.Zoom(_canvasZoomFactor);
+
+            //// Move the origin a bit to the right and up so
+            //// we have a bit more space
+            g.TranslateTransform(Settings.CanvasMarginLeft,
+                                    Settings.CanvasMarginBottom);
+
 
             // Ensure the canvas dimensions are correct and optionally
             // display the X and/or Y Axis.
-            CanvasManager.SetCanvasDimensions(panelCanvas.Width, panelCanvas.Height);
+            //CanvasManager.SetCanvasDimensions(panelCanvas.Width, panelCanvas.Height);
             CanvasManager.ShowXAxis = Settings.ShowXAxis;
             CanvasManager.ShowYAxis = Settings.ShowYAxis;
+            CanvasManager.XAxisColor = ColorUtilities.GetColorFromHexRGBString(Settings.XAxisColor);
+            CanvasManager.YAxisColor = ColorUtilities.GetColorFromHexRGBString(Settings.YAxisColor);
+            CanvasManager.XAxisWidth = Settings.XAxisWidth;
+            CanvasManager.YAxisWidth = Settings.YAxisWidth;
             CanvasManager.RenderXAndYAxis();
 
             // Show the optional grid
@@ -150,18 +211,17 @@ namespace SkylineProblemWinforms
             CanvasManager.GridColor = ColorUtilities.GetColorFromHexRGBString(Settings.GridColor);
             CanvasManager.RenderGrid();
 
-
-            GraphicsPath gp = new GraphicsPath();
-            //gp.SetMarkers();
+            GraphicsPath gpUnscaledData = new GraphicsPath();
+            GraphicsPath gpScaledData = new GraphicsPath();
 
             var penIndex = 0;
-            foreach (var b in DataManager.Data)
+            foreach (var buildingData in DataManager.Data)
             {
                 // Scale the data to fit nicely in the panel
-                var a = b.GetScaledCoordinates(CanvasManager.Width,
-                                               CanvasManager.Height,
-                                               DataManager.MaximumX,
-                                               DataManager.MaximumY);
+                var a = buildingData.GetScaledCoordinates(CanvasManager.Width,
+                                                            CanvasManager.Height,
+                                                            DataManager.MaximumX,
+                                                            DataManager.MaximumY);
 
                 // Get the data
                 var l = a.Left;
@@ -169,14 +229,20 @@ namespace SkylineProblemWinforms
                 var r = a.Right;
                 var w = a.Width;
 
-                Rectangle rect1 = b.GetScaledRectangle(CanvasManager.Width,
-                                                       CanvasManager.Height,
-                                                       DataManager.MaximumX,
-                                                       DataManager.MaximumY);
+                Rectangle rect1 = buildingData.GetScaledRectangle(CanvasManager.Width,
+                                                                    CanvasManager.Height,
+                                                                    DataManager.MaximumX,
+                                                                    DataManager.MaximumY);
 
-                gp.AddRectangle(rect1);
+                gpScaledData.AddRectangle(rect1);
 
-                HandleRef handle = new HandleRef(gp, (IntPtr)gp.GetType().GetField("nativePath", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(gp));
+                HandleRef handle = new HandleRef(gpScaledData,
+                                                    (IntPtr)gpScaledData.
+                                                    GetType().
+                                                    GetField("nativePath", BindingFlags.NonPublic |
+                                                                            BindingFlags.Instance).
+                                                    GetValue(gpScaledData));
+
                 GdipWindingModeOutline(handle, IntPtr.Zero, 0.25F);
 
 
@@ -199,20 +265,28 @@ namespace SkylineProblemWinforms
             {
                 var color = ColorUtilities.GetColorFromHexRGBString(Settings.SkylineBorderColor);
                 var penWidth = Settings.SkylineBorderWidth;
-                g.DrawPath(new Pen(color, penWidth), gp);
 
-                Brush theBrush = new HatchBrush(HatchStyle.LargeGrid,
-                                                Color.FromArgb(50, 255, 255, 255),
-                                                Color.FromArgb(10, 255, 255, 255));
+                using (var p = new Pen(color, penWidth))
+                {
+                    g.DrawPath(p, gpScaledData);
+                }
 
-                g.FillPath(theBrush, gp);
+
+                using (var brush = new HatchBrush(HatchStyle.LargeGrid,
+                                                Color.FromArgb(20, 255, 255, 255),
+                                                Color.FromArgb(10, 255, 255, 255)))
+                {
+                    g.FillPath(brush, gpScaledData);
+                }
+
             }
 
-            if (Settings.ShowCoordinates)
+            if (Settings.ShowDataCoordinates)
             {
+                g.ResetTransform();
                 var drawString = "[10,15]";
 
-                using (var drawFont = new System.Drawing.Font("Arial", 10))
+                using (var drawFont = new System.Drawing.Font("Arial", 8))
                 using (var drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.White))
                 {
                     var x = 150.0F;
@@ -220,22 +294,9 @@ namespace SkylineProblemWinforms
                     var drawFormat = new System.Drawing.StringFormat();
                     g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
                 }
-
-
-
-                //System.Drawing.Font drawFont = new System.Drawing.Font("Arial", 16);
-                //System.Drawing.SolidBrush drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.Black);
-                //float x = 150.0F;
-                //float y = 50.0F;
-                //System.Drawing.StringFormat drawFormat = new System.Drawing.StringFormat();
-                //g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
-                //drawFont.Dispose();
-                //drawBrush.Dispose();
-                //g.Dispose();
             }
 
-
-            PointF[] pathPoints = gp.PathData.Points;
+            PointF[] pathPoints = gpScaledData.PathData.Points;
         }
 
         /// <summary>
@@ -277,7 +338,6 @@ namespace SkylineProblemWinforms
         {
             new FormManageSkylineSettings(this, Settings).ShowDialog();
         }
-
 
         /// <summary>
         /// 
@@ -345,16 +405,66 @@ namespace SkylineProblemWinforms
         /// <param name="e"></param>
         private void panelCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            // Get mouse coordinates
-            var x = e.X;
-            var y = e.Y;
+            if (Settings.ShowInfoPanel)
+            {
+                InfoPanel.SetMouseCoordinates(e.Location);
+            }
+            //if (!Settings.ShowMouseCoordinates)
+            //{
+            //    labelMouseCoordinates.Text = string.Empty;
+            //    return;
+            //}
 
-            // We have to flip the Y-Axis to match the actual chart
-            var height = panelCanvas.Height;
-            y = height - y;
+            //// Get mouse coordinates
+            //var x = e.X - Settings.CanvasMarginLeft;
+            //var y = e.Y;
 
-            string text = $"{x} : {y}";
-            labelMouseCoordinates.Text = text;
+            //// We have to flip the Y-Axis to match the actual chart
+            //var height = panelCanvas.Height;
+            //y = height - y;
+
+            //y -= Settings.CanvasMarginBottom;
+
+            //// Detect if the mouse coordinates are 'out of bounds'
+            //string text = string.Empty;
+            //if (x >=0 && y >= 0)
+            //{
+            //    text = $"{x} : {y}";
+            //}
+            //labelMouseCoordinates.Text = text;
+
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void panelCanvas_MouseWheel(object sender, MouseEventArgs e)
+        {
+            float minZoom = 0.1f;
+            float maxZoom = 10.0f;
+            float zoomIncrement = 0.1f;
+            if (_ctrlPressed == true)
+            {
+                bool increasing = (e.Delta > 0) ? true : false;
+                if (increasing)
+                    _canvasZoomFactor += zoomIncrement;
+                else
+                    _canvasZoomFactor -= zoomIncrement;
+
+                if (_canvasZoomFactor <= 0f)
+                    _canvasZoomFactor = minZoom;
+
+                if (_canvasZoomFactor > maxZoom)
+                    _canvasZoomFactor = maxZoom;
+
+                ReinitializeWindow();
+            }
+
+            float z = _canvasZoomFactor * 100;
+            InfoPanel.SetZoomLevel(z);
         }
 
         /// <summary>
@@ -375,19 +485,69 @@ namespace SkylineProblemWinforms
         public void OptionsUpdated()
         {
             UpdateConfigurationSettingsUI();
+            //UpdateInfoPanelVisiblity();
+
             ReloadData();
             DrawRawData();
             ReinitializeWindow();
 
-            if (Settings.ShowDataPointWindow)
-            {
-                FormDataPoints.Show();
-            }
-            else
-            {
-                FormDataPoints.Hide();
-            }
+            // Show/Hide the Data Points Window
+            if (Settings.ShowDataPointWindow) { FormDataPoints.Show(); }
+            else { FormDataPoints.Hide(); }
+
+            // Show/Hide the Info Panel
+            if (Settings.ShowInfoPanel) { InfoPanel.Show(); }
+            else { InfoPanel.Hide(); }
         }
         #endregion
+
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            _ctrlPressed = e.Control;
+        }
+
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            _ctrlPressed = e.Control;
+        }
+
+        private void infoPanelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Get the current Info Panel visibility status
+            var isVisible = InfoPanel.Visible;
+
+            // Flip Status
+            isVisible = !isVisible;
+
+            // Show/Hide the panel
+            InfoPanel.Visible = isVisible;
+
+            // Update Settings property
+            Settings.ShowInfoPanel = isVisible;
+
+            // Update the menuitem checkbox
+            infoPanelToolStripMenuItem.Checked = isVisible;
+        }
+
+        private void UpdateInfoPanelVisiblity()
+        {
+            // Get the current Info Panel visibility status
+            var isVisible = InfoPanel.Visible;
+
+            // Flip Status
+            isVisible = !isVisible;
+
+            // Show/Hide the panel
+            InfoPanel.Visible = isVisible;
+
+            // Update Settings property
+            Settings.ShowInfoPanel = isVisible;
+
+            // Update the menuitem checkbox
+            //infoPanelToolStripMenuItem.Checked = isVisible;
+        }
+
     }
 }

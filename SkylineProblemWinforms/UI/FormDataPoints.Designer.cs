@@ -28,58 +28,80 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listBoxDataPoints = new System.Windows.Forms.ListBox();
+            this.listViewData = new System.Windows.Forms.ListView();
             this.buttonHide = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // listBoxDataPoints
+            // listViewData
             // 
-            this.listBoxDataPoints.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listBoxDataPoints.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listBoxDataPoints.Font = new System.Drawing.Font("Lucida Sans Typewriter", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listBoxDataPoints.FormattingEnabled = true;
-            this.listBoxDataPoints.ItemHeight = 19;
-            this.listBoxDataPoints.Location = new System.Drawing.Point(3, 4);
-            this.listBoxDataPoints.Margin = new System.Windows.Forms.Padding(4);
-            this.listBoxDataPoints.Name = "listBoxDataPoints";
-            this.listBoxDataPoints.Size = new System.Drawing.Size(266, 686);
-            this.listBoxDataPoints.TabIndex = 0;
+            this.listViewData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewData.Location = new System.Drawing.Point(0, 0);
+            this.listViewData.Name = "listViewData";
+            this.listViewData.Size = new System.Drawing.Size(221, 481);
+            this.listViewData.TabIndex = 0;
+            this.listViewData.UseCompatibleStateImageBehavior = false;
+            this.listViewData.View = System.Windows.Forms.View.Details;
             // 
             // buttonHide
             // 
-            this.buttonHide.Location = new System.Drawing.Point(3, 693);
+            this.buttonHide.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonHide.Location = new System.Drawing.Point(0, 0);
             this.buttonHide.Name = "buttonHide";
-            this.buttonHide.Size = new System.Drawing.Size(266, 51);
+            this.buttonHide.Size = new System.Drawing.Size(221, 69);
             this.buttonHide.TabIndex = 1;
-            this.buttonHide.Text = "Hide";
+            this.buttonHide.Text = "HIde";
             this.buttonHide.UseVisualStyleBackColor = true;
             this.buttonHide.Click += new System.EventHandler(this.buttonHide_Click);
             // 
+            // panel1
+            // 
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(221, 550);
+            this.panel1.TabIndex = 2;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.buttonHide);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 481);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(221, 69);
+            this.panel2.TabIndex = 3;
+            // 
             // FormDataPoints
             // 
+            this.AcceptButton = this.buttonHide;
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(272, 749);
+            this.CancelButton = this.buttonHide;
+            this.ClientSize = new System.Drawing.Size(221, 550);
             this.ControlBox = false;
-            this.Controls.Add(this.buttonHide);
-            this.Controls.Add(this.listBoxDataPoints);
+            this.Controls.Add(this.listViewData);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormDataPoints";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Raw Data Points";
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ListBox listBoxDataPoints;
+        private System.Windows.Forms.ListView listViewData;
         private System.Windows.Forms.Button buttonHide;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
     }
 }

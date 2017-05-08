@@ -28,8 +28,8 @@ namespace SkylineProblemWinforms.Utilities
             }
         }
 
-        public int                          MaximumX { get; set; }
-        public int                          MaximumY { get; set; }
+        public int MaximumX { get; set; }
+        public int MaximumY { get; set; }
 
         public DataManager(string filename)
         {
@@ -55,17 +55,15 @@ namespace SkylineProblemWinforms.Utilities
                     var l = Convert.ToInt32(temp[0]);
                     var h = Convert.ToInt32(temp[1]);
                     var r = Convert.ToInt32(temp[2]);
-                    BuildingCoordinates d = new BuildingCoordinates(l, h, r);
-                    list.Add(d);
-
-                    // Determine the maximum X and Y for all of the data
-                    if (MaximumX < r) { MaximumX = r; }
-                    if (MaximumY < h) { MaximumY = h; }
+                    list.Add(new BuildingCoordinates(l, h, r));
                 }
             }
 
+            // Determine the maximum X and Y for all of the data
+            MaximumX = list.Max(a => a.Right);
+            MaximumY = list.Max(a => a.Height);
+
             Data = list;
         }
-
     }
 }
