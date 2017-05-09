@@ -148,7 +148,7 @@ namespace SkylineProblemWinforms
         #endregion
 
         #region Event Handlers
-        private void panelCanvas_Paint(object sender, PaintEventArgs e)
+        private void panelCanvas_Paint1(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
             CanvasManager.Graphics = g;
@@ -157,30 +157,10 @@ namespace SkylineProblemWinforms
             panelCanvas.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.CanvasBackgroundColor);
 
 
-
-            //// The last two arguments may be used for a zoom about center if you want to zoom.
-            //var m = new Matrix(1, 0, 0, -1, 0, 0);
-
-            //// Use the scale method to adjust both x and y scale.
-            //// Use variables if you want to zoom 
-            //m.Scale(0.5f, 0.5f); // Double scale I think
-
-
-            //// Use the translate method to move the origin
-            //// Use variables to Pan  
-            //m.Translate(0.0f, -(0.0f));
-
-            //// We reset the graphics matrix to default settings before we apply
-            //// our new matrix.  Remember this whole routne occurs everytime windows 
-            //// refreshes the graphics.  If you are panning and zooming this is important.
-            //g.Transform.Reset();
-
-            //// Apply your custom matrix
-            //g.Transform = m;
+            // Renable this later!
 
             // Get rid of jaggy graphics
             g.SmoothingMode = SmoothingMode.HighQuality;
-
 
             //// Set the coordinate transformation (Flip the Y Axis)
             ////CanvasManager.TransformCanvas();
@@ -193,6 +173,8 @@ namespace SkylineProblemWinforms
             //// we have a bit more space
             g.TranslateTransform(Settings.CanvasMarginLeft,
                                     Settings.CanvasMarginBottom);
+
+
 
 
             // Ensure the canvas dimensions are correct and optionally
@@ -215,10 +197,10 @@ namespace SkylineProblemWinforms
             GraphicsPath gpScaledData = new GraphicsPath();
 
             var penIndex = 0;
-            foreach (var buildingData in DataManager.Data)
+            foreach (BuildingCoordinates buildingData in DataManager.Data)
             {
                 // Scale the data to fit nicely in the panel
-                var a = buildingData.GetScaledCoordinates(CanvasManager.Width,
+                BuildingCoordinates a = buildingData.GetScaledCoordinates(CanvasManager.Width,
                                                             CanvasManager.Height,
                                                             DataManager.MaximumX,
                                                             DataManager.MaximumY);
@@ -261,6 +243,10 @@ namespace SkylineProblemWinforms
                 }
             }
 
+
+            PointF[] pathPoints = gpScaledData.PathData.Points;
+
+
             if (Settings.HighlightSkyline)
             {
                 var color = ColorUtilities.GetColorFromHexRGBString(Settings.SkylineBorderColor);
@@ -296,8 +282,183 @@ namespace SkylineProblemWinforms
                 }
             }
 
-            PointF[] pathPoints = gpScaledData.PathData.Points;
+            //PointF[] pathPoints = gpScaledData.PathData.Points;
         }
+
+
+
+
+        private void panelCanvas_Paint(object sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            CanvasManager.Graphics = g;
+
+            // Set the canvas background color
+            panelCanvas.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.CanvasBackgroundColor);
+
+            // Ensure the canvas dimensions are correct and optionally
+            // display the X and/or Y Axis.
+            //CanvasManager.SetCanvasDimensions(panelCanvas.Width, panelCanvas.Height);
+            CanvasManager.ShowXAxis = Settings.ShowXAxis;
+            CanvasManager.ShowYAxis = Settings.ShowYAxis;
+            CanvasManager.XAxisColor = ColorUtilities.GetColorFromHexRGBString(Settings.XAxisColor);
+            CanvasManager.YAxisColor = ColorUtilities.GetColorFromHexRGBString(Settings.YAxisColor);
+            CanvasManager.XAxisWidth = Settings.XAxisWidth;
+            CanvasManager.YAxisWidth = Settings.YAxisWidth;
+            CanvasManager.RenderXAndYAxis();
+
+            // Show the optional grid
+            CanvasManager.ShowGrid = Settings.ShowGrid;
+            CanvasManager.GridColor = ColorUtilities.GetColorFromHexRGBString(Settings.GridColor);
+            CanvasManager.RenderGrid();
+
+            GraphicsPath gpUnscaledData = new GraphicsPath();
+            GraphicsPath gpScaledData = new GraphicsPath();
+
+            float scaleAspect = Math.Min(CanvasManager.Width / DataManager.MaximumX, 
+                                         CanvasManager.Height / DataManager.MaximumY);
+
+
+            //PointF[] allPoints = new PointF[DataManager.Data.Count * 4];
+            List<PointF> allPointsList = new List<PointF>();
+
+
+            var penIndex = 0;
+            foreach (BuildingCoordinates buildingData in DataManager.Data)
+            {
+                // Scale the data to fit nicely in the panel
+                BuildingCoordinates a = buildingData.GetScaledCoordinates(CanvasManager.Width,
+                                                            CanvasManager.Height,
+                                                            DataManager.MaximumX,
+                                                            DataManager.MaximumY);
+
+                // Get the data
+                //var l = a.Left;
+                //var h = a.Height;
+                //var r = a.Right;
+                //var w = a.Width;
+
+                var l = buildingData.Left;
+                var h = buildingData.Height;
+                var r = buildingData.Right;
+                var w = buildingData.Width;
+
+                //Rectangle rect1 = buildingData.GetScaledRectangle(CanvasManager.Width,
+                //                                                    CanvasManager.Height,
+                //                                                    DataManager.MaximumX,
+                //                                                    DataManager.MaximumY);
+
+                allPointsList.Add(new PointF(l, 0f));
+                allPointsList.Add(new PointF(l, h));
+                allPointsList.Add(new PointF(r, h));
+                allPointsList.Add(new PointF(r, 0f));
+
+
+                //Rectangle rect1 = new Rectangle(l, 0, w, h);
+                //gpScaledData.AddRectangle(rect1);
+                //HandleRef handle = new HandleRef(gpScaledData,
+                //                                    (IntPtr)gpScaledData.
+                //                                    GetType().
+                //                                    GetField("nativePath", BindingFlags.NonPublic |
+                //                                                            BindingFlags.Instance).
+                //                                    GetValue(gpScaledData));
+
+                //GdipWindingModeOutline(handle, IntPtr.Zero, 0.25F);
+
+                //if (!Settings.HighlightSkyline)
+                //{
+                //    // Draw the building outline rectangle
+                //    g.DrawRectangle(_pens[penIndex], l, 0, w, h);
+                //}
+
+                //// Get the next pen in the list of pens
+                //// for the next building rectangle
+                //penIndex++;
+                //if (penIndex >= _pens.Length)
+                //{
+                //    penIndex = 0;
+                //}
+            }
+
+
+            //Matrix matrix = new Matrix();
+            //matrix.Scale(scaleAspect, -scaleAspect);
+            //matrix.Translate(DataManager.MaximumX / 2, -DataManager.MaximumY / 2);
+
+            PointF[] points = allPointsList.ToArray();
+            //matrix.TransformPoints(points);
+
+            RectangleF[] rectangles = ConvertPointsToRectangles(points);
+
+
+            g.TranslateTransform(Settings.CanvasMarginLeft, Settings.CanvasMarginBottom);
+            g.DrawRectangles(Pens.Red, rectangles);
+
+            //g.DrawLines(Pens.Green, points);
+
+            //if (Settings.HighlightSkyline)
+            //{
+            //    var color = ColorUtilities.GetColorFromHexRGBString(Settings.SkylineBorderColor);
+            //    var penWidth = Settings.SkylineBorderWidth;
+
+            //    using (var p = new Pen(color, penWidth))
+            //    {
+            //        g.DrawPath(p, gpScaledData);
+            //    }
+
+
+            //    using (var brush = new HatchBrush(HatchStyle.LargeGrid,
+            //                                    Color.FromArgb(20, 255, 255, 255),
+            //                                    Color.FromArgb(10, 255, 255, 255)))
+            //    {
+            //        g.FillPath(brush, gpScaledData);
+            //    }
+
+            //}
+
+            //if (Settings.ShowDataCoordinates)
+            //{
+            //    g.ResetTransform();
+            //    var drawString = "[10,15]";
+
+            //    using (var drawFont = new System.Drawing.Font("Arial", 8))
+            //    using (var drawBrush = new System.Drawing.SolidBrush(System.Drawing.Color.White))
+            //    {
+            //        var x = 150.0F;
+            //        var y = 0F;
+            //        var drawFormat = new System.Drawing.StringFormat();
+            //        g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
+            //    }
+            //}
+
+            //PointF[] pathPoints = gpScaledData.PathData.Points;
+        }
+
+
+        private RectangleF[] ConvertPointsToRectangles(PointF[] points)
+        {
+            List<RectangleF> rects = new List<RectangleF>();
+
+            for(int i = 0; i<points.Length; i+=4)
+            {
+                PointF upperLeft = points[i + 1];
+                float width = points[i + 3].X - points[i].X;
+                float height = upperLeft.Y - points[i].Y;
+                RectangleF r = new RectangleF(upperLeft, new SizeF(width, Math.Abs(height)));
+                rects.Add(r);
+            }
+
+            return rects.ToArray();
+        }
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// 
