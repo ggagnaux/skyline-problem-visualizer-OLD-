@@ -36,6 +36,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\KohdAndArt.Toolkit\KohdAndArt.Toolkit\bin\Debug\KohdAndArt.Toolkit.dll</HintPath>
     </Reference>
+    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroFramework.Design, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroFramework.Fonts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -62,6 +71,12 @@
     </Compile>
     <Compile Include="UI\InfoPanel.Designer.cs">
       <DependentUpon>InfoPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\KohdColorPicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\KohdColorPicker.Designer.cs">
+      <DependentUpon>KohdColorPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\BuildingCoordinates.cs" />
     <Compile Include="Utilities\BuildingUtilities.cs" />
@@ -99,6 +114,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\InfoPanel.resx">
       <DependentUpon>InfoPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\KohdColorPicker.resx">
+      <DependentUpon>KohdColorPicker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

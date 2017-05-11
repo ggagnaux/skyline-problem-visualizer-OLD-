@@ -247,8 +247,6 @@ namespace SkylineProblemWinforms
             }
         }
 
-
-
         /// <summary>
         /// Skyline border color 
         /// </summary>
@@ -264,6 +262,57 @@ namespace SkylineProblemWinforms
             set
             {
                 this["SkylineBorderColor"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Skyline foreground fill color 
+        /// </summary>
+        [UserScopedSetting]
+        [DefaultSettingValue("FFFFFF")]
+        public string SkylineFillForegroundColor
+        {
+            get
+            {
+                return (string)this["SkylineFillForegroundColor"];
+            }
+
+            set
+            {
+                this["SkylineFillForegroundColor"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Skyline background fill color 
+        /// </summary>
+        [UserScopedSetting]
+        [DefaultSettingValue("FFFFFF")]
+        public string SkylineFillBackgroundColor
+        {
+            get
+            {
+                return (string)this["SkylineFillBackgroundColor"];
+            }
+
+            set
+            {
+                this["SkylineFillBackgroundColor"] = value;
+            }
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("True")]
+        public bool SkylineFillFlag
+        {
+            get
+            {
+                return ((bool)this["SkylineFillFlag"]);
+            }
+
+            set
+            {
+                this["SkylineFillFlag"] = (bool)value;
             }
         }
 

@@ -53,6 +53,11 @@ namespace SkylineProblemWinforms
             panelXAxisColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.XAxisColor);
             panelYAxisColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.YAxisColor);
 
+            //SkylineBorderColorPicker.CurrentColor = ColorUtilities.GetColorFromHexRGBString(Settings.SkylineBorderColor); ;
+
+            panelSkylineFillForegroundColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.SkylineFillForegroundColor);
+            panelSkylineFillBackgroundColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.SkylineFillBackgroundColor);
+
             base.OnLoad(e);
         }
 
@@ -64,7 +69,12 @@ namespace SkylineProblemWinforms
             // Skyline Border Settings
             this.checkBoxHighlightSkyline.DataBindings.Add("Checked", Settings, "HighlightSkyline", false, DataSourceUpdateMode.OnPropertyChanged);
             this.textBoxSkylineBorderColor.DataBindings.Add("Text", Settings, "SkylineBorderColor", false, DataSourceUpdateMode.OnPropertyChanged);
+            //this.SkylineBorderColorPicker.DataBindings.Add("Text", Settings, "SkylineBorderColor", false, DataSourceUpdateMode.OnPropertyChanged, string.Empty);
             this.textBoxSkylineBorderWidth.DataBindings.Add("Text", Settings, "SkylineBorderWidth", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            this.checkBoxEnableSkylineFill.DataBindings.Add("Checked", Settings, "SkylineFillFlag", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxSkylineFillForegroundColor.DataBindings.Add("Text", Settings, "SkylineFillForegroundColor", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.textBoxSkylineFillBackgroundColor.DataBindings.Add("Text", Settings, "SkylineFillBackgroundColor", false, DataSourceUpdateMode.OnPropertyChanged);
 
             // Axis Settings
             this.checkBoxShowXAxis.DataBindings.Add("Checked", Settings, "ShowXAxis", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -118,6 +128,30 @@ namespace SkylineProblemWinforms
                                         textBoxSkylineBorderColor);
             labelSkylineBorderWidth.Enabled = enable;
             textBoxSkylineBorderWidth.Enabled = enable;
+
+            checkBoxEnableSkylineFill.Enabled = enable;
+            EnableSkylineFillForegroundSettings(enable);
+            EnableSkylineFillBackgroundSettings(enable);
+        }
+
+        private void EnableSkylineFillForegroundSettings(bool enable)
+        {
+            EnableColorPickerComponents(enable,
+                                        labelSkylineForegroundFillColor,
+                                        panelSkylineFillForegroundColorSwatch,
+                                        textBoxSkylineFillForegroundColor);
+
+            labelSkylineForegroundFillColor.Enabled = enable;
+        }
+
+        private void EnableSkylineFillBackgroundSettings(bool enable)
+        {
+            EnableColorPickerComponents(enable,
+                                        labelSkylineBackgroundFillColor,
+                                        panelSkylineFillBackgroundColorSwatch,
+                                        textBoxSkylineFillBackgroundColor);
+
+            labelSkylineBackgroundFillColor.Enabled = enable;
         }
 
         private void EnableXAxisSettings(bool enable)
@@ -379,6 +413,33 @@ namespace SkylineProblemWinforms
             bool flag = checkBoxShowInfoPanel.Checked;
             Settings.ShowInfoPanel = flag;
             ParentSettings.ShowInfoPanel = flag;
+            ParentForm.OptionsUpdated();
+        }
+
+        private void panelSkylineFillForegroundColorSwatch_Click(object sender, EventArgs e)
+        {
+            SetColorSwatch(panelSkylineFillForegroundColorSwatch.BackColor,
+                           panelSkylineFillForegroundColorSwatch,
+                           textBoxSkylineFillForegroundColor);
+        }
+
+        private void panelSkylineFillBackgroundColorSwatch_Click(object sender, EventArgs e)
+        {
+            SetColorSwatch(panelSkylineFillBackgroundColorSwatch.BackColor,
+                           panelSkylineFillBackgroundColorSwatch,
+                           textBoxSkylineFillBackgroundColor);
+        }
+
+        private void checkBoxEnableSkylineFill_CheckedChanged(object sender, EventArgs e)
+        {
+            // Note - This ensures that this method isn't run
+            // during application startup
+            if (!checkBoxEnableSkylineFill.IsHandleCreated)
+                return;
+
+            bool flag = checkBoxEnableSkylineFill.Checked;
+            EnableSkylineFillForegroundSettings(flag);
+            EnableSkylineFillBackgroundSettings(flag);
             ParentForm.OptionsUpdated();
         }
     }

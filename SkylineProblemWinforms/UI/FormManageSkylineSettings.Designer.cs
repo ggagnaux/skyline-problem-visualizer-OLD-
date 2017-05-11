@@ -38,6 +38,13 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.checkBoxShowDataPointWindow = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBoxSkylineFillBackgroundColor = new System.Windows.Forms.TextBox();
+            this.panelSkylineFillBackgroundColorSwatch = new System.Windows.Forms.Panel();
+            this.labelSkylineBackgroundFillColor = new System.Windows.Forms.Label();
+            this.textBoxSkylineFillForegroundColor = new System.Windows.Forms.TextBox();
+            this.panelSkylineFillForegroundColorSwatch = new System.Windows.Forms.Panel();
+            this.labelSkylineForegroundFillColor = new System.Windows.Forms.Label();
+            this.checkBoxEnableSkylineFill = new System.Windows.Forms.CheckBox();
             this.labelSkylineBorderWidth = new System.Windows.Forms.Label();
             this.textBoxCanvasGridColor = new System.Windows.Forms.TextBox();
             this.textBoxSkylineBorderWidth = new System.Windows.Forms.TextBox();
@@ -74,8 +81,8 @@
             this.labelYAxisWidth = new System.Windows.Forms.Label();
             this.textBoxYAxisWidth = new System.Windows.Forms.TextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.checkBoxShowMouseCoordinates = new System.Windows.Forms.CheckBox();
             this.checkBoxShowInfoPanel = new System.Windows.Forms.CheckBox();
+            this.checkBoxShowMouseCoordinates = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -98,7 +105,7 @@
             // 
             this.labelSkylineBorderColor.AutoSize = true;
             this.labelSkylineBorderColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSkylineBorderColor.Location = new System.Drawing.Point(47, 88);
+            this.labelSkylineBorderColor.Location = new System.Drawing.Point(39, 88);
             this.labelSkylineBorderColor.Name = "labelSkylineBorderColor";
             this.labelSkylineBorderColor.Size = new System.Drawing.Size(168, 20);
             this.labelSkylineBorderColor.TabIndex = 5;
@@ -107,7 +114,7 @@
             // panelSkylineBorderColorSwatch
             // 
             this.panelSkylineBorderColorSwatch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelSkylineBorderColorSwatch.Location = new System.Drawing.Point(246, 88);
+            this.panelSkylineBorderColorSwatch.Location = new System.Drawing.Point(263, 88);
             this.panelSkylineBorderColorSwatch.Name = "panelSkylineBorderColorSwatch";
             this.panelSkylineBorderColorSwatch.Size = new System.Drawing.Size(47, 27);
             this.panelSkylineBorderColorSwatch.TabIndex = 6;
@@ -118,7 +125,7 @@
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.buttonCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonCancel.Location = new System.Drawing.Point(712, 539);
+            this.buttonCancel.Location = new System.Drawing.Point(712, 593);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(98, 34);
             this.buttonCancel.TabIndex = 1;
@@ -156,7 +163,7 @@
             // 
             this.checkBoxShowDataPointWindow.AutoSize = true;
             this.checkBoxShowDataPointWindow.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxShowDataPointWindow.Location = new System.Drawing.Point(16, 58);
+            this.checkBoxShowDataPointWindow.Location = new System.Drawing.Point(21, 118);
             this.checkBoxShowDataPointWindow.Name = "checkBoxShowDataPointWindow";
             this.checkBoxShowDataPointWindow.Size = new System.Drawing.Size(220, 24);
             this.checkBoxShowDataPointWindow.TabIndex = 4;
@@ -166,6 +173,13 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.textBoxSkylineFillBackgroundColor);
+            this.groupBox1.Controls.Add(this.panelSkylineFillBackgroundColorSwatch);
+            this.groupBox1.Controls.Add(this.labelSkylineBackgroundFillColor);
+            this.groupBox1.Controls.Add(this.textBoxSkylineFillForegroundColor);
+            this.groupBox1.Controls.Add(this.panelSkylineFillForegroundColorSwatch);
+            this.groupBox1.Controls.Add(this.labelSkylineForegroundFillColor);
+            this.groupBox1.Controls.Add(this.checkBoxEnableSkylineFill);
             this.groupBox1.Controls.Add(this.labelSkylineBorderWidth);
             this.groupBox1.Controls.Add(this.textBoxCanvasGridColor);
             this.groupBox1.Controls.Add(this.textBoxSkylineBorderWidth);
@@ -174,18 +188,92 @@
             this.groupBox1.Controls.Add(this.checkBoxHighlightSkyline);
             this.groupBox1.Controls.Add(this.labelSkylineBorderColor);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(16, 97);
+            this.groupBox1.Location = new System.Drawing.Point(16, 58);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(335, 143);
+            this.groupBox1.Size = new System.Drawing.Size(335, 227);
             this.groupBox1.TabIndex = 16;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Skyline Highlighting";
+            // 
+            // textBoxSkylineFillBackgroundColor
+            // 
+            this.textBoxSkylineFillBackgroundColor.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxSkylineFillBackgroundColor.ForeColor = System.Drawing.SystemColors.Control;
+            this.textBoxSkylineFillBackgroundColor.Location = new System.Drawing.Point(317, 185);
+            this.textBoxSkylineFillBackgroundColor.MaxLength = 8;
+            this.textBoxSkylineFillBackgroundColor.Name = "textBoxSkylineFillBackgroundColor";
+            this.textBoxSkylineFillBackgroundColor.ReadOnly = true;
+            this.textBoxSkylineFillBackgroundColor.Size = new System.Drawing.Size(0, 20);
+            this.textBoxSkylineFillBackgroundColor.TabIndex = 29;
+            // 
+            // panelSkylineFillBackgroundColorSwatch
+            // 
+            this.panelSkylineFillBackgroundColorSwatch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelSkylineFillBackgroundColorSwatch.Location = new System.Drawing.Point(263, 178);
+            this.panelSkylineFillBackgroundColorSwatch.Name = "panelSkylineFillBackgroundColorSwatch";
+            this.panelSkylineFillBackgroundColorSwatch.Size = new System.Drawing.Size(47, 27);
+            this.panelSkylineFillBackgroundColorSwatch.TabIndex = 28;
+            this.panelSkylineFillBackgroundColorSwatch.Click += new System.EventHandler(this.panelSkylineFillBackgroundColorSwatch_Click);
+            this.panelSkylineFillBackgroundColorSwatch.DoubleClick += new System.EventHandler(this.panelSkylineFillBackgroundColorSwatch_Click);
+            // 
+            // labelSkylineBackgroundFillColor
+            // 
+            this.labelSkylineBackgroundFillColor.AutoSize = true;
+            this.labelSkylineBackgroundFillColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSkylineBackgroundFillColor.Location = new System.Drawing.Point(63, 181);
+            this.labelSkylineBackgroundFillColor.Name = "labelSkylineBackgroundFillColor";
+            this.labelSkylineBackgroundFillColor.Size = new System.Drawing.Size(148, 20);
+            this.labelSkylineBackgroundFillColor.TabIndex = 27;
+            this.labelSkylineBackgroundFillColor.Text = "Background Color:";
+            // 
+            // textBoxSkylineFillForegroundColor
+            // 
+            this.textBoxSkylineFillForegroundColor.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxSkylineFillForegroundColor.ForeColor = System.Drawing.SystemColors.Control;
+            this.textBoxSkylineFillForegroundColor.Location = new System.Drawing.Point(317, 152);
+            this.textBoxSkylineFillForegroundColor.MaxLength = 8;
+            this.textBoxSkylineFillForegroundColor.Name = "textBoxSkylineFillForegroundColor";
+            this.textBoxSkylineFillForegroundColor.ReadOnly = true;
+            this.textBoxSkylineFillForegroundColor.Size = new System.Drawing.Size(0, 20);
+            this.textBoxSkylineFillForegroundColor.TabIndex = 26;
+            // 
+            // panelSkylineFillForegroundColorSwatch
+            // 
+            this.panelSkylineFillForegroundColorSwatch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelSkylineFillForegroundColorSwatch.Location = new System.Drawing.Point(263, 144);
+            this.panelSkylineFillForegroundColorSwatch.Name = "panelSkylineFillForegroundColorSwatch";
+            this.panelSkylineFillForegroundColorSwatch.Size = new System.Drawing.Size(47, 27);
+            this.panelSkylineFillForegroundColorSwatch.TabIndex = 25;
+            this.panelSkylineFillForegroundColorSwatch.Click += new System.EventHandler(this.panelSkylineFillForegroundColorSwatch_Click);
+            this.panelSkylineFillForegroundColorSwatch.DoubleClick += new System.EventHandler(this.panelSkylineFillForegroundColorSwatch_Click);
+            // 
+            // labelSkylineForegroundFillColor
+            // 
+            this.labelSkylineForegroundFillColor.AutoSize = true;
+            this.labelSkylineForegroundFillColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSkylineForegroundFillColor.Location = new System.Drawing.Point(63, 147);
+            this.labelSkylineForegroundFillColor.Name = "labelSkylineForegroundFillColor";
+            this.labelSkylineForegroundFillColor.Size = new System.Drawing.Size(144, 20);
+            this.labelSkylineForegroundFillColor.TabIndex = 24;
+            this.labelSkylineForegroundFillColor.Text = "Foreground Color:";
+            // 
+            // checkBoxEnableSkylineFill
+            // 
+            this.checkBoxEnableSkylineFill.AutoSize = true;
+            this.checkBoxEnableSkylineFill.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxEnableSkylineFill.Location = new System.Drawing.Point(43, 120);
+            this.checkBoxEnableSkylineFill.Name = "checkBoxEnableSkylineFill";
+            this.checkBoxEnableSkylineFill.Size = new System.Drawing.Size(109, 24);
+            this.checkBoxEnableSkylineFill.TabIndex = 23;
+            this.checkBoxEnableSkylineFill.Text = "Enable Fill";
+            this.checkBoxEnableSkylineFill.UseVisualStyleBackColor = true;
+            this.checkBoxEnableSkylineFill.CheckedChanged += new System.EventHandler(this.checkBoxEnableSkylineFill_CheckedChanged);
             // 
             // labelSkylineBorderWidth
             // 
             this.labelSkylineBorderWidth.AutoSize = true;
             this.labelSkylineBorderWidth.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSkylineBorderWidth.Location = new System.Drawing.Point(47, 58);
+            this.labelSkylineBorderWidth.Location = new System.Drawing.Point(39, 58);
             this.labelSkylineBorderWidth.Name = "labelSkylineBorderWidth";
             this.labelSkylineBorderWidth.Size = new System.Drawing.Size(113, 20);
             this.labelSkylineBorderWidth.TabIndex = 22;
@@ -204,7 +292,7 @@
             // 
             // textBoxSkylineBorderWidth
             // 
-            this.textBoxSkylineBorderWidth.Location = new System.Drawing.Point(246, 55);
+            this.textBoxSkylineBorderWidth.Location = new System.Drawing.Point(263, 55);
             this.textBoxSkylineBorderWidth.Name = "textBoxSkylineBorderWidth";
             this.textBoxSkylineBorderWidth.Size = new System.Drawing.Size(47, 27);
             this.textBoxSkylineBorderWidth.TabIndex = 21;
@@ -214,7 +302,7 @@
             // 
             this.textBoxSkylineBorderColor.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxSkylineBorderColor.ForeColor = System.Drawing.SystemColors.Control;
-            this.textBoxSkylineBorderColor.Location = new System.Drawing.Point(300, 60);
+            this.textBoxSkylineBorderColor.Location = new System.Drawing.Point(317, 93);
             this.textBoxSkylineBorderColor.MaxLength = 8;
             this.textBoxSkylineBorderColor.Name = "textBoxSkylineBorderColor";
             this.textBoxSkylineBorderColor.ReadOnly = true;
@@ -258,7 +346,7 @@
             this.groupBox2.Controls.Add(this.textBoxMarginRight);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(16, 246);
+            this.groupBox2.Location = new System.Drawing.Point(16, 300);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(335, 327);
             this.groupBox2.TabIndex = 18;
@@ -269,7 +357,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(65, 205);
+            this.label6.Location = new System.Drawing.Point(39, 203);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(68, 20);
             this.label6.TabIndex = 33;
@@ -279,7 +367,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(47, 77);
+            this.label2.Location = new System.Drawing.Point(17, 75);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(82, 20);
             this.label2.TabIndex = 26;
@@ -288,7 +376,7 @@
             // panelCanvasGridColorSwatch
             // 
             this.panelCanvasGridColorSwatch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelCanvasGridColorSwatch.Location = new System.Drawing.Point(246, 259);
+            this.panelCanvasGridColorSwatch.Location = new System.Drawing.Point(263, 259);
             this.panelCanvasGridColorSwatch.Name = "panelCanvasGridColorSwatch";
             this.panelCanvasGridColorSwatch.Size = new System.Drawing.Size(47, 30);
             this.panelCanvasGridColorSwatch.TabIndex = 2;
@@ -298,7 +386,7 @@
             // textBoxMarginBottom
             // 
             this.textBoxMarginBottom.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxMarginBottom.Location = new System.Drawing.Point(246, 202);
+            this.textBoxMarginBottom.Location = new System.Drawing.Point(263, 202);
             this.textBoxMarginBottom.Name = "textBoxMarginBottom";
             this.textBoxMarginBottom.Size = new System.Drawing.Size(47, 27);
             this.textBoxMarginBottom.TabIndex = 32;
@@ -307,7 +395,7 @@
             // labelCanvasGridColor
             // 
             this.labelCanvasGridColor.AutoSize = true;
-            this.labelCanvasGridColor.Location = new System.Drawing.Point(47, 265);
+            this.labelCanvasGridColor.Location = new System.Drawing.Point(39, 261);
             this.labelCanvasGridColor.Name = "labelCanvasGridColor";
             this.labelCanvasGridColor.Size = new System.Drawing.Size(91, 20);
             this.labelCanvasGridColor.TabIndex = 1;
@@ -316,7 +404,7 @@
             // panelCanvasBackgroundColorSwatch
             // 
             this.panelCanvasBackgroundColorSwatch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelCanvasBackgroundColorSwatch.Location = new System.Drawing.Point(246, 26);
+            this.panelCanvasBackgroundColorSwatch.Location = new System.Drawing.Point(263, 26);
             this.panelCanvasBackgroundColorSwatch.Name = "panelCanvasBackgroundColorSwatch";
             this.panelCanvasBackgroundColorSwatch.Size = new System.Drawing.Size(47, 30);
             this.panelCanvasBackgroundColorSwatch.TabIndex = 24;
@@ -326,7 +414,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(65, 172);
+            this.label7.Location = new System.Drawing.Point(39, 170);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(42, 20);
             this.label7.TabIndex = 31;
@@ -335,7 +423,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(47, 32);
+            this.label1.Location = new System.Drawing.Point(18, 34);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(148, 20);
             this.label1.TabIndex = 23;
@@ -344,7 +432,7 @@
             // checkBoxShowGrid
             // 
             this.checkBoxShowGrid.AutoSize = true;
-            this.checkBoxShowGrid.Location = new System.Drawing.Point(22, 234);
+            this.checkBoxShowGrid.Location = new System.Drawing.Point(21, 234);
             this.checkBoxShowGrid.Name = "checkBoxShowGrid";
             this.checkBoxShowGrid.Size = new System.Drawing.Size(124, 24);
             this.checkBoxShowGrid.TabIndex = 0;
@@ -355,7 +443,7 @@
             // textBoxMarginTop
             // 
             this.textBoxMarginTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxMarginTop.Location = new System.Drawing.Point(246, 169);
+            this.textBoxMarginTop.Location = new System.Drawing.Point(263, 169);
             this.textBoxMarginTop.Name = "textBoxMarginTop";
             this.textBoxMarginTop.Size = new System.Drawing.Size(47, 27);
             this.textBoxMarginTop.TabIndex = 30;
@@ -376,7 +464,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(65, 138);
+            this.label5.Location = new System.Drawing.Point(39, 136);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 20);
             this.label5.TabIndex = 29;
@@ -385,7 +473,7 @@
             // textBoxMarginLeft
             // 
             this.textBoxMarginLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxMarginLeft.Location = new System.Drawing.Point(246, 102);
+            this.textBoxMarginLeft.Location = new System.Drawing.Point(263, 102);
             this.textBoxMarginLeft.Name = "textBoxMarginLeft";
             this.textBoxMarginLeft.Size = new System.Drawing.Size(47, 27);
             this.textBoxMarginLeft.TabIndex = 23;
@@ -394,7 +482,7 @@
             // textBoxMarginRight
             // 
             this.textBoxMarginRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxMarginRight.Location = new System.Drawing.Point(246, 135);
+            this.textBoxMarginRight.Location = new System.Drawing.Point(263, 135);
             this.textBoxMarginRight.Name = "textBoxMarginRight";
             this.textBoxMarginRight.Size = new System.Drawing.Size(47, 27);
             this.textBoxMarginRight.TabIndex = 28;
@@ -404,7 +492,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(65, 105);
+            this.label4.Location = new System.Drawing.Point(39, 103);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(43, 20);
             this.label4.TabIndex = 27;
@@ -560,25 +648,14 @@
             this.groupBox5.Controls.Add(this.checkBoxShowInfoPanel);
             this.groupBox5.Controls.Add(this.checkBoxShowMouseCoordinates);
             this.groupBox5.Controls.Add(this.checkBoxShowDataCoordinates);
+            this.groupBox5.Controls.Add(this.checkBoxShowDataPointWindow);
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox5.Location = new System.Drawing.Point(371, 353);
+            this.groupBox5.Location = new System.Drawing.Point(371, 360);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(439, 129);
+            this.groupBox5.Size = new System.Drawing.Size(439, 180);
             this.groupBox5.TabIndex = 25;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Other";
-            // 
-            // checkBoxShowMouseCoordinates
-            // 
-            this.checkBoxShowMouseCoordinates.AutoSize = true;
-            this.checkBoxShowMouseCoordinates.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxShowMouseCoordinates.Location = new System.Drawing.Point(21, 58);
-            this.checkBoxShowMouseCoordinates.Name = "checkBoxShowMouseCoordinates";
-            this.checkBoxShowMouseCoordinates.Size = new System.Drawing.Size(222, 24);
-            this.checkBoxShowMouseCoordinates.TabIndex = 23;
-            this.checkBoxShowMouseCoordinates.Text = "Show Mouse Coordinates";
-            this.checkBoxShowMouseCoordinates.UseVisualStyleBackColor = true;
-            this.checkBoxShowMouseCoordinates.CheckedChanged += new System.EventHandler(this.checkBoxShowMouseCoordinates_CheckedChanged);
             // 
             // checkBoxShowInfoPanel
             // 
@@ -592,16 +669,27 @@
             this.checkBoxShowInfoPanel.UseVisualStyleBackColor = true;
             this.checkBoxShowInfoPanel.CheckedChanged += new System.EventHandler(this.checkBoxShowInfoPanel_CheckedChanged);
             // 
+            // checkBoxShowMouseCoordinates
+            // 
+            this.checkBoxShowMouseCoordinates.AutoSize = true;
+            this.checkBoxShowMouseCoordinates.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxShowMouseCoordinates.Location = new System.Drawing.Point(21, 58);
+            this.checkBoxShowMouseCoordinates.Name = "checkBoxShowMouseCoordinates";
+            this.checkBoxShowMouseCoordinates.Size = new System.Drawing.Size(222, 24);
+            this.checkBoxShowMouseCoordinates.TabIndex = 23;
+            this.checkBoxShowMouseCoordinates.Text = "Show Mouse Coordinates";
+            this.checkBoxShowMouseCoordinates.UseVisualStyleBackColor = true;
+            this.checkBoxShowMouseCoordinates.CheckedChanged += new System.EventHandler(this.checkBoxShowMouseCoordinates_CheckedChanged);
+            // 
             // FormManageSkylineSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(820, 587);
+            this.ClientSize = new System.Drawing.Size(823, 644);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.checkBoxShowDataPointWindow);
             this.Controls.Add(this.buttonBrowse);
             this.Controls.Add(this.textBoxDefaultDataFile);
             this.Controls.Add(this.label3);
@@ -675,5 +763,12 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox checkBoxShowMouseCoordinates;
         private System.Windows.Forms.CheckBox checkBoxShowInfoPanel;
+        private System.Windows.Forms.TextBox textBoxSkylineFillBackgroundColor;
+        private System.Windows.Forms.Panel panelSkylineFillBackgroundColorSwatch;
+        private System.Windows.Forms.Label labelSkylineBackgroundFillColor;
+        private System.Windows.Forms.TextBox textBoxSkylineFillForegroundColor;
+        private System.Windows.Forms.Panel panelSkylineFillForegroundColorSwatch;
+        private System.Windows.Forms.Label labelSkylineForegroundFillColor;
+        private System.Windows.Forms.CheckBox checkBoxEnableSkylineFill;
     }
 }
