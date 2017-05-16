@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework.Forms;
 
@@ -45,21 +40,14 @@ namespace SkylineProblemWinforms.UI
         {
             SetMouseCoordinates(new Point(500, 500));
             SetZoomLevel(100);
-
             base.OnLoad(e);
         }
 
 
         #region Public Methods
-        /// <summary>
-        /// Populate the listview
-        /// </summary>
-        /// <param name="data"></param>
         public void SetData(IList<BuildingCoordinates> data)
         {
             this.Data = data;
-
-            //int[] columnWidths = new int[] { 5, 7, 7 };
 
             // Clear old data and load new data
             listViewData.Clear();

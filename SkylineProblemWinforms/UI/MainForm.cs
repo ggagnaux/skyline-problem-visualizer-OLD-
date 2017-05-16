@@ -8,10 +8,9 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using KohdAndArt.Toolkit;
+using MetroFramework.Forms;
 using SkylineProblemWinforms.UI;
 using SkylineProblemWinforms.Utilities;
-using MetroFramework.Forms;
-using MetroFramework.Components;
 
 namespace SkylineProblemWinforms
 {
@@ -57,11 +56,8 @@ namespace SkylineProblemWinforms
         public MainForm()
         {
             LoadConfigurationSettings();
-
             InitializeComponent();
-
             Initialize();
-
             //TestBuildGridRectangle();
         }
         #endregion
@@ -71,8 +67,6 @@ namespace SkylineProblemWinforms
         {
             try
             {
-                //MetroStyleManager
-
                 // Use double buffering to reduce flicker.
                 this.SetStyle(
                     ControlStyles.ResizeRedraw |
@@ -104,11 +98,7 @@ namespace SkylineProblemWinforms
                     InfoPanel.Show();
                 }
 
-
                 UpdateConfigurationSettingsUI();
-
-                //buttonToggleInfoPanel.BackColor = Color.FromArgb(100, 0, 0, 0);
-                //buttonToggleInfoPanel.ForeColor = Color.FromArgb(100, 255, 0, 0);
 
                 // Ensure that the primary canvas doesn't flicker when refreshed
                 panelCanvas.SetDoubleBuffered();
@@ -124,7 +114,6 @@ namespace SkylineProblemWinforms
                 var matrix = new Matrix(1, 0, 0, -1, 0, 0);
                 g.Transform = matrix;
                 g.TranslateTransform(0, -panelCanvas.Height);
-
 
                 menuStrip1.Renderer = new ToolStripProfessionalRenderer(new TestColorTable());
             }
@@ -205,7 +194,6 @@ namespace SkylineProblemWinforms
 
             //DrawCheckerboard(g);
             //return;
-
 
             // Set the canvas background color
             panelCanvas.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.CanvasBackgroundColor);
@@ -799,7 +787,6 @@ namespace SkylineProblemWinforms
         }
     }
 
-
     class RectangleWithText
     {
         RectangleF m_extent = new RectangleF();
@@ -875,25 +862,6 @@ namespace SkylineProblemWinforms
             g.DrawString(text, m_textFont, Brushes.White, m_textRect, stringFormat);
 
             g.Restore(gs);
-        }
-    }
-
-
-    public class TestColorTable : ProfessionalColorTable
-    {
-        public override Color MenuItemSelected
-        {
-            get { return Color.FromArgb(10, 0, 0, 0); }
-        }
-
-        public override Color MenuBorder  //added for changing the menu border
-        {
-            get { return Color.Black; }
-        }
-
-        public override Color ToolStripBorder
-        {
-            get { return Color.Red; }
         }
     }
 }

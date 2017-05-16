@@ -78,6 +78,7 @@
     <Compile Include="UI\KohdColorPicker.Designer.cs">
       <DependentUpon>KohdColorPicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\TestColorTable.cs" />
     <Compile Include="Utilities\BuildingCoordinates.cs" />
     <Compile Include="Utilities\BuildingUtilities.cs" />
     <Compile Include="Utilities\CanvasManager.cs" />
