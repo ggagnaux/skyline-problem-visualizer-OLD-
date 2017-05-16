@@ -23,7 +23,6 @@ namespace SkylineProblemWinforms
 
         #region Public Properties
         public SkylineSettings              Settings { get; set; }
-        public FormDataPoints               FormDataPoints { get; set; }
         public ChartCanvasManager           CanvasManager { get; set; }
         public IList<BuildingCoordinates>   DataList { get; set; }
         public DataManager                  DataManager { get; set; }
@@ -81,14 +80,6 @@ namespace SkylineProblemWinforms
 
                 // Create the Data Manager and Load the data
                 DataManager = new DataManager(Settings.DefaultDataFile);
-
-                // Create and optionally display the data window
-                FormDataPoints = new FormDataPoints(this);
-                FormDataPoints.SetData(DataManager.Data);
-                if (Settings.ShowDataPointWindow)
-                {
-                    FormDataPoints.Show();
-                }
 
                 // Create and optionally display the info panel
                 InfoPanel = new InfoPanel(this);
@@ -157,7 +148,7 @@ namespace SkylineProblemWinforms
         private void ReloadData()
         {
             DataManager.Filename = Settings.DefaultDataFile;
-            FormDataPoints.SetData(DataManager.Data);
+            InfoPanel.SetData(DataManager.Data);
         }
 
         private void DrawRawData()
@@ -735,10 +726,6 @@ namespace SkylineProblemWinforms
             ReloadData();
             DrawRawData();
             ReinitializeWindow();
-
-            // Show/Hide the Data Points Window
-            if (Settings.ShowDataPointWindow) { FormDataPoints.Show(); }
-            else { FormDataPoints.Hide(); }
 
             // Show/Hide the Info Panel
             if (Settings.ShowInfoPanel) { InfoPanel.Show(); }
