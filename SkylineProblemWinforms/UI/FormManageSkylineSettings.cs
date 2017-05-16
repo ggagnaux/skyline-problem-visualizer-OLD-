@@ -64,7 +64,6 @@ namespace SkylineProblemWinforms
         private void SetBindings()
         {
             this.textBoxDefaultDataFile.DataBindings.Add("Text", Settings, "DefaultDataFile", false, DataSourceUpdateMode.OnPropertyChanged);
-            this.checkBoxShowDataPointWindow.DataBindings.Add("Checked", Settings, "ShowDataPointWindow", false, DataSourceUpdateMode.OnPropertyChanged);
 
             // Skyline Border Settings
             this.checkBoxHighlightSkyline.DataBindings.Add("Checked", Settings, "HighlightSkyline", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -215,19 +214,6 @@ namespace SkylineProblemWinforms
             ParentForm.OptionsUpdated();
         }
 
-        private void checkBoxShowDataPointWindow_CheckedChanged(object sender, EventArgs e)
-        {
-            // Note - This ensures that this method isn't run
-            // during application startup
-            if (!checkBoxShowDataPointWindow.IsHandleCreated)
-                return;
-
-            bool flag = checkBoxShowDataPointWindow.Checked;
-            Settings.ShowDataPointWindow = flag;
-            ParentSettings.ShowDataPointWindow = flag;
-            ParentForm.OptionsUpdated();
-        }
-
         private void checkBoxShowXAxis_CheckedChanged(object sender, EventArgs e)
         {
             // Note - This ensures that this method isn't run
@@ -347,19 +333,6 @@ namespace SkylineProblemWinforms
             SetColorSwatch(panelYAxisColorSwatch.BackColor,
                            panelYAxisColorSwatch,
                            textBoxYAxisColor);
-        }
-
-        private void checkBoxShowMouseCoordinates_CheckedChanged(object sender, EventArgs e)
-        {
-            // Note - This ensures that this method isn't run
-            // during application startup
-            if (!checkBoxShowMouseCoordinates.IsHandleCreated)
-                return;
-
-            var flag = checkBoxShowMouseCoordinates.Checked;
-            Settings.ShowMouseCoordinates = flag;
-            ParentSettings.ShowMouseCoordinates = flag;
-            ParentForm.OptionsUpdated();
         }
 
         private void textBoxMarginLeft_TextChanged(object sender, EventArgs e)

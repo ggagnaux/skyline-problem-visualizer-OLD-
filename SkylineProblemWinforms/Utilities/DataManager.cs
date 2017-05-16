@@ -9,6 +9,7 @@ namespace SkylineProblemWinforms.Utilities
 {
     public class DataManager
     {
+        private bool _loaded;
         public IList<BuildingCoordinates>   Data { get; set; }
 
         private string _filename;
@@ -47,21 +48,29 @@ namespace SkylineProblemWinforms.Utilities
             var line = string.Empty;
             var list = new List<BuildingCoordinates>();
 
-            using (var file = new StreamReader(Filename))
+            try
             {
-                while ((line = file.ReadLine()) != null && (line.Length > 0))
+                using (var file = new StreamReader(Filename))
                 {
-                    string[] temp = line.Split(itemSeparator);
-                    var l = Convert.ToInt32(temp[0]);
-                    var h = Convert.ToInt32(temp[1]);
-                    var r = Convert.ToInt32(temp[2]);
-                    list.Add(new BuildingCoordinates(l, h, r));
+                    while ((line = file.ReadLine()) != null && (line.Length > 0))
+                    {
+                        string[] temp = line.Split(itemSeparator);
+                        var l = Convert.ToInt32(temp[0]);
+                        var h = Convert.ToInt32(temp[1]);
+                        var r = Convert.ToInt32(temp[2]);
+                        list.Add(new BuildingCoordinates(l, h, r));
+                    }
                 }
+
+                // Determine the maximum X and Y for all of the data
+                MaximumX = list.Max(a => a.Right);
+                MaximumY = list.Max(a => a.Height);
+            }
+            catch (IndexOutOfRangeException e1)
+            {
+                throw new ApplicationException("Invalid file format.");
             }
 
-            // Determine the maximum X and Y for all of the data
-            MaximumX = list.Max(a => a.Right);
-            MaximumY = list.Max(a => a.Height);
 
             Data = list;
         }

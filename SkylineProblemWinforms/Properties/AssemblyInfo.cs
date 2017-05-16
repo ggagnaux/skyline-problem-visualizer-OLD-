@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Skyline Problem Winforms")]
-[assembly: AssemblyDescription("This program will build a visual representation of datapoints for the Skyline problem.")]
+[assembly: AssemblyTitle("Skyline Problem Visualizer")]
+[assembly: AssemblyDescription("This program will build a visual representation of datapoints for the 'Skyline' algorithm problem.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Skyline Problem Winforms")]
+[assembly: AssemblyProduct("Skyline Problem Visualizer")]
 [assembly: AssemblyCopyright("Copyright ©  2017 - G. Gagnaux")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

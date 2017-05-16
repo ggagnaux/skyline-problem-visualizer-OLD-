@@ -36,7 +36,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.buttonBrowse = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.checkBoxShowDataPointWindow = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBoxSkylineFillBackgroundColor = new System.Windows.Forms.TextBox();
             this.panelSkylineFillBackgroundColorSwatch = new System.Windows.Forms.Panel();
@@ -82,7 +81,6 @@
             this.textBoxYAxisWidth = new System.Windows.Forms.TextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.checkBoxShowInfoPanel = new System.Windows.Forms.CheckBox();
-            this.checkBoxShowMouseCoordinates = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -158,18 +156,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // checkBoxShowDataPointWindow
-            // 
-            this.checkBoxShowDataPointWindow.AutoSize = true;
-            this.checkBoxShowDataPointWindow.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxShowDataPointWindow.Location = new System.Drawing.Point(21, 118);
-            this.checkBoxShowDataPointWindow.Name = "checkBoxShowDataPointWindow";
-            this.checkBoxShowDataPointWindow.Size = new System.Drawing.Size(220, 24);
-            this.checkBoxShowDataPointWindow.TabIndex = 4;
-            this.checkBoxShowDataPointWindow.Text = "Show Data Point Window";
-            this.checkBoxShowDataPointWindow.UseVisualStyleBackColor = true;
-            this.checkBoxShowDataPointWindow.CheckedChanged += new System.EventHandler(this.checkBoxShowDataPointWindow_CheckedChanged);
             // 
             // groupBox1
             // 
@@ -646,13 +632,11 @@
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.checkBoxShowInfoPanel);
-            this.groupBox5.Controls.Add(this.checkBoxShowMouseCoordinates);
             this.groupBox5.Controls.Add(this.checkBoxShowDataCoordinates);
-            this.groupBox5.Controls.Add(this.checkBoxShowDataPointWindow);
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox5.Location = new System.Drawing.Point(371, 360);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(439, 180);
+            this.groupBox5.Size = new System.Drawing.Size(439, 102);
             this.groupBox5.TabIndex = 25;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Other";
@@ -661,25 +645,13 @@
             // 
             this.checkBoxShowInfoPanel.AutoSize = true;
             this.checkBoxShowInfoPanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxShowInfoPanel.Location = new System.Drawing.Point(21, 88);
+            this.checkBoxShowInfoPanel.Location = new System.Drawing.Point(21, 58);
             this.checkBoxShowInfoPanel.Name = "checkBoxShowInfoPanel";
             this.checkBoxShowInfoPanel.Size = new System.Drawing.Size(151, 24);
             this.checkBoxShowInfoPanel.TabIndex = 24;
             this.checkBoxShowInfoPanel.Text = "Show Info Panel";
             this.checkBoxShowInfoPanel.UseVisualStyleBackColor = true;
             this.checkBoxShowInfoPanel.CheckedChanged += new System.EventHandler(this.checkBoxShowInfoPanel_CheckedChanged);
-            // 
-            // checkBoxShowMouseCoordinates
-            // 
-            this.checkBoxShowMouseCoordinates.AutoSize = true;
-            this.checkBoxShowMouseCoordinates.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxShowMouseCoordinates.Location = new System.Drawing.Point(21, 58);
-            this.checkBoxShowMouseCoordinates.Name = "checkBoxShowMouseCoordinates";
-            this.checkBoxShowMouseCoordinates.Size = new System.Drawing.Size(222, 24);
-            this.checkBoxShowMouseCoordinates.TabIndex = 23;
-            this.checkBoxShowMouseCoordinates.Text = "Show Mouse Coordinates";
-            this.checkBoxShowMouseCoordinates.UseVisualStyleBackColor = true;
-            this.checkBoxShowMouseCoordinates.CheckedChanged += new System.EventHandler(this.checkBoxShowMouseCoordinates_CheckedChanged);
             // 
             // FormManageSkylineSettings
             // 
@@ -723,7 +695,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonBrowse;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.CheckBox checkBoxShowDataPointWindow;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label labelXAxisWidth;
         private System.Windows.Forms.TextBox textBoxXAxisWidth;
@@ -761,7 +732,6 @@
         private System.Windows.Forms.TextBox textBoxMarginLeft;
         private System.Windows.Forms.TextBox textBoxMarginRight;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox checkBoxShowMouseCoordinates;
         private System.Windows.Forms.CheckBox checkBoxShowInfoPanel;
         private System.Windows.Forms.TextBox textBoxSkylineFillBackgroundColor;
         private System.Windows.Forms.Panel panelSkylineFillBackgroundColorSwatch;
