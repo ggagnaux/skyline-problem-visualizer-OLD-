@@ -21,13 +21,9 @@ namespace SkylineProblemWinforms.UI
 
             // Set the form values
             this.Text = $"About {util.AssemblyTitle}";
-            //this.labelProductName.Text = util.AssemblyProduct;
             this.labelProductName.Text = $"V{util.AssemblyVersion}";
             this.labelCopyright.Text = util.AssemblyCopyright;
-            //this.labelCompanyName.Text = util.AssemblyCompany;
             this.textBoxDescription.Text = util.AssemblyDescription;
-
-
             this.textBoxThirdpartyComponents.Text = _thirdpartyDescription;
 
             // Initialize the link label
@@ -38,8 +34,6 @@ namespace SkylineProblemWinforms.UI
                 linkLabelThirdparty.LinkVisited = true;
                 System.Diagnostics.Process.Start(_thirdpartyLink);
             };
-
-
         }
     }
 }
