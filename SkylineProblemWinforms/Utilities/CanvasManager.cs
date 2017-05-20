@@ -88,8 +88,8 @@ namespace SkylineProblemWinforms
             }
         }
 
-        private float _XAxisWidth;
-        public float XAxisWidth
+        private int _XAxisWidth;
+        public int XAxisWidth
         {
             get
             {
@@ -104,8 +104,8 @@ namespace SkylineProblemWinforms
             }
         }
 
-        private float _YAxisWidth;
-        public float YAxisWidth
+        private int _YAxisWidth;
+        public int YAxisWidth
         {
             get
             {

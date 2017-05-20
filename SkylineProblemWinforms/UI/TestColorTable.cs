@@ -12,17 +12,12 @@ namespace SkylineProblemWinforms.UI
     {
         public override Color MenuItemSelected
         {
-            get { return Color.FromArgb(10, 0, 0, 0); }
+            get { return Color.FromArgb(20, 0, 0, 0); }
         }
 
         public override Color MenuBorder  //added for changing the menu border
         {
             get { return Color.Black; }
-        }
-
-        public override Color ToolStripBorder
-        {
-            get { return Color.Red; }
         }
     }
 }

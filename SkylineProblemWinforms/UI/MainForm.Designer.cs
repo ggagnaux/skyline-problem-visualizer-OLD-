@@ -38,20 +38,20 @@ namespace SkylineProblemWinforms
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quickFlagsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuItemSkylineBorder = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuItemSkylineFill = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemSkylineBorder = new SkylineProblemWinforms.UI.BindableToolStripMenuItem();
+            this.menuItemSkylineFill = new SkylineProblemWinforms.UI.BindableToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuItemGrid = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemGrid = new SkylineProblemWinforms.UI.BindableToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuItemXAxis = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuItemYAxis = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemXAxis = new SkylineProblemWinforms.UI.BindableToolStripMenuItem();
+            this.menuItemYAxis = new SkylineProblemWinforms.UI.BindableToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuItemShowDataPoints = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemShowDataPoints = new SkylineProblemWinforms.UI.BindableToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.metroToggleInfoPanel = new MetroFramework.Controls.MetroToggle();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkBoxToggleInfoPanel = new MetroFramework.Controls.MetroToggle();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.panelCanvas.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -64,16 +64,18 @@ namespace SkylineProblemWinforms
             // 
             // panelCanvas
             // 
+            this.panelCanvas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelCanvas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(40)))));
             this.panelCanvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelCanvas.Controls.Add(this.labelDefaultDataFile);
             this.panelCanvas.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.panelCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelCanvas.ForeColor = System.Drawing.Color.DarkRed;
+            this.panelCanvas.ForeColor = System.Drawing.Color.Transparent;
             this.panelCanvas.Location = new System.Drawing.Point(0, 0);
             this.panelCanvas.Margin = new System.Windows.Forms.Padding(4);
             this.panelCanvas.Name = "panelCanvas";
-            this.panelCanvas.Size = new System.Drawing.Size(1045, 662);
+            this.panelCanvas.Size = new System.Drawing.Size(842, 557);
             this.panelCanvas.TabIndex = 5;
             this.panelCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.panelCanvas_Paint);
             this.panelCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelCanvas_MouseMove);
@@ -103,66 +105,63 @@ namespace SkylineProblemWinforms
             this.panel1.Location = new System.Drawing.Point(15, 114);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1045, 662);
+            this.panel1.Size = new System.Drawing.Size(842, 557);
             this.panel1.TabIndex = 6;
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.Color.Transparent;
             this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
             this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.viewToolStripMenuItem,
+            this.optionsToolStripMenuItem,
             this.quickFlagsToolStripMenuItem,
             this.aboutToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(18, 75);
+            this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
+            this.menuStrip1.Location = new System.Drawing.Point(15, 75);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStrip1.Size = new System.Drawing.Size(244, 31);
+            this.menuStrip1.Size = new System.Drawing.Size(266, 31);
             this.menuStrip1.TabIndex = 14;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
+            this.fileToolStripMenuItem.BackColor = System.Drawing.Color.Transparent;
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
             this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.ForeColor = System.Drawing.SystemColors.Menu;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(47, 27);
             this.fileToolStripMenuItem.Text = "&File";
             // 
             // openToolStripMenuItem
             // 
+            this.openToolStripMenuItem.ForeColor = System.Drawing.SystemColors.MenuText;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(140, 28);
-            this.openToolStripMenuItem.Text = "&Open...";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(238, 28);
+            this.openToolStripMenuItem.Text = "&Open New Data File";
             this.openToolStripMenuItem.ToolTipText = "Open a new data file";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
+            this.exitToolStripMenuItem.ForeColor = System.Drawing.SystemColors.MenuText;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(140, 28);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(238, 28);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.ToolTipText = "Exit the application";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // viewToolStripMenuItem
-            // 
-            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.optionsToolStripMenuItem});
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(58, 27);
-            this.viewToolStripMenuItem.Text = "&View";
-            this.viewToolStripMenuItem.ToolTipText = "Display the Options dialog";
-            // 
             // optionsToolStripMenuItem
             // 
+            this.optionsToolStripMenuItem.ForeColor = System.Drawing.SystemColors.Menu;
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(146, 28);
-            this.optionsToolStripMenuItem.Text = "O&ptions";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(82, 27);
+            this.optionsToolStripMenuItem.Text = "&Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
             // quickFlagsToolStripMenuItem
@@ -177,12 +176,14 @@ namespace SkylineProblemWinforms
             this.menuItemYAxis,
             this.toolStripSeparator3,
             this.menuItemShowDataPoints});
+            this.quickFlagsToolStripMenuItem.ForeColor = System.Drawing.SystemColors.Menu;
             this.quickFlagsToolStripMenuItem.Name = "quickFlagsToolStripMenuItem";
             this.quickFlagsToolStripMenuItem.Size = new System.Drawing.Size(60, 27);
             this.quickFlagsToolStripMenuItem.Text = "F&lags";
             // 
             // menuItemSkylineBorder
             // 
+            this.menuItemSkylineBorder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.menuItemSkylineBorder.Name = "menuItemSkylineBorder";
             this.menuItemSkylineBorder.Size = new System.Drawing.Size(219, 28);
             this.menuItemSkylineBorder.Text = "Skyline &Border";
@@ -240,32 +241,40 @@ namespace SkylineProblemWinforms
             // 
             // aboutToolStripMenuItem
             // 
+            this.aboutToolStripMenuItem.ForeColor = System.Drawing.SystemColors.Menu;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(69, 27);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.ToolTipText = "Display the About Dialog";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // metroToggleInfoPanel
+            // viewToolStripMenuItem
             // 
-            this.metroToggleInfoPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.metroToggleInfoPanel.AutoSize = true;
-            this.metroToggleInfoPanel.DisplayStatus = false;
-            this.metroToggleInfoPanel.Location = new System.Drawing.Point(1010, 82);
-            this.metroToggleInfoPanel.Name = "metroToggleInfoPanel";
-            this.metroToggleInfoPanel.Size = new System.Drawing.Size(50, 24);
-            this.metroToggleInfoPanel.TabIndex = 15;
-            this.metroToggleInfoPanel.Text = "Off";
-            this.metroToggleInfoPanel.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroToggleInfoPanel.UseSelectable = true;
-            this.metroToggleInfoPanel.CheckedChanged += new System.EventHandler(this.metroToggleInfoPanel_CheckedChanged);
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
+            // 
+            // checkBoxToggleInfoPanel
+            // 
+            this.checkBoxToggleInfoPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBoxToggleInfoPanel.AutoSize = true;
+            this.checkBoxToggleInfoPanel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.checkBoxToggleInfoPanel.DisplayStatus = false;
+            this.checkBoxToggleInfoPanel.FontSize = MetroFramework.MetroLinkSize.Medium;
+            this.checkBoxToggleInfoPanel.Location = new System.Drawing.Point(807, 82);
+            this.checkBoxToggleInfoPanel.Name = "checkBoxToggleInfoPanel";
+            this.checkBoxToggleInfoPanel.Size = new System.Drawing.Size(50, 24);
+            this.checkBoxToggleInfoPanel.TabIndex = 15;
+            this.checkBoxToggleInfoPanel.Text = "Off";
+            this.checkBoxToggleInfoPanel.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.checkBoxToggleInfoPanel.UseSelectable = true;
+            this.checkBoxToggleInfoPanel.Click += new System.EventHandler(this.checkBoxToggleInfoPanel_Click);
             // 
             // metroLabel1
             // 
             this.metroLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.metroLabel1.AutoSize = true;
             this.metroLabel1.FontSize = MetroFramework.MetroLabelSize.Tall;
-            this.metroLabel1.Location = new System.Drawing.Point(915, 81);
+            this.metroLabel1.Location = new System.Drawing.Point(712, 81);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(89, 25);
             this.metroLabel1.TabIndex = 16;
@@ -276,9 +285,10 @@ namespace SkylineProblemWinforms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1077, 790);
+            this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle;
+            this.ClientSize = new System.Drawing.Size(874, 685);
             this.Controls.Add(this.metroLabel1);
-            this.Controls.Add(this.metroToggleInfoPanel);
+            this.Controls.Add(this.checkBoxToggleInfoPanel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -294,6 +304,7 @@ namespace SkylineProblemWinforms
             this.Text = "Skyline Problem Visualizer";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.LocationChanged += new System.EventHandler(this.MainForm_LocationChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
@@ -319,19 +330,19 @@ namespace SkylineProblemWinforms
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quickFlagsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem menuItemSkylineBorder;
-        private System.Windows.Forms.ToolStripMenuItem menuItemSkylineFill;
+        private SkylineProblemWinforms.UI.BindableToolStripMenuItem menuItemSkylineBorder;
+        private SkylineProblemWinforms.UI.BindableToolStripMenuItem menuItemSkylineFill;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem menuItemGrid;
+        private SkylineProblemWinforms.UI.BindableToolStripMenuItem menuItemGrid;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem menuItemXAxis;
-        private System.Windows.Forms.ToolStripMenuItem menuItemYAxis;
+        private SkylineProblemWinforms.UI.BindableToolStripMenuItem menuItemXAxis;
+        private SkylineProblemWinforms.UI.BindableToolStripMenuItem menuItemYAxis;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripMenuItem menuItemShowDataPoints;
-        private MetroFramework.Controls.MetroToggle metroToggleInfoPanel;
+        private SkylineProblemWinforms.UI.BindableToolStripMenuItem menuItemShowDataPoints;
+        private MetroFramework.Controls.MetroToggle checkBoxToggleInfoPanel;
         private MetroFramework.Controls.MetroLabel metroLabel1;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
     }
 }
 

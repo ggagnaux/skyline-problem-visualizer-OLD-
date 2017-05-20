@@ -4,24 +4,37 @@ using System.Drawing;
 
 namespace SkylineProblemWinforms
 {
-    public class SkylineSettings : ApplicationSettingsBase
+    public class UserSettings : ApplicationSettingsBase
     {
-        private static SkylineSettings _settings = null;
-        public static SkylineSettings GetInstance()
+        private static UserSettings _settings = null;
+        public static UserSettings GetInstance()
         {
             if (_settings == null)
             {
-                _settings = new SkylineSettings();
+                _settings = new UserSettings();
             }
             return _settings;
         }
 
-        private SkylineSettings()
+        private UserSettings()
         {
         }
 
+        public Point InfoPanelPosition
+        {
+            get
+            {
+                return new Point(InfoPanelPositionX, InfoPanelPositionY);
+            }
+            set
+            {
+                InfoPanelPositionX = value.X;
+                InfoPanelPositionY = value.Y;
+            }
+        }
+
         [UserScopedSetting]
-        [DefaultSettingValue("skyline_data3.txt")]
+        [DefaultSettingValue("skyline_data.txt")]
         public string DefaultDataFile
         {
             get
@@ -54,17 +67,17 @@ namespace SkylineProblemWinforms
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("2.0")]
-        public float XAxisWidth
+        [DefaultSettingValue("2")]
+        public int XAxisWidth
         {
             get
             {
-                return ((float)this["XAxisWidth"]);
+                return ((int)this["XAxisWidth"]);
             }
 
             set
             {
-                this["XAxisWidth"] = (float)value;
+                this["XAxisWidth"] = (int)value;
             }
         }
 
@@ -106,17 +119,17 @@ namespace SkylineProblemWinforms
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("2.0")]
-        public float YAxisWidth
+        [DefaultSettingValue("1")]
+        public int YAxisWidth
         {
             get
             {
-                return ((float)this["YAxisWidth"]);
+                return ((int)this["YAxisWidth"]);
             }
 
             set
             {
-                this["YAxisWidth"] = (float)value;
+                this["YAxisWidth"] = (int)value;
             }
         }
 
@@ -168,24 +181,22 @@ namespace SkylineProblemWinforms
 
 
         [UserScopedSetting]
-        [DefaultSettingValue("5.0")]
-        public float SkylineBorderWidth
+        [DefaultSettingValue("1")]
+        public int SkylineBorderWidth
         {
             get
             {
-                return ((float)this["SkylineBorderWidth"]);
+                return ((int)this["SkylineBorderWidth"]);
             }
 
             set
             {
-                this["SkylineBorderWidth"] = (float)value;
+                this["SkylineBorderWidth"] = (int)value;
             }
         }
 
-
-
         [UserScopedSetting]
-        [DefaultSettingValue("0")]
+        [DefaultSettingValue("30")]
         public int CanvasMarginLeft
         {
             get { return ((int)this["CanvasMarginLeft"]); }
@@ -193,7 +204,7 @@ namespace SkylineProblemWinforms
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("0")]
+        [DefaultSettingValue("30")]
         public int CanvasMarginRight
         {
             get { return ((int)this["CanvasMarginRight"]); }
@@ -201,7 +212,7 @@ namespace SkylineProblemWinforms
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("0")]
+        [DefaultSettingValue("30")]
         public int CanvasMarginTop
         {
             get { return ((int)this["CanvasMarginTop"]); }
@@ -209,7 +220,7 @@ namespace SkylineProblemWinforms
         }
 
         [UserScopedSetting]
-        [DefaultSettingValue("0")]
+        [DefaultSettingValue("30")]
         public int CanvasMarginBottom
         {
             get { return ((int)this["CanvasMarginBottom"]); }
@@ -247,9 +258,6 @@ namespace SkylineProblemWinforms
             }
         }
 
-        /// <summary>
-        /// Skyline border color 
-        /// </summary>
         [UserScopedSetting]
         [DefaultSettingValue("FF0000")]
         public string SkylineBorderColor
@@ -265,9 +273,6 @@ namespace SkylineProblemWinforms
             }
         }
 
-        /// <summary>
-        /// Skyline foreground fill color 
-        /// </summary>
         [UserScopedSetting]
         [DefaultSettingValue("FFFFFF")]
         public string SkylineFillForegroundColor
@@ -283,9 +288,6 @@ namespace SkylineProblemWinforms
             }
         }
 
-        /// <summary>
-        /// Skyline background fill color 
-        /// </summary>
         [UserScopedSetting]
         [DefaultSettingValue("FFFFFF")]
         public string SkylineFillBackgroundColor
@@ -316,9 +318,6 @@ namespace SkylineProblemWinforms
             }
         }
 
-        /// <summary>
-        /// Grid Color
-        /// </summary>
         [UserScopedSetting]
         [DefaultSettingValue("303030")]
         public string GridColor
@@ -334,9 +333,6 @@ namespace SkylineProblemWinforms
             }
         }
 
-        /// <summary>
-        /// Canvas Background Color
-        /// </summary>
         [UserScopedSetting]
         [DefaultSettingValue("000010")]
         public string CanvasBackgroundColor
@@ -352,9 +348,6 @@ namespace SkylineProblemWinforms
             }
         }
 
-        /// <summary>
-        /// Show the mouse coordinates?
-        /// </summary>
         [UserScopedSetting]
         [DefaultSettingValue("True")]
         public bool ShowMouseCoordinates
@@ -370,9 +363,6 @@ namespace SkylineProblemWinforms
             }
         }
 
-        /// <summary>
-        /// Show the information panel?
-        /// </summary>
         [UserScopedSetting]
         [DefaultSettingValue("True")]
         public bool ShowInfoPanel
@@ -385,6 +375,70 @@ namespace SkylineProblemWinforms
             set
             {
                 this["ShowInfoPanel"] = value;
+            }
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("True")]
+        public bool SaveInfoPanelPosition
+        {
+            get
+            {
+                return (bool)this["SaveInfoPanelPosition"];
+            }
+
+            set
+            {
+                this["SaveInfoPanelPosition"] = value;
+            }
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("0")]
+        public int InfoPanelPositionX
+        {
+            get
+            {
+                return (int)this["InfoPanelPositionX"];
+            }
+
+            set
+            {
+                this["InfoPanelPositionX"] = value;
+            }
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("0")]
+        public int InfoPanelPositionY
+        {
+            get
+            {
+                return (int)this["InfoPanelPositionY"];
+            }
+
+            set
+            {
+                this["InfoPanelPositionY"] = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Where to dock the info panel?
+        /// </summary>
+        [UserScopedSetting]
+        [DefaultSettingValue("1")]
+        public int InfoPanelDockingLocation
+        {
+            get
+            {
+                return (int)this["InfoPanelDockingLocation"];
+            }
+
+            set
+            {
+                this["InfoPanelDockingLocation"] = value;
             }
         }
     }

@@ -11,10 +11,13 @@ using KohdAndArt.Toolkit;
 using MetroFramework.Forms;
 using SkylineProblemWinforms.UI;
 using SkylineProblemWinforms.Utilities;
+using log4net;
+using SkylineProblemWinforms.Interfaces;
+using SkylineProblemWinforms.Contollers;
 
 namespace SkylineProblemWinforms
 {
-    public partial class MainForm : MetroForm
+    public partial class MainForm : FormBase
     {
         #region External Imports
         [DllImport(@"gdiplus.dll")]
@@ -22,10 +25,21 @@ namespace SkylineProblemWinforms
         #endregion
 
         #region Public Properties
-        public SkylineSettings              Settings { get; set; }
-        public ChartCanvasManager           CanvasManager { get; set; }
-        public IList<BuildingCoordinates>   DataList { get; set; }
-        public DataManager                  DataManager { get; set; }
+
+        public event Action UserSettingsChanged;
+
+
+        // Just wrappers for external objects
+
+        // TODO - Make this private once external references are fixed up.
+        public new MainFormController       Controller { get { return (MainFormController)base.Controller; } }
+
+        private DataManager                 DataManager { get { return Controller.DataManager; } }
+        private UserSettings                UserSettings { get { return Controller.UserSettings; } }
+        private ChartCanvasManager          CanvasManager { get; set; }
+        private IList<BuildingCoordinates>  DataList { get; set; }
+
+        // TODO - Need to get rid of this dependency
         public InfoPanel                    InfoPanel { get; set; }
         #endregion
 
@@ -42,21 +56,21 @@ namespace SkylineProblemWinforms
                 new Pen(Color.LightCoral, penWidth),
                 new Pen(Color.Gray, penWidth),
                 new Pen(Color.Yellow, penWidth),
-                new Pen(Color.Orange, penWidth),
+                new Pen(Color.Orange, penWidth), 
                 new Pen(Color.Purple, penWidth),
             };
         Point _centerPoint = new Point();
-
         float _canvasZoomFactor = 1.0f;
         bool _ctrlPressed = false;
         #endregion
 
         #region Constructor(s)
-        public MainForm()
+        public MainForm(IFormController _controller) : base(_controller)
         {
-            LoadConfigurationSettings();
+            Log("Constructing MainForm()");
             InitializeComponent();
             Initialize();
+            SetBindings();
             //TestBuildGridRectangle();
         }
         #endregion
@@ -64,6 +78,8 @@ namespace SkylineProblemWinforms
         #region Private Methods
         private void Initialize()
         {
+            Log("Calling Initialize()");
+
             try
             {
                 // Use double buffering to reduce flicker.
@@ -78,77 +94,91 @@ namespace SkylineProblemWinforms
                 // Create the canvas manager
                 CanvasManager = new ChartCanvasManager(panelCanvas.Width, panelCanvas.Height);
 
-                // Create the Data Manager and Load the data
-                DataManager = new DataManager(Settings.DefaultDataFile);
-
-                // Create and optionally display the info panel
-                InfoPanel = new InfoPanel(this);
-                InfoPanel.SetData(DataManager.Data);
-                if (Settings.ShowInfoPanel)
-                {
-                    InfoPanel.Show();
-                }
-
-                UpdateConfigurationSettingsUI();
-
                 // Ensure that the primary canvas doesn't flicker when refreshed
                 panelCanvas.SetDoubleBuffered();
 
                 // Setup keyboard handler
-                this.KeyPreview = true;
-                this.KeyDown += new KeyEventHandler(MainForm_KeyDown);
+                InitializeKeyboardHandlers();
 
-                // Menu Item States
-                InitializeMenuItemStates();
+                // Initialize Menu Customizations
+                InitializeMenuSettings();
 
-                var g = panelCanvas.CreateGraphics();
-                var matrix = new Matrix(1, 0, 0, -1, 0, 0);
-                g.Transform = matrix;
-                g.TranslateTransform(0, -panelCanvas.Height);
+                // Create and optionally display the info panel
+                InfoPanel = new InfoPanel(this, Controller);
+                InfoPanel.SetData(Controller.DataManager.InputData);
+                if (UserSettings.ShowInfoPanel)
+                { InfoPanel.Show(); }
 
-                menuStrip1.Renderer = new ToolStripProfessionalRenderer(new TestColorTable());
+                //throw new IndexOutOfRangeException("Index out of range");
             }
             catch (Exception e)
             {
-                throw new ApplicationException("Oops.  Something very very bad has happened :)");
+                Log(e.Message.ToString());
             }
         }
 
-        private void InitializeMenuItemStates()
+        private void SetBindings()
         {
-            menuItemSkylineBorder.Checked = Settings.HighlightSkyline;
-            menuItemSkylineFill.Checked = Settings.SkylineFillFlag; 
-            menuItemSkylineFill.Enabled = Settings.HighlightSkyline;
-            menuItemGrid.Checked = Settings.ShowGrid;
-            menuItemXAxis.Checked = Settings.ShowXAxis;
-            menuItemYAxis.Checked = Settings.ShowYAxis;
-            menuItemShowDataPoints.Checked = Settings.ShowDataCoordinates;
+            Log("Calling SetBindings()");
 
-            metroToggleInfoPanel.Checked = Settings.ShowInfoPanel;
+            // Need to control how text is formatted
+            var binding = new Binding("Text", UserSettings, "DefaultDataFile", true, DataSourceUpdateMode.OnPropertyChanged);
+            binding.Format += labelDefaultDataFile_Format;
+            this.labelDefaultDataFile.DataBindings.Add(binding);
+
+            this.checkBoxToggleInfoPanel.DataBindings.Add("Checked", UserSettings, "ShowInfoPanel", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.menuItemSkylineBorder.DataBindings.Add("Checked", UserSettings, "HighlightSkyline", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.menuItemSkylineFill.DataBindings.Add("Checked", UserSettings, "SkylineFillFlag", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.menuItemXAxis.DataBindings.Add("Checked", UserSettings, "ShowXAxis", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.menuItemYAxis.DataBindings.Add("Checked", UserSettings, "ShowYAxis", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.menuItemGrid.DataBindings.Add("Checked", UserSettings, "ShowGrid", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.menuItemShowDataPoints.DataBindings.Add("Checked", UserSettings, "ShowDataCoordinates", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        private void UpdateConfigurationSettingsUI()
+        private void InitializeMenuSettings()
         {
-            labelDefaultDataFile.Text = new FileInfo(Settings.DefaultDataFile).Name;
+            //menuStrip1.RenderMode = ToolStripRenderMode.Professional;
+            //menuStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable());
+
+
+            var renderer = new MenuStripRenderer();
+            ToolStripManager.Renderer = renderer;
+            menuStrip1.RenderMode = ToolStripRenderMode.Professional;
+            menuStrip1.Renderer = renderer;
+
+            //menuStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable());
+            //var renderer = new MenuStripRenderer();
+            //ToolStripManager.Renderer = renderer;
+            //menuStrip1.Renderer = renderer;
+
+            //menuStrip1.Renderer = new MenuStripRenderer();
+            //menuStrip1.ForeColor = Color.White;
+            //menuStrip1.Cursor = Cursors.Hand;
+            //menuStrip1.BackColor = Color.Transparent;
+            //menuStrip1.ForeColor = Color.White;
+            //menuStrip1.Dock = DockStyle.Top;
+
+            //menuStrip2.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable());
+
         }
 
-        private void LoadConfigurationSettings()
+        private void UpdateMainFormUI()
         {
-            Settings = SkylineSettings.GetInstance();
+            labelDefaultDataFile.Text = new FileInfo(UserSettings.DefaultDataFile).Name;
         }
 
-        private void UpdateInfoPanelVisiblity()
+        private void InitializeKeyboardHandlers()
         {
-            // Get the current Info Panel visibility status
-            var isVisible = !InfoPanel.Visible;
-            InfoPanel.Visible = isVisible;
-            Settings.ShowInfoPanel = isVisible;
+            this.KeyPreview = true;
+            this.KeyDown += new KeyEventHandler(MainForm_KeyDown);
         }
 
         private void ReloadData()
         {
-            DataManager.Filename = Settings.DefaultDataFile;
-            InfoPanel.SetData(DataManager.Data);
+            Log("Calling ReloadData()");
+
+            DataManager.Filename = UserSettings.DefaultDataFile;
+            InfoPanel.SetData(Controller.DataManager.InputData);
         }
 
         private void DrawRawData()
@@ -187,21 +217,21 @@ namespace SkylineProblemWinforms
             //return;
 
             // Set the canvas background color
-            panelCanvas.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.CanvasBackgroundColor);
+            panelCanvas.BackColor = ColorUtilities.GetColorFromHexRGBString(UserSettings.CanvasBackgroundColor);
 
             // Set up the coordinate mapping
             MapRectangles(g,
-                          0, DataManager.MaximumX, 0, DataManager.MaximumY, // World Coordinates
-                          0 + Settings.CanvasMarginLeft,                    // Device Coordinates
-                          CanvasManager.Width - Settings.CanvasMarginRight,
-                          0 + Settings.CanvasMarginTop,
-                          CanvasManager.Height - Settings.CanvasMarginBottom,
+                          0, Controller.DataManager.MaximumX, 0, DataManager.MaximumY, // World Coordinates
+                          0 + UserSettings.CanvasMarginLeft,                    // Device Coordinates
+                          CanvasManager.Width - UserSettings.CanvasMarginRight,
+                          0 + UserSettings.CanvasMarginTop,
+                          CanvasManager.Height - UserSettings.CanvasMarginBottom,
                           false);
 
             // Set the Zoom factor
             CanvasManager.Zoom(_canvasZoomFactor);
 
-            foreach (BuildingCoordinates buildingData in DataManager.Data)
+            foreach (BuildingCoordinates buildingData in DataManager.InputData)
             {
                 var left = buildingData.Left;
                 var height = buildingData.Height;
@@ -220,7 +250,7 @@ namespace SkylineProblemWinforms
 
                 GdipWindingModeOutline(handle, IntPtr.Zero, 0.25F);
 
-                if (!Settings.HighlightSkyline)
+                if (!UserSettings.HighlightSkyline)
                 {
                     // Draw the building outline rectangle
                     DrawBuildingOutline(g, _pens[penIndex], left, bottom, right, height);
@@ -229,17 +259,17 @@ namespace SkylineProblemWinforms
                 penIndex = GetNextPenArrayIndex(penIndex, _pens.Length);
             }
 
-            if (Settings.HighlightSkyline)
+            if (UserSettings.HighlightSkyline)
             {
                 DrawSkyline(g, graphicsPath,
-                            Settings.SkylineBorderWidth,
-                            Settings.SkylineBorderColor,
-                            Settings.SkylineFillFlag,
-                            Settings.SkylineFillForegroundColor,
-                            Settings.SkylineFillBackgroundColor);
+                            UserSettings.SkylineBorderWidth,
+                            UserSettings.SkylineBorderColor,
+                            UserSettings.SkylineFillFlag,
+                            UserSettings.SkylineFillForegroundColor,
+                            UserSettings.SkylineFillBackgroundColor);
             }
 
-            if (Settings.ShowDataCoordinates)
+            if (UserSettings.ShowDataCoordinates)
             {
                 //g.ResetTransform();
 
@@ -256,7 +286,7 @@ namespace SkylineProblemWinforms
             }
 
             // Save the path data points to a file
-            WritePathDataToFile(graphicsPath.PathData);
+            DataManager.WriteOutputPathDataToFile(graphicsPath.PathData);
 
             // Clear out all of the transforms on the graphics object
             g.ResetTransform();
@@ -268,7 +298,6 @@ namespace SkylineProblemWinforms
             // Render the grid
             DrawGrid();
         }
-
 
         private void DrawCheckerboard(Graphics g)
         {
@@ -332,23 +361,23 @@ namespace SkylineProblemWinforms
         private void DrawAxis()
         {
             CanvasManager.SetCanvasDimensions(panelCanvas.Width, panelCanvas.Height);
-            CanvasManager.SetMargins(Settings.CanvasMarginLeft,
-                                     Settings.CanvasMarginRight,
-                                     Settings.CanvasMarginRight,
-                                     Settings.CanvasMarginBottom);
-            CanvasManager.ShowXAxis = Settings.ShowXAxis;
-            CanvasManager.ShowYAxis = Settings.ShowYAxis;
-            CanvasManager.XAxisColor = ColorUtilities.GetColorFromHexRGBString(Settings.XAxisColor);
-            CanvasManager.YAxisColor = ColorUtilities.GetColorFromHexRGBString(Settings.YAxisColor);
-            CanvasManager.XAxisWidth = Settings.XAxisWidth;
-            CanvasManager.YAxisWidth = Settings.YAxisWidth;
+            CanvasManager.SetMargins(UserSettings.CanvasMarginLeft,
+                                     UserSettings.CanvasMarginRight,
+                                     UserSettings.CanvasMarginRight,
+                                     UserSettings.CanvasMarginBottom);
+            CanvasManager.ShowXAxis = UserSettings.ShowXAxis;
+            CanvasManager.ShowYAxis = UserSettings.ShowYAxis;
+            CanvasManager.XAxisColor = ColorUtilities.GetColorFromHexRGBString(UserSettings.XAxisColor);
+            CanvasManager.YAxisColor = ColorUtilities.GetColorFromHexRGBString(UserSettings.YAxisColor);
+            CanvasManager.XAxisWidth = UserSettings.XAxisWidth;
+            CanvasManager.YAxisWidth = UserSettings.YAxisWidth;
             CanvasManager.RenderXAndYAxis();
         }
 
         private void DrawGrid()
         {
-            CanvasManager.ShowGrid = Settings.ShowGrid;
-            CanvasManager.GridColor = ColorUtilities.GetColorFromHexRGBString(Settings.GridColor);
+            CanvasManager.ShowGrid = UserSettings.ShowGrid;
+            CanvasManager.GridColor = ColorUtilities.GetColorFromHexRGBString(UserSettings.GridColor);
             CanvasManager.GridOpacity = 15;
             CanvasManager.GridPenWidth = 0;
             CanvasManager.GridSpacingHorizontal = 30;
@@ -466,36 +495,6 @@ namespace SkylineProblemWinforms
             //gr.Restore(state);
         }
 
-        private void WritePathDataToFile(PathData data)
-        {
-            // Build an output filename based on the source filename
-            FileInfo fi = new FileInfo(Settings.DefaultDataFile);
-            string targetFilename = $"outputdata_{fi.Name}";
-
-            // Sort the data array 
-            List<PointF> pointList = new List<PointF>();
-            pointList.AddRange(data.Points);
-            pointList = pointList.OrderBy(p => p.X).ToList();
-            PointF[] dataPoints = pointList.ToArray<PointF>();
-
-            // Save the path data points to a file
-            using (var sw = File.CreateText(targetFilename))
-            {
-                for (int j = 0; j < dataPoints.Length; ++j)
-                {
-                    sw.WriteLine(BuildLine(dataPoints[j]));
-                }
-                sw.Close();
-            }
-
-            // Only added this to demonstrate use of inner methods
-            // In this particular instance it isn't really necessary :)
-            string BuildLine(PointF point)
-            {
-                return $"{point.X} {point.Y}";
-            }
-        }
-
         // Transform the Graphics object to 
         // world coordinates wxmin <= X <= wxmax, wymin <= Y <= wymax are mapped to 
         // device coordinates dxmin	<= X <=	dxmax, dymin <= Y <= dymax. 
@@ -564,6 +563,13 @@ namespace SkylineProblemWinforms
         private void MainForm_Resize(object sender, EventArgs e)
         {
             ReinitializeWindow();
+
+            if (UserSettings.ShowInfoPanel)
+            {
+                // TODO - Set up publisher/subscriber to do this.
+                InfoPanel.DockLocation = (InfoPanel.DockLocationEnum)UserSettings.InfoPanelDockingLocation;
+                InfoPanel.DockToParent();
+            }
         }
 
         private void panelCanvas_Resize(object sender, EventArgs e)
@@ -573,7 +579,8 @@ namespace SkylineProblemWinforms
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Settings.Save();
+            Log("Application Shutting Down...");
+            UserSettings.Save();
 
             // Clean up resources
             foreach (var p in _pens)
@@ -582,14 +589,9 @@ namespace SkylineProblemWinforms
             }
         }
 
-        private void buttonOptions_Click(object sender, EventArgs e)
-        {
-            new FormManageSkylineSettings(this, Settings).ShowDialog();
-        }
-
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new FormManageSkylineSettings(this, Settings).ShowDialog();
+            new SkylineSettingsManagerForm(this, Controller).ShowDialog();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -600,30 +602,22 @@ namespace SkylineProblemWinforms
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openFileDialog1.Title = "Open Skyline Dataset File...";
+            openFileDialog1.FileName = string.Empty;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 string filename = openFileDialog1.FileName;
                 if (filename.Length > 0 && File.Exists(filename))
                 {
-                    var fi = new FileInfo(filename);
-                    labelDefaultDataFile.Text = fi.Name;
-                    Settings.DefaultDataFile = filename;
+                    UserSettings.DefaultDataFile = filename;
+                    labelDefaultDataFile.Text = new FileInfo(filename).Name;
                     OptionsUpdated();
                 }
             }
         }
 
-        private void metroToggleInfoPanel_CheckedChanged(object sender, EventArgs e)
-        {
-            var isChecked = metroToggleInfoPanel.Checked;
-            if (isChecked == true) { InfoPanel.Show(); }
-            else { InfoPanel.Hide(); }
-            Settings.ShowInfoPanel = isChecked;
-        }
-
         private void panelCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (Settings.ShowInfoPanel)
+            if (UserSettings.ShowInfoPanel == true)
             {
                 InfoPanel.SetMouseCoordinates(e.Location);
             }
@@ -672,67 +666,83 @@ namespace SkylineProblemWinforms
 
         private void menuItemSkylineBorder_Click(object sender, EventArgs e)
         {
-            var flag = menuItemSkylineBorder.Checked = !menuItemSkylineBorder.Checked;
-            Settings.HighlightSkyline = flag;
-
             // Need to ensure that the Skyline Fill flag is disabled if border is turned off
-            menuItemSkylineFill.Enabled = flag;
-
+            menuItemSkylineFill.Enabled = menuItemSkylineBorder.Checked = !menuItemSkylineBorder.Checked;
             OptionsUpdated();
         }
 
         private void menuItemSkylineFill_Click(object sender, EventArgs e)
         {
-            var flag = menuItemSkylineFill.Checked = !menuItemSkylineFill.Checked;
-            Settings.SkylineFillFlag = flag;
+            menuItemSkylineFill.Checked = !menuItemSkylineFill.Checked;
             OptionsUpdated();
         }
 
         private void menuItemGrid_Click(object sender, EventArgs e)
         {
-            var flag = menuItemGrid.Checked = !menuItemGrid.Checked;
-            Settings.ShowGrid = flag;
+            menuItemGrid.Checked = !menuItemGrid.Checked;
             OptionsUpdated();
         }
 
         private void menuItemXAxis_Click(object sender, EventArgs e)
         {
-            var flag = menuItemXAxis.Checked = !menuItemXAxis.Checked;
-            Settings.ShowXAxis = flag;
+            menuItemXAxis.Checked = !menuItemXAxis.Checked;
             OptionsUpdated();
         }
 
         private void menuItemYAxis_Click(object sender, EventArgs e)
         {
-            var flag = menuItemYAxis.Checked = !menuItemYAxis.Checked;
-            Settings.ShowYAxis = flag;
+            menuItemYAxis.Checked = !menuItemYAxis.Checked;
             OptionsUpdated();
         }
 
         private void menuItemShowDataPoints_Click(object sender, EventArgs e)
         {
-            var flag = menuItemShowDataPoints.Checked = !menuItemShowDataPoints.Checked;
-            Settings.ShowDataCoordinates = flag;
+            menuItemShowDataPoints.Checked = !menuItemShowDataPoints.Checked;
             OptionsUpdated();
+        }
+
+        private void checkBoxToggleInfoPanel_Click(object sender, EventArgs e)
+        {
+            InfoPanel.Show(checkBoxToggleInfoPanel.Checked);
+        }
+
+        private void MainForm_LocationChanged(object sender, EventArgs e)
+        {
+            if (UserSettings.ShowInfoPanel)
+                {InfoPanel.DockToParent();}
+        }
+
+        private void labelDefaultDataFile_Format(object sender, ConvertEventArgs e)
+        {
+            // Customized rendering of text for label control
+            // Only want to display the name of the file.
+            e.Value = new FileInfo(e.Value.ToString()).Name;
         }
         #endregion
 
         #region Public Methods
         public void OptionsUpdated()
         {
-            UpdateConfigurationSettingsUI();
-            //UpdateInfoPanelVisiblity();
+            LogHelper.Log("MainForm:OptionsUpdated() being called.");
 
             ReloadData();
             DrawRawData();
             ReinitializeWindow();
 
             // Show/Hide the Info Panel
-            if (Settings.ShowInfoPanel) { InfoPanel.Show(); }
-            else { InfoPanel.Hide(); }
+            InfoPanel.DockLocation = (InfoPanel.DockLocationEnum)UserSettings.InfoPanelDockingLocation;
+            if (UserSettings.ShowInfoPanel)
+            {
+                InfoPanel.Show();
+            }
+            else
+            {
+                InfoPanel.Hide();
+            }
         }
         #endregion
 
+        #region Sandbox Methods
         private void TestBuildGridRectangle()
         {
             List<Rectangle> list = BuildGridRectangles(_canvasWidth:             panelCanvas.Width,
@@ -772,83 +782,171 @@ namespace SkylineProblemWinforms
 
             return rectList;
         }
+        #endregion
     }
 
-    class RectangleWithText
+
+    public class MenuStripRenderer : ToolStripProfessionalRenderer
     {
-        RectangleF m_extent = new RectangleF();
-        string m_text = "";
-
-        Font m_textFont = null;
-        RectangleF m_textRect = new RectangleF();
-
-        public RectangleWithText(RectangleF extent, string text)
+        public MenuStripRenderer() : base(new CustomColorTable())
         {
-            m_extent = extent;
-            m_text = text;
+
         }
 
-        public void Draw(Graphics g)
+        //protected override void OnRenderButtonBackground(ToolStripItemRenderEventArgs e)
+        //{
+        //    // check if the object being rendered is actually a ToolStripButton
+        //    if (e.Item is ToolStripButton)
+        //    {
+        //        ToolStripButton button = e.Item as ToolStripButton;
+
+        //        // only render checked items differently
+        //        if (button.Checked)
+        //        {
+        //            // fill the entire button with a color (will be used as a border)
+        //            int buttonHeight = button.Size.Height;
+        //            int buttonWidth = button.Size.Width;
+        //            Rectangle buttonFill = new Rectangle(Point.Empty, new Size(buttonWidth, buttonHeight));
+        //            e.Graphics.FillRectangle(Brushes.SteelBlue, buttonFill);
+
+        //            // fill the entire button offset by 1,1 and height/width subtracted by 2 used as the fill color
+        //            int backgroundHeight = button.Size.Height - 2;
+        //            int backgroundWidth = button.Size.Width - 2;
+        //            Rectangle background = new Rectangle(1, 1, backgroundWidth, backgroundHeight);
+        //            e.Graphics.FillRectangle(Brushes.LightSkyBlue, background);
+        //        }
+        //        // if this button is not checked, use the normal render event
+        //        else
+        //            base.OnRenderButtonBackground(e);
+        //    }
+        //    // if this object is not a ToolStripButton, use the normal render event
+        //    else
+        //        base.OnRenderButtonBackground(e);
+        //}
+
+        protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
         {
-            //var dashedGrayPen = new Pen(Color.Gray, 1.0f / g.DpiX) { DashStyle = DashStyle.Dash };
-            //var brownPen = new Pen(Color.White, 1.0f / g.DpiX);
+            var rc = new Rectangle(Point.Empty, e.Item.Size);
 
-            //// Draw rectangle itself
-            //g.DrawRectangle(dashedGrayPen, m_extent.X, m_extent.Y, m_extent.Width, m_extent.Height);
-
-            // Draw text on it
-            var extentCenter = new PointF((m_extent.Left + m_extent.Right) / 2, (m_extent.Bottom + m_extent.Top) / 2);
-            DrawText(g, m_text, extentCenter, m_extent);
-        }
-
-        private void DrawText(Graphics g, string text, PointF ptStart, RectangleF extent)
-        {
-            var gs = g.Save();
-
-            // Inverse Y axis again - now it grow down;
-            // if we don't do this, text will be drawn inverted
-            g.ScaleTransform(1.0f, -1.0f, MatrixOrder.Prepend);
-
-            if (m_textFont == null)
+            var c = e.Item.Selected ? Color.Green : Color.Transparent;
+            using (var brush = new SolidBrush(c))
             {
-                //m_textFont = new Font("Arial", 150.0f/g.DpiX, FontStyle.Regular, GraphicsUnit.Pixel);
-
-
-                // Find the maximum appropriate text size to fix the extent
-                float fontSize = 100.0f;
-                Font fnt;
-                SizeF textSize;
-                do
-                {
-                    fnt = new Font("Arial", fontSize / g.DpiX, FontStyle.Regular, GraphicsUnit.Pixel);
-                    textSize = g.MeasureString(text, fnt);
-                    m_textRect = new RectangleF(new PointF(ptStart.X - textSize.Width / 2.0f, -ptStart.Y - textSize.Height / 2.0f), textSize);
-
-                    var textRectInv = new RectangleF(m_textRect.X, -m_textRect.Y, m_textRect.Width, m_textRect.Height);
-                    if (extent.Contains(textRectInv))
-                        break;
-
-                    fontSize -= 1.0f;
-                    if (fontSize <= 0)
-                    {
-                        fontSize = 1.0f;
-                        break;
-                    }
-                } while (true);
-
-                m_textFont = fnt;
+                e.Graphics.FillRectangle(brush, rc);
             }
 
-            // Create a StringFormat object with the each line of text, and the block of text centered on the page
-            var stringFormat = new StringFormat()
-            {
-                Alignment = StringAlignment.Center,
-                LineAlignment = StringAlignment.Center
-            };
-            //m_textFont = new Font(FontFamily.GenericSansSerif, 2.0f, FontStyle.Regular);
-            g.DrawString(text, m_textFont, Brushes.White, m_textRect, stringFormat);
+            base.OnRenderMenuItemBackground(e);
+        }
+        protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
+        {
+            var rc = new Rectangle(Point.Empty, e.Item.Size);
 
-            g.Restore(gs);
+            e.Item.ForeColor = Color.FromArgb(255, 125, 125, 125);
+            e.Item.BackColor = Color.Transparent;
+            base.OnRenderItemText(e);
         }
     }
+
+
+    class CustomColorTable : ProfessionalColorTable
+    {
+        private Color DarkBackgroundColor = Color.FromArgb(15, 15, 15);
+
+        public CustomColorTable()
+        {
+            // see notes
+            base.UseSystemColors = false;
+        }
+        public override System.Drawing.Color MenuBorder
+        {
+            get { return Color.Red; }
+        }
+        public override System.Drawing.Color MenuItemBorder
+        {
+            get { return Color.Blue; }
+        }
+        public override Color MenuItemSelected
+        {
+            get { return Color.DarkBlue; }
+        }
+        public override Color MenuItemSelectedGradientBegin
+        {
+            get { return DarkBackgroundColor; }
+        }
+        public override Color MenuItemSelectedGradientEnd
+        {
+            get { return DarkBackgroundColor; }
+        }
+        public override Color MenuStripGradientBegin
+        {
+            get { return Color.AliceBlue; }
+        }
+        public override Color MenuStripGradientEnd
+        {
+            get { return Color.DodgerBlue; }
+        }
+    }
+
+    //public class CustomColorTable : ProfessionalColorTable
+    //{
+    //    private Color DarkBackgroundColor = Color.FromArgb(15, 15, 15);
+    //    private Color ItemSelectedDarkBackgroundColor = Color.FromArgb(45, 45, 45);
+
+    //    public override Color MenuItemSelected
+    //    {
+    //        get { return ItemSelectedDarkBackgroundColor; }
+    //    }
+    //    public override Color ToolStripBorder
+    //    {
+    //        get { return DarkBackgroundColor; }
+    //    }
+    //    public override Color ToolStripDropDownBackground
+    //    {
+    //        get { return DarkBackgroundColor; }
+    //    }
+    //    public override Color ToolStripGradientBegin
+    //    {
+    //        get { return DarkBackgroundColor; }
+    //    }
+    //    public override Color ToolStripGradientEnd
+    //    {
+    //        get { return DarkBackgroundColor; }
+    //    }
+    //    public override Color ToolStripGradientMiddle
+    //    {
+    //        get { return DarkBackgroundColor; }
+    //    }
+
+    //    public override Color ImageMarginGradientBegin
+    //    {
+    //        get { return DarkBackgroundColor; }
+    //    }
+    //    public override Color ImageMarginGradientEnd
+    //    {
+    //        get { return DarkBackgroundColor; }
+    //    }
+    //    public override Color ImageMarginGradientMiddle
+    //    {
+    //        get { return DarkBackgroundColor; }
+    //    }
+    //    public override Color ImageMarginRevealedGradientBegin
+    //    {
+    //        get { return DarkBackgroundColor; }
+    //    }
+    //    public override Color ImageMarginRevealedGradientEnd
+    //    {
+    //        get { return DarkBackgroundColor; }
+    //    }
+    //    public override Color ImageMarginRevealedGradientMiddle
+    //    {
+    //        get { return DarkBackgroundColor; }
+    //    }
+    //    public override Color CheckBackground
+    //    {
+    //        get { return Color.FromArgb(125, 0, 0, 0); }
+    //    }
+    //    public override Color CheckSelectedBackground
+    //    {
+    //        get { return DarkBackgroundColor; }
+    //    }
+    //}
 }

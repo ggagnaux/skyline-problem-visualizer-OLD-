@@ -34,6 +34,8 @@
             this.buttonOK = new MetroFramework.Controls.MetroButton();
             this.textBoxThirdpartyComponents = new System.Windows.Forms.TextBox();
             this.linkLabelThirdparty = new System.Windows.Forms.LinkLabel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.linkLabelSource = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,7 +50,7 @@
             this.logoPictureBox.Location = new System.Drawing.Point(16, 78);
             this.logoPictureBox.Margin = new System.Windows.Forms.Padding(4);
             this.logoPictureBox.Name = "logoPictureBox";
-            this.logoPictureBox.Size = new System.Drawing.Size(578, 399);
+            this.logoPictureBox.Size = new System.Drawing.Size(556, 399);
             this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.logoPictureBox.TabIndex = 12;
             this.logoPictureBox.TabStop = false;
@@ -94,10 +96,11 @@
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOK.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonOK.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.buttonOK.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.buttonOK.Location = new System.Drawing.Point(861, 434);
+            this.buttonOK.Location = new System.Drawing.Point(971, 434);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(142, 43);
             this.buttonOK.Style = MetroFramework.MetroColorStyle.Teal;
@@ -112,7 +115,7 @@
             this.textBoxThirdpartyComponents.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxThirdpartyComponents.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxThirdpartyComponents.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.textBoxThirdpartyComponents.Location = new System.Drawing.Point(608, 285);
+            this.textBoxThirdpartyComponents.Location = new System.Drawing.Point(608, 306);
             this.textBoxThirdpartyComponents.Margin = new System.Windows.Forms.Padding(10);
             this.textBoxThirdpartyComponents.Multiline = true;
             this.textBoxThirdpartyComponents.Name = "textBoxThirdpartyComponents";
@@ -125,21 +128,48 @@
             // linkLabelThirdparty
             // 
             this.linkLabelThirdparty.AutoSize = true;
+            this.linkLabelThirdparty.Cursor = System.Windows.Forms.Cursors.Hand;
             this.linkLabelThirdparty.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabelThirdparty.LinkColor = System.Drawing.Color.Aqua;
-            this.linkLabelThirdparty.Location = new System.Drawing.Point(604, 373);
+            this.linkLabelThirdparty.Location = new System.Drawing.Point(604, 382);
             this.linkLabelThirdparty.Name = "linkLabelThirdparty";
             this.linkLabelThirdparty.Size = new System.Drawing.Size(84, 20);
             this.linkLabelThirdparty.TabIndex = 32;
             this.linkLabelThirdparty.TabStop = true;
             this.linkLabelThirdparty.Text = "linkLabel1";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.Location = new System.Drawing.Point(604, 247);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(181, 20);
+            this.label1.TabIndex = 33;
+            this.label1.Text = "Source Available Here:";
+            // 
+            // linkLabelSource
+            // 
+            this.linkLabelSource.AutoSize = true;
+            this.linkLabelSource.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.linkLabelSource.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabelSource.LinkColor = System.Drawing.Color.Aqua;
+            this.linkLabelSource.Location = new System.Drawing.Point(605, 270);
+            this.linkLabelSource.Name = "linkLabelSource";
+            this.linkLabelSource.Size = new System.Drawing.Size(185, 20);
+            this.linkLabelSource.TabIndex = 34;
+            this.linkLabelSource.TabStop = true;
+            this.linkLabelSource.Text = "http://www.github.com...";
+            // 
             // AboutBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle;
-            this.ClientSize = new System.Drawing.Size(1019, 491);
+            this.ClientSize = new System.Drawing.Size(1125, 491);
+            this.Controls.Add(this.linkLabelSource);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.linkLabelThirdparty);
             this.Controls.Add(this.textBoxThirdpartyComponents);
             this.Controls.Add(this.buttonOK);
@@ -172,5 +202,7 @@
         private MetroFramework.Controls.MetroButton buttonOK;
         private System.Windows.Forms.TextBox textBoxThirdpartyComponents;
         private System.Windows.Forms.LinkLabel linkLabelThirdparty;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.LinkLabel linkLabelSource;
     }
 }
