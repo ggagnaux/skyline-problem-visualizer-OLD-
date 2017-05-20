@@ -63,8 +63,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contollers\FormController.cs" />
-    <Compile Include="Contollers\MainFormController.cs" />
+    <Compile Include="Controllers\FormController.cs" />
+    <Compile Include="Controllers\MainFormController.cs" />
     <Compile Include="Interfaces\IFormController.cs" />
     <Compile Include="Interfaces\ILoggable.cs" />
     <Compile Include="Interfaces\ILogTarget.cs" />

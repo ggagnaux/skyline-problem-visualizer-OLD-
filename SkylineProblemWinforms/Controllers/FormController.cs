@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using SkylineProblemWinforms.Interfaces;
 using SkylineProblemWinforms.Utilities;
 
-namespace SkylineProblemWinforms.Contollers
+namespace SkylineProblemWinforms.Controllers
 {
     public class FormController : IFormController
     {

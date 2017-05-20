@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using KohdAndArt.Toolkit;
-using MetroFramework.Forms;
+using SkylineProblemWinforms.Controllers;
+using SkylineProblemWinforms.Interfaces;
 using SkylineProblemWinforms.UI;
 using SkylineProblemWinforms.Utilities;
-using log4net;
-using SkylineProblemWinforms.Interfaces;
-using SkylineProblemWinforms.Contollers;
 
 namespace SkylineProblemWinforms
 {

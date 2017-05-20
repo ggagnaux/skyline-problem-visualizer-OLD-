@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
-using SkylineProblemWinforms.Contollers;
+using SkylineProblemWinforms.Controllers;
 using SkylineProblemWinforms.Interfaces;
 using SkylineProblemWinforms.Utilities;
 

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using MetroFramework.Forms;
-using SkylineProblemWinforms.Contollers;
+using SkylineProblemWinforms.Controllers;
 using SkylineProblemWinforms.Interfaces;
 using SkylineProblemWinforms.Utilities;
 

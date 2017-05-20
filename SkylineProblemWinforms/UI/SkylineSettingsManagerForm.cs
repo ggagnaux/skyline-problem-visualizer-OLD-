@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using KohdAndArt.Toolkit;
 using MetroFramework.Forms;
-using SkylineProblemWinforms.Contollers;
+using SkylineProblemWinforms.Controllers;
 using SkylineProblemWinforms.Interfaces;
 using SkylineProblemWinforms.UI;
 using SkylineProblemWinforms.Utilities;
