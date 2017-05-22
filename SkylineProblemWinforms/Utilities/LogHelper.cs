@@ -37,7 +37,17 @@ namespace SkylineProblemWinforms.Utilities
         public static void Log(string msg)
         {
             _Logger.DebugFormat(msg);
+            LogToExtraTargets(msg);
+        }
 
+        public static void LogMessage(string msg)
+        {
+            _Logger.InfoFormat(msg);
+            LogToExtraTargets(msg);
+        }
+
+        private static void LogToExtraTargets(string msg)
+        {
             foreach (var logTarget in _extraLoggingTargets)
             {
                 ((ILogTarget)logTarget).LogToControl(msg);

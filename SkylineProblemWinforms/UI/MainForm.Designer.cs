@@ -265,7 +265,7 @@ namespace SkylineProblemWinforms
             this.checkBoxToggleInfoPanel.Size = new System.Drawing.Size(50, 24);
             this.checkBoxToggleInfoPanel.TabIndex = 15;
             this.checkBoxToggleInfoPanel.Text = "Off";
-            this.checkBoxToggleInfoPanel.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.checkBoxToggleInfoPanel.Theme = MetroFramework.MetroThemeStyle.Default;
             this.checkBoxToggleInfoPanel.UseSelectable = true;
             this.checkBoxToggleInfoPanel.Click += new System.EventHandler(this.checkBoxToggleInfoPanel_Click);
             // 
@@ -279,7 +279,6 @@ namespace SkylineProblemWinforms
             this.metroLabel1.Size = new System.Drawing.Size(89, 25);
             this.metroLabel1.TabIndex = 16;
             this.metroLabel1.Text = "Info Panel";
-            this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // MainForm
             // 
@@ -302,7 +301,7 @@ namespace SkylineProblemWinforms
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Style = MetroFramework.MetroColorStyle.Teal;
             this.Text = "Skyline Problem Visualizer";
-            this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.Theme = MetroFramework.MetroThemeStyle.Default;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.LocationChanged += new System.EventHandler(this.MainForm_LocationChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);

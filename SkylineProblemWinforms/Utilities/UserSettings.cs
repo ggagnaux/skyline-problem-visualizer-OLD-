@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Configuration;
 using System.Drawing;
 
@@ -6,6 +7,12 @@ namespace SkylineProblemWinforms
 {
     public class UserSettings : ApplicationSettingsBase
     {
+        public new event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private static UserSettings _settings = null;
         public static UserSettings GetInstance()
         {
@@ -48,9 +55,6 @@ namespace SkylineProblemWinforms
             }
         }
 
-        /// <summary>
-        /// Show or Hide the X Axis
-        /// </summary>
         [UserScopedSetting]
         [DefaultSettingValue("True")]
         public bool ShowXAxis
@@ -96,13 +100,6 @@ namespace SkylineProblemWinforms
             }
         }
 
-
-
-
-
-        /// <summary>
-        /// Show or Hide the Y Axis
-        /// </summary>
         [UserScopedSetting]
         [DefaultSettingValue("True")]
         public bool ShowYAxis
@@ -176,6 +173,7 @@ namespace SkylineProblemWinforms
             set
             {
                 this["HighlightSkyline"] = (bool)value;
+                OnPropertyChanged("HighlightSkyline");
             }
         }
 
@@ -439,6 +437,43 @@ namespace SkylineProblemWinforms
             set
             {
                 this["InfoPanelDockingLocation"] = value;
+                OnPropertyChanged("InfoPanelDockingLocation");
+            }
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("True")]
+        public bool MakeTopMostWindow
+        {
+            get
+            {
+                return (bool)this["MakeTopMostWindow"];
+            }
+
+            set
+            {
+                this["MakeTopMostWindow"] = value;
+
+                // We want to inform all other windows of this event.
+                OnPropertyChanged("MakeTopMostWindow");
+            }
+        }
+
+        [UserScopedSetting]
+        [DefaultSettingValue("2")] // 0 = Default, 1 = Light, 2 = Dark
+        public int ActiveTheme
+        {
+            get
+            {
+                return (int)this["ActiveTheme"];
+            }
+
+            set
+            {
+                this["ActiveTheme"] = value;
+
+                // We want to inform all other windows of this event.
+                OnPropertyChanged("ActiveTheme");
             }
         }
     }

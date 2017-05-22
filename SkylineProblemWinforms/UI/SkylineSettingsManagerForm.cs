@@ -4,71 +4,66 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Reflection;
 using KohdAndArt.Toolkit;
 using MetroFramework.Forms;
 using SkylineProblemWinforms.Controllers;
 using SkylineProblemWinforms.Interfaces;
 using SkylineProblemWinforms.UI;
 using SkylineProblemWinforms.Utilities;
+using System.Collections.Generic;
+using MetroFramework.Components;
+using MetroFramework;
+using System.Diagnostics;
 
 namespace SkylineProblemWinforms
 {
     public partial class SkylineSettingsManagerForm : FormBase //MetroForm
     {
-        public UserSettings Settings { get; set; }
+        //public UserSettings Settings { get; set; }
 
         public UserSettings UserSettings
         {
             get { return ((MainFormController)Controller).UserSettings; }
         }
 
-        //public UserSettings UserSettings
-        //{
-        //    get
-        //    {
-        //        return ((MainForm)Owner).Controller.UserSettings;
-        //    }
-        //}
-
         public new MainForm ParentForm
         {
-            get
-            {
-                return (MainForm)Owner;
-            }
+            get { return (MainForm)Owner; } 
         }
 
-        public SkylineSettingsManagerForm(MainForm parent, IFormController _controller) : base(_controller)
+        public SkylineSettingsManagerForm(Form parent, IFormController _controller) : base(_controller)
         {
             InitializeComponent();
             this.Owner = parent;
-            this.Settings = ((MainFormController)_controller).UserSettings;
             SetBindings();
         }
 
         protected override void OnLoad(EventArgs e)
         {
             SetInitialVisibilityStateForUIElements();
-            InitializeInfoPanelDockingLocationComboBox((InfoPanel.DockLocationEnum)Settings.InfoPanelDockingLocation);
+            InitializeInfoPanelDockingLocationComboBox((InfoPanel.DockLocationEnum)UserSettings.InfoPanelDockingLocation);
+            InitializeUIThemeComboBox((MetroFramework.MetroThemeStyle)UserSettings.ActiveTheme);
+
             base.OnLoad(e);
         }
 
         private void SetInitialVisibilityStateForUIElements()
         {
-            panelSkylineSettingsGroup.Visible = Settings.HighlightSkyline;
-            panelXAxisGroup.Visible = Settings.ShowXAxis;
-            panelYAxisGroup.Visible = Settings.ShowYAxis;
+            panelSkylineSettingsGroup.Visible = UserSettings.HighlightSkyline;
+            panelXAxisGroup.Visible = UserSettings.ShowXAxis;
+            panelYAxisGroup.Visible = UserSettings.ShowYAxis;
 
-            panelSkylineBorderColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.SkylineBorderColor);
-            panelCanvasGridColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.GridColor);
-            panelCanvasBackgroundColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.CanvasBackgroundColor);
-            panelXAxisColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.XAxisColor);
-            panelYAxisColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.YAxisColor);
+            panelSkylineBorderColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(UserSettings.SkylineBorderColor);
+            panelCanvasGridColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(UserSettings.GridColor);
+            panelCanvasBackgroundColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(UserSettings.CanvasBackgroundColor);
+            panelXAxisColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(UserSettings.XAxisColor);
+            panelYAxisColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(UserSettings.YAxisColor);
 
-            panelSkylineFillForegroundColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.SkylineFillForegroundColor);
-            panelSkylineFillBackgroundColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(Settings.SkylineFillBackgroundColor);
+            panelSkylineFillForegroundColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(UserSettings.SkylineFillForegroundColor);
+            panelSkylineFillBackgroundColorSwatch.BackColor = ColorUtilities.GetColorFromHexRGBString(UserSettings.SkylineFillBackgroundColor);
 
-            panelInfoBoxDockingLocation.Visible = Settings.ShowInfoPanel;
+            panelInfoBoxDockingLocation.Visible = UserSettings.ShowInfoPanel;
 
             metroTabControl.SelectTab(0);
         }
@@ -76,6 +71,11 @@ namespace SkylineProblemWinforms
         private void InitializeInfoPanelDockingLocationComboBox(InfoPanel.DockLocationEnum location)
         {
             LoadInfoPanelDockingComboBox(comboBoxInfoPanelDockingLocation, (int)location);
+        }
+
+        private void InitializeUIThemeComboBox(MetroFramework.MetroThemeStyle themeId)
+        {
+            LoadUIThemeComboBox(comboBoxUITheme, (int)themeId);
         }
 
         //
@@ -97,6 +97,54 @@ namespace SkylineProblemWinforms
             cbo.DisplayMember = "Description";
             cbo.ValueMember = "value";
             cbo.SelectedIndex = selectedIndex;
+        }
+
+        //
+        // This method will fill the UI Theme combobox
+        //
+        private void LoadUIThemeComboBox(ComboBox cbo, int selectedIndex)
+        {
+            cbo.DataSource = Enum.GetValues(typeof(MetroThemeStyle))
+                .Cast<Enum>()
+                .Select(value => new
+                {
+                    description = GetUIThemeDescription((MetroThemeStyle)value),
+                    value
+                })
+                .OrderBy(item => item.value)
+                .ToList();
+
+            cbo.DisplayMember = "description";
+            cbo.ValueMember = "value";
+            cbo.SelectedIndex = selectedIndex;
+        }
+
+        private string GetUIThemeDescription(MetroThemeStyle index)
+        {
+            //var themes = MetroStyleManager.Styles.Themes.Keys;
+            //while (true)
+            //{
+            //    string newTheme = themes.ElementAt(rng.Next(themes.Count));
+            //    if (newTheme == metroStyleManager.Theme) continue;
+            //    metroStyleManager.Theme = newTheme;
+            //    return;
+            //}
+
+            string desc;
+            switch ((int)index)
+            {
+                case 0:
+                default:
+                    desc = "Default";
+                    break;
+                case 1:
+                    desc = "Light";
+                    break;
+                case 2:
+                    desc = "Dark";
+                    break;
+            }
+            return desc;
         }
 
 
@@ -139,7 +187,21 @@ namespace SkylineProblemWinforms
             this.checkBoxShowDataCoordinates.DataBindings.Add("Checked", UserSettings, "ShowDataCoordinates", false, DataSourceUpdateMode.OnPropertyChanged);
             this.checkBoxShowInfoPanel.DataBindings.Add("Checked", UserSettings, "ShowInfoPanel", false, DataSourceUpdateMode.OnPropertyChanged);
             this.checkBoxInfoPanelSavePosition.DataBindings.Add("Checked", UserSettings, "SaveInfoPanelPosition", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.toggleTopMost.DataBindings.Add("Checked", UserSettings, "MakeTopMostWindow", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.comboBoxUITheme.DataBindings.Add("SelectedIndex", UserSettings, "ActiveTheme", false, DataSourceUpdateMode.OnPropertyChanged);
+            this.comboBoxInfoPanelDockingLocation.DataBindings.Add("SelectedIndex", UserSettings, "InfoPanelDockingLocation", false, DataSourceUpdateMode.OnPropertyChanged);
 
+
+            UserSettings.PropertyChanged += UserSettings_PropertyChanged;
+        }
+
+        private void UserSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "InfoPanelDockingLocation")
+            {
+                //InfoPanel.DockToParent();
+            }
+            base.UserSettingsChanged(sender, e);
         }
 
         private void SetColorSwatch(Color currentColor, Panel swatchPanel, TextBox textBoxHexRGB)
@@ -335,9 +397,18 @@ namespace SkylineProblemWinforms
 
         private void comboBoxInfoPanelDockingLocation_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedIndex = comboBoxInfoPanelDockingLocation.SelectedIndex;
-            Settings.InfoPanelDockingLocation = selectedIndex;
-            UserSettings.InfoPanelDockingLocation = selectedIndex;
+            var text = string.Empty;
+            var selectedIndex = comboBoxInfoPanelDockingLocation.SelectedIndex;
+            var selectedVal = comboBoxInfoPanelDockingLocation.SelectedValue;
+            if (selectedVal.HasProperty("Description"))
+            {
+                text = (string)selectedVal.GetPropertyValue("Description");
+                Debug.Assert(text.Length > 0);
+            }
+            LogHelper.LogMessage($"Changing InfoPanel docking location to '{text}' - [{selectedIndex}]");
+
+            //int selectedIndex = comboBoxInfoPanelDockingLocation.SelectedIndex;
+            //UserSettings.InfoPanelDockingLocation = selectedIndex;
             ParentForm.OptionsUpdated();
         }
     }

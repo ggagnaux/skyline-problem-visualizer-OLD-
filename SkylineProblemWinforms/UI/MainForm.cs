@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using KohdAndArt.Toolkit;
+using KohdAndArt.Toolkit.Sys;
 using SkylineProblemWinforms.Controllers;
 using SkylineProblemWinforms.Interfaces;
 using SkylineProblemWinforms.UI;
@@ -23,21 +25,18 @@ namespace SkylineProblemWinforms
 
         #region Public Properties
 
-        public event Action UserSettingsChanged;
+        //public event Action UserSettingsChanged;
 
 
         // Just wrappers for external objects
-
-        // TODO - Make this private once external references are fixed up.
-        public new MainFormController       Controller { get { return (MainFormController)base.Controller; } }
-
+        private new MainFormController      Controller { get { return (MainFormController)base.Controller; } }
         private DataManager                 DataManager { get { return Controller.DataManager; } }
         private UserSettings                UserSettings { get { return Controller.UserSettings; } }
         private ChartCanvasManager          CanvasManager { get; set; }
         private IList<BuildingCoordinates>  DataList { get; set; }
 
         // TODO - Need to get rid of this dependency
-        public InfoPanel                    InfoPanel { get; set; }
+        public static InfoPanel             InfoPanel { get; set; }
         #endregion
 
         #region Private Variables
@@ -68,50 +67,48 @@ namespace SkylineProblemWinforms
             InitializeComponent();
             Initialize();
             SetBindings();
+            SetTitle();
+
             //TestBuildGridRectangle();
         }
         #endregion
 
         #region Private Methods
-        private void Initialize()
+        public override void Initialize()
         {
             Log("Calling Initialize()");
 
-            try
-            {
-                // Use double buffering to reduce flicker.
-                this.SetStyle(
-                    ControlStyles.ResizeRedraw |
-                    ControlStyles.AllPaintingInWmPaint |
-                    ControlStyles.UserPaint |
-                    ControlStyles.DoubleBuffer,
-                    true);
-                this.UpdateStyles();
+            // Create the canvas manager
+            CanvasManager = new ChartCanvasManager(panelCanvas.Width, panelCanvas.Height);
 
-                // Create the canvas manager
-                CanvasManager = new ChartCanvasManager(panelCanvas.Width, panelCanvas.Height);
+            // Ensure that the primary canvas doesn't flicker when refreshed
+            panelCanvas.SetDoubleBuffered();
 
-                // Ensure that the primary canvas doesn't flicker when refreshed
-                panelCanvas.SetDoubleBuffered();
+            // Setup keyboard handler
+            InitializeKeyboardHandlers();
 
-                // Setup keyboard handler
-                InitializeKeyboardHandlers();
+            // Initialize Menu Customizations
+            InitializeMenuSettings();
 
-                // Initialize Menu Customizations
-                InitializeMenuSettings();
-
-                // Create and optionally display the info panel
-                InfoPanel = new InfoPanel(this, Controller);
+            // Create and optionally display the info panel
+            InfoPanel = InfoPanel.GetInstance(this, Controller);
+            if (InfoPanel == null)
                 InfoPanel.SetData(Controller.DataManager.InputData);
                 if (UserSettings.ShowInfoPanel)
                 { InfoPanel.Show(); }
-
-                //throw new IndexOutOfRangeException("Index out of range");
-            }
-            catch (Exception e)
             {
-                Log(e.Message.ToString());
+                InfoPanel.SetData(Controller.DataManager.InputData);
+                InfoPanel.Show(UserSettings.ShowInfoPanel);
             }
+
+            base.Initialize();
+        }
+
+        private void SetTitle()
+        {
+            var util = new AssemblyUtilities(Assembly.GetExecutingAssembly());
+            string title = $"{util.AssemblyTitle} V{util.AssemblyVersion}";
+            this.Text = title;
         }
 
         private void SetBindings()
@@ -130,6 +127,14 @@ namespace SkylineProblemWinforms
             this.menuItemYAxis.DataBindings.Add("Checked", UserSettings, "ShowYAxis", false, DataSourceUpdateMode.OnPropertyChanged);
             this.menuItemGrid.DataBindings.Add("Checked", UserSettings, "ShowGrid", false, DataSourceUpdateMode.OnPropertyChanged);
             this.menuItemShowDataPoints.DataBindings.Add("Checked", UserSettings, "ShowDataCoordinates", false, DataSourceUpdateMode.OnPropertyChanged);
+
+            UserSettings.PropertyChanged += UserSettings_PropertyChanged;
+        }
+
+        private void UserSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            InfoPanel.TopMost = ((UserSettings)sender).MakeTopMostWindow;
+            base.UserSettingsChanged(sender, e);
         }
 
         private void InitializeMenuSettings()
@@ -142,6 +147,7 @@ namespace SkylineProblemWinforms
             ToolStripManager.Renderer = renderer;
             menuStrip1.RenderMode = ToolStripRenderMode.Professional;
             menuStrip1.Renderer = renderer;
+            menuStrip1.Cursor = Cursors.Hand;
 
             //menuStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomColorTable());
             //var renderer = new MenuStripRenderer();
@@ -588,12 +594,12 @@ namespace SkylineProblemWinforms
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new SkylineSettingsManagerForm(this, Controller).ShowDialog();
+            new SkylineSettingsManagerForm(this, Controller).ShowDialogTopMost();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new AboutBox().ShowDialog();
+            new AboutBox(this, Controller).ShowDialogTopMost();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -855,7 +861,7 @@ namespace SkylineProblemWinforms
         }
         public override System.Drawing.Color MenuBorder
         {
-            get { return Color.Red; }
+            get { return Color.Black; }
         }
         public override System.Drawing.Color MenuItemBorder
         {

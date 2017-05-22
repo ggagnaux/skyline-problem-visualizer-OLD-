@@ -27,15 +27,23 @@ namespace SkylineProblemWinforms.UI
             ParentRight,
         };
 
+        private static InfoPanel _infoPanel = null;
+        public static InfoPanel GetInstance(Form parent, IFormController _controller)
+        {
+            if (_infoPanel == null)
+            {
+                _infoPanel = new InfoPanel(parent, _controller);
+            }
+            return _infoPanel;
+        }
+
 
         #region Properties
         public UserSettings UserSettings
         {
             get { return ((MainFormController)Controller).UserSettings; }
         }
-
         public IList<BuildingCoordinates> Data { get; set; }
-
         private DockLocationEnum _dockLocation;
         public DockLocationEnum DockLocation
         {
@@ -49,7 +57,6 @@ namespace SkylineProblemWinforms.UI
                 DockToParent();
             }
         }
-
         private string MouseCoordinates
         {
             set
@@ -68,13 +75,19 @@ namespace SkylineProblemWinforms.UI
         #endregion
 
         #region Constructor(s)
-        public InfoPanel(Form parent, IFormController _controller) : base(_controller)
+        private InfoPanel(Form parent, IFormController _controller) : base(_controller)
         {
             Init(parent);
         }
         #endregion
 
         #region Private Methods
+
+        public override void Initialize()
+        {
+            base.Initialize();
+        }
+
         private void Init(Form parent)
         {
             InitializeComponent();
@@ -111,7 +124,15 @@ namespace SkylineProblemWinforms.UI
         {
             SetMouseCoordinates(new Point(500, 500));
             SetZoomLevel(100);
+
+            UserSettings.PropertyChanged += UserSettings_PropertyChanged;
+
             base.OnLoad(e);
+        }
+
+        private void UserSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.UserSettingsChanged(sender, e);
         }
 
         private void textBoxProgramLog_TextChanged(object sender, EventArgs e)

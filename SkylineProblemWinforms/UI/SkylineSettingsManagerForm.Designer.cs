@@ -86,6 +86,8 @@
             this.checkBoxShowYAxis = new MetroFramework.Controls.MetroToggle();
             this.checkBoxShowXAxis = new MetroFramework.Controls.MetroToggle();
             this.metroTabOther = new MetroFramework.Controls.MetroTabPage();
+            this.metroLabel20 = new MetroFramework.Controls.MetroLabel();
+            this.toggleTopMost = new MetroFramework.Controls.MetroToggle();
             this.panelInfoBoxDockingLocation = new MetroFramework.Controls.MetroPanel();
             this.checkBoxInfoPanelSavePosition = new MetroFramework.Controls.MetroCheckBox();
             this.comboBoxInfoPanelDockingLocation = new MetroFramework.Controls.MetroComboBox();
@@ -96,6 +98,8 @@
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.checkBoxShowDataCoordinates = new MetroFramework.Controls.MetroToggle();
             this.checkBoxShowInfoPanel = new MetroFramework.Controls.MetroToggle();
+            this.labelUITheme = new MetroFramework.Controls.MetroLabel();
+            this.comboBoxUITheme = new MetroFramework.Controls.MetroComboBox();
             this.metroTabControl.SuspendLayout();
             this.metroTabSkyline.SuspendLayout();
             this.panelSkylineSettingsGroup.SuspendLayout();
@@ -112,7 +116,7 @@
             // panelSkylineBorderColorSwatch
             // 
             this.panelSkylineBorderColorSwatch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelSkylineBorderColorSwatch.Location = new System.Drawing.Point(223, 31);
+            this.panelSkylineBorderColorSwatch.Location = new System.Drawing.Point(223, 37);
             this.panelSkylineBorderColorSwatch.Name = "panelSkylineBorderColorSwatch";
             this.panelSkylineBorderColorSwatch.Size = new System.Drawing.Size(47, 27);
             this.panelSkylineBorderColorSwatch.TabIndex = 6;
@@ -131,7 +135,6 @@
             this.checkBoxHighlightSkyline.Size = new System.Drawing.Size(80, 21);
             this.checkBoxHighlightSkyline.TabIndex = 27;
             this.checkBoxHighlightSkyline.Text = "Off";
-            this.checkBoxHighlightSkyline.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.checkBoxHighlightSkyline.UseSelectable = true;
             this.checkBoxHighlightSkyline.Click += new System.EventHandler(this.checkBoxHighlightSkyline_Click);
             // 
@@ -168,7 +171,7 @@
             // 
             // textBoxSkylineBorderWidth
             // 
-            this.textBoxSkylineBorderWidth.Location = new System.Drawing.Point(223, -2);
+            this.textBoxSkylineBorderWidth.Location = new System.Drawing.Point(223, 4);
             this.textBoxSkylineBorderWidth.Name = "textBoxSkylineBorderWidth";
             this.textBoxSkylineBorderWidth.Size = new System.Drawing.Size(47, 22);
             this.textBoxSkylineBorderWidth.TabIndex = 21;
@@ -302,12 +305,11 @@
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.buttonCancel.FontWeight = MetroFramework.MetroButtonWeight.Regular;
-            this.buttonCancel.Location = new System.Drawing.Point(643, 445);
+            this.buttonCancel.Location = new System.Drawing.Point(643, 492);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(126, 34);
             this.buttonCancel.TabIndex = 26;
             this.buttonCancel.Text = "Close";
-            this.buttonCancel.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.buttonCancel.UseSelectable = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
@@ -319,10 +321,9 @@
             this.metroTabControl.Controls.Add(this.metroTabOther);
             this.metroTabControl.Location = new System.Drawing.Point(26, 73);
             this.metroTabControl.Name = "metroTabControl";
-            this.metroTabControl.SelectedIndex = 3;
-            this.metroTabControl.Size = new System.Drawing.Size(743, 353);
+            this.metroTabControl.SelectedIndex = 0;
+            this.metroTabControl.Size = new System.Drawing.Size(743, 413);
             this.metroTabControl.TabIndex = 27;
-            this.metroTabControl.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroTabControl.UseSelectable = true;
             // 
             // metroTabSkyline
@@ -335,10 +336,9 @@
             this.metroTabSkyline.HorizontalScrollbarSize = 10;
             this.metroTabSkyline.Location = new System.Drawing.Point(4, 38);
             this.metroTabSkyline.Name = "metroTabSkyline";
-            this.metroTabSkyline.Size = new System.Drawing.Size(735, 311);
+            this.metroTabSkyline.Size = new System.Drawing.Size(735, 371);
             this.metroTabSkyline.TabIndex = 0;
             this.metroTabSkyline.Text = "Skyline";
-            this.metroTabSkyline.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroTabSkyline.VerticalScrollbarBarColor = true;
             this.metroTabSkyline.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabSkyline.VerticalScrollbarSize = 10;
@@ -356,11 +356,10 @@
             this.panelSkylineSettingsGroup.HorizontalScrollbarBarColor = true;
             this.panelSkylineSettingsGroup.HorizontalScrollbarHighlightOnWheel = false;
             this.panelSkylineSettingsGroup.HorizontalScrollbarSize = 10;
-            this.panelSkylineSettingsGroup.Location = new System.Drawing.Point(22, 71);
+            this.panelSkylineSettingsGroup.Location = new System.Drawing.Point(22, 57);
             this.panelSkylineSettingsGroup.Name = "panelSkylineSettingsGroup";
-            this.panelSkylineSettingsGroup.Size = new System.Drawing.Size(299, 194);
+            this.panelSkylineSettingsGroup.Size = new System.Drawing.Size(299, 208);
             this.panelSkylineSettingsGroup.TabIndex = 28;
-            this.panelSkylineSettingsGroup.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.panelSkylineSettingsGroup.VerticalScrollbarBarColor = true;
             this.panelSkylineSettingsGroup.VerticalScrollbarHighlightOnWheel = false;
             this.panelSkylineSettingsGroup.VerticalScrollbarSize = 10;
@@ -380,7 +379,6 @@
             this.panelSkylineFillGroup.Name = "panelSkylineFillGroup";
             this.panelSkylineFillGroup.Size = new System.Drawing.Size(239, 72);
             this.panelSkylineFillGroup.TabIndex = 36;
-            this.panelSkylineFillGroup.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.panelSkylineFillGroup.VerticalScrollbarBarColor = true;
             this.panelSkylineFillGroup.VerticalScrollbarHighlightOnWheel = false;
             this.panelSkylineFillGroup.VerticalScrollbarSize = 10;
@@ -394,7 +392,6 @@
             this.labelSkylineBackgroundFillColor.Size = new System.Drawing.Size(131, 20);
             this.labelSkylineBackgroundFillColor.TabIndex = 35;
             this.labelSkylineBackgroundFillColor.Text = "Background Color:";
-            this.labelSkylineBackgroundFillColor.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // textBoxSkylineFillBackgroundColor
             // 
@@ -416,18 +413,16 @@
             this.labelSkylineForegroundFillColor.Size = new System.Drawing.Size(129, 20);
             this.labelSkylineForegroundFillColor.TabIndex = 34;
             this.labelSkylineForegroundFillColor.Text = "Foreground Color:";
-            this.labelSkylineForegroundFillColor.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // labelSkylineBorderColor
             // 
             this.labelSkylineBorderColor.AutoSize = true;
             this.labelSkylineBorderColor.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.labelSkylineBorderColor.Location = new System.Drawing.Point(3, 35);
+            this.labelSkylineBorderColor.Location = new System.Drawing.Point(3, 41);
             this.labelSkylineBorderColor.Name = "labelSkylineBorderColor";
             this.labelSkylineBorderColor.Size = new System.Drawing.Size(97, 20);
             this.labelSkylineBorderColor.TabIndex = 33;
             this.labelSkylineBorderColor.Text = "Border Color:";
-            this.labelSkylineBorderColor.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // textBoxSkylineBorderColor
             // 
@@ -444,12 +439,11 @@
             // 
             this.labelSkylineBorderWidth.AutoSize = true;
             this.labelSkylineBorderWidth.FontWeight = MetroFramework.MetroLabelWeight.Regular;
-            this.labelSkylineBorderWidth.Location = new System.Drawing.Point(3, 0);
+            this.labelSkylineBorderWidth.Location = new System.Drawing.Point(3, 6);
             this.labelSkylineBorderWidth.Name = "labelSkylineBorderWidth";
             this.labelSkylineBorderWidth.Size = new System.Drawing.Size(101, 20);
             this.labelSkylineBorderWidth.TabIndex = 28;
             this.labelSkylineBorderWidth.Text = "Border Width:";
-            this.labelSkylineBorderWidth.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // checkBoxEnableSkylineFill
             // 
@@ -472,7 +466,6 @@
             this.metroLabel5.Size = new System.Drawing.Size(80, 20);
             this.metroLabel5.TabIndex = 32;
             this.metroLabel5.Text = "Enable Fill:";
-            this.metroLabel5.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // metroTabCanvas
             // 
@@ -497,10 +490,9 @@
             this.metroTabCanvas.HorizontalScrollbarSize = 10;
             this.metroTabCanvas.Location = new System.Drawing.Point(4, 38);
             this.metroTabCanvas.Name = "metroTabCanvas";
-            this.metroTabCanvas.Size = new System.Drawing.Size(735, 311);
+            this.metroTabCanvas.Size = new System.Drawing.Size(735, 371);
             this.metroTabCanvas.TabIndex = 1;
             this.metroTabCanvas.Text = "Canvas";
-            this.metroTabCanvas.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroTabCanvas.VerticalScrollbarBarColor = true;
             this.metroTabCanvas.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabCanvas.VerticalScrollbarSize = 10;
@@ -514,7 +506,6 @@
             this.metroLabel18.Size = new System.Drawing.Size(80, 20);
             this.metroLabel18.TabIndex = 43;
             this.metroLabel18.Text = "Show Grid:";
-            this.metroLabel18.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // panelGridGroup
             // 
@@ -528,7 +519,6 @@
             this.panelGridGroup.Name = "panelGridGroup";
             this.panelGridGroup.Size = new System.Drawing.Size(286, 40);
             this.panelGridGroup.TabIndex = 41;
-            this.panelGridGroup.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.panelGridGroup.VerticalScrollbarBarColor = true;
             this.panelGridGroup.VerticalScrollbarHighlightOnWheel = false;
             this.panelGridGroup.VerticalScrollbarSize = 10;
@@ -542,7 +532,6 @@
             this.metroLabel17.Size = new System.Drawing.Size(80, 20);
             this.metroLabel17.TabIndex = 40;
             this.metroLabel17.Text = "Grid Color:";
-            this.metroLabel17.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // textBoxCanvasGridColor
             // 
@@ -564,7 +553,6 @@
             this.metroLabel15.Size = new System.Drawing.Size(62, 20);
             this.metroLabel15.TabIndex = 39;
             this.metroLabel15.Text = "Bottom:";
-            this.metroLabel15.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // metroLabel16
             // 
@@ -575,7 +563,6 @@
             this.metroLabel16.Size = new System.Drawing.Size(37, 20);
             this.metroLabel16.TabIndex = 38;
             this.metroLabel16.Text = "Top:";
-            this.metroLabel16.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // metroLabel14
             // 
@@ -586,7 +573,6 @@
             this.metroLabel14.Size = new System.Drawing.Size(47, 20);
             this.metroLabel14.TabIndex = 37;
             this.metroLabel14.Text = "Right:";
-            this.metroLabel14.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // metroLabel13
             // 
@@ -597,7 +583,6 @@
             this.metroLabel13.Size = new System.Drawing.Size(37, 20);
             this.metroLabel13.TabIndex = 36;
             this.metroLabel13.Text = "Left:";
-            this.metroLabel13.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // metroLabel12
             // 
@@ -608,7 +593,6 @@
             this.metroLabel12.Size = new System.Drawing.Size(65, 20);
             this.metroLabel12.TabIndex = 35;
             this.metroLabel12.Text = "Margins:";
-            this.metroLabel12.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // metroLabel11
             // 
@@ -619,7 +603,6 @@
             this.metroLabel11.Size = new System.Drawing.Size(131, 20);
             this.metroLabel11.TabIndex = 34;
             this.metroLabel11.Text = "Background Color:";
-            this.metroLabel11.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // checkBoxShowGrid
             // 
@@ -630,7 +613,6 @@
             this.checkBoxShowGrid.Size = new System.Drawing.Size(50, 21);
             this.checkBoxShowGrid.TabIndex = 42;
             this.checkBoxShowGrid.Text = "Off";
-            this.checkBoxShowGrid.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.checkBoxShowGrid.UseSelectable = true;
             this.checkBoxShowGrid.Click += new System.EventHandler(this.checkBoxShowGrid_Click);
             // 
@@ -648,10 +630,9 @@
             this.metroTabAxis.HorizontalScrollbarSize = 10;
             this.metroTabAxis.Location = new System.Drawing.Point(4, 38);
             this.metroTabAxis.Name = "metroTabAxis";
-            this.metroTabAxis.Size = new System.Drawing.Size(735, 311);
+            this.metroTabAxis.Size = new System.Drawing.Size(735, 360);
             this.metroTabAxis.TabIndex = 2;
             this.metroTabAxis.Text = "Axis";
-            this.metroTabAxis.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroTabAxis.VerticalScrollbarBarColor = true;
             this.metroTabAxis.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabAxis.VerticalScrollbarSize = 10;
@@ -670,7 +651,6 @@
             this.panelYAxisGroup.Name = "panelYAxisGroup";
             this.panelYAxisGroup.Size = new System.Drawing.Size(188, 91);
             this.panelYAxisGroup.TabIndex = 28;
-            this.panelYAxisGroup.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.panelYAxisGroup.VerticalScrollbarBarColor = true;
             this.panelYAxisGroup.VerticalScrollbarHighlightOnWheel = false;
             this.panelYAxisGroup.VerticalScrollbarSize = 10;
@@ -684,7 +664,6 @@
             this.metroLabel10.Size = new System.Drawing.Size(48, 20);
             this.metroLabel10.TabIndex = 33;
             this.metroLabel10.Text = "Color:";
-            this.metroLabel10.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // metroLabel8
             // 
@@ -695,7 +674,6 @@
             this.metroLabel8.Size = new System.Drawing.Size(52, 20);
             this.metroLabel8.TabIndex = 32;
             this.metroLabel8.Text = "Width:";
-            this.metroLabel8.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // panelXAxisGroup
             // 
@@ -711,7 +689,6 @@
             this.panelXAxisGroup.Name = "panelXAxisGroup";
             this.panelXAxisGroup.Size = new System.Drawing.Size(186, 76);
             this.panelXAxisGroup.TabIndex = 28;
-            this.panelXAxisGroup.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.panelXAxisGroup.VerticalScrollbarBarColor = true;
             this.panelXAxisGroup.VerticalScrollbarHighlightOnWheel = false;
             this.panelXAxisGroup.VerticalScrollbarSize = 10;
@@ -725,7 +702,6 @@
             this.metroLabel7.Size = new System.Drawing.Size(52, 20);
             this.metroLabel7.TabIndex = 31;
             this.metroLabel7.Text = "Width:";
-            this.metroLabel7.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // metroLabel9
             // 
@@ -736,7 +712,6 @@
             this.metroLabel9.Size = new System.Drawing.Size(48, 20);
             this.metroLabel9.TabIndex = 32;
             this.metroLabel9.Text = "Color:";
-            this.metroLabel9.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // metroLabel4
             // 
@@ -747,7 +722,6 @@
             this.metroLabel4.Size = new System.Drawing.Size(50, 20);
             this.metroLabel4.TabIndex = 30;
             this.metroLabel4.Text = "Y-Axis";
-            this.metroLabel4.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // metroLabel3
             // 
@@ -758,7 +732,6 @@
             this.metroLabel3.Size = new System.Drawing.Size(51, 20);
             this.metroLabel3.TabIndex = 29;
             this.metroLabel3.Text = "X-Axis";
-            this.metroLabel3.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // checkBoxShowYAxis
             // 
@@ -787,6 +760,8 @@
             // metroTabOther
             // 
             this.metroTabOther.CausesValidation = false;
+            this.metroTabOther.Controls.Add(this.metroLabel20);
+            this.metroTabOther.Controls.Add(this.toggleTopMost);
             this.metroTabOther.Controls.Add(this.panelInfoBoxDockingLocation);
             this.metroTabOther.Controls.Add(this.textBoxDefaultDataFile);
             this.metroTabOther.Controls.Add(this.metroLabel6);
@@ -794,18 +769,40 @@
             this.metroTabOther.Controls.Add(this.metroLabel1);
             this.metroTabOther.Controls.Add(this.checkBoxShowDataCoordinates);
             this.metroTabOther.Controls.Add(this.checkBoxShowInfoPanel);
+            this.metroTabOther.Controls.Add(this.labelUITheme);
+            this.metroTabOther.Controls.Add(this.comboBoxUITheme);
             this.metroTabOther.HorizontalScrollbarBarColor = true;
             this.metroTabOther.HorizontalScrollbarHighlightOnWheel = false;
             this.metroTabOther.HorizontalScrollbarSize = 10;
             this.metroTabOther.Location = new System.Drawing.Point(4, 38);
             this.metroTabOther.Name = "metroTabOther";
-            this.metroTabOther.Size = new System.Drawing.Size(735, 311);
+            this.metroTabOther.Size = new System.Drawing.Size(735, 371);
             this.metroTabOther.TabIndex = 3;
             this.metroTabOther.Text = "Other";
-            this.metroTabOther.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroTabOther.VerticalScrollbarBarColor = true;
             this.metroTabOther.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabOther.VerticalScrollbarSize = 10;
+            // 
+            // metroLabel20
+            // 
+            this.metroLabel20.AutoSize = true;
+            this.metroLabel20.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.metroLabel20.Location = new System.Drawing.Point(3, 276);
+            this.metroLabel20.Name = "metroLabel20";
+            this.metroLabel20.Size = new System.Drawing.Size(146, 20);
+            this.metroLabel20.TabIndex = 32;
+            this.metroLabel20.Text = "Make App Top Most:";
+            // 
+            // toggleTopMost
+            // 
+            this.toggleTopMost.AutoSize = true;
+            this.toggleTopMost.DisplayStatus = false;
+            this.toggleTopMost.Location = new System.Drawing.Point(267, 275);
+            this.toggleTopMost.Name = "toggleTopMost";
+            this.toggleTopMost.Size = new System.Drawing.Size(50, 21);
+            this.toggleTopMost.TabIndex = 31;
+            this.toggleTopMost.Text = "Off";
+            this.toggleTopMost.UseSelectable = true;
             // 
             // panelInfoBoxDockingLocation
             // 
@@ -817,9 +814,8 @@
             this.panelInfoBoxDockingLocation.HorizontalScrollbarSize = 10;
             this.panelInfoBoxDockingLocation.Location = new System.Drawing.Point(27, 150);
             this.panelInfoBoxDockingLocation.Name = "panelInfoBoxDockingLocation";
-            this.panelInfoBoxDockingLocation.Size = new System.Drawing.Size(557, 99);
+            this.panelInfoBoxDockingLocation.Size = new System.Drawing.Size(686, 99);
             this.panelInfoBoxDockingLocation.TabIndex = 28;
-            this.panelInfoBoxDockingLocation.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.panelInfoBoxDockingLocation.VerticalScrollbarBarColor = true;
             this.panelInfoBoxDockingLocation.VerticalScrollbarHighlightOnWheel = false;
             this.panelInfoBoxDockingLocation.VerticalScrollbarSize = 10;
@@ -829,23 +825,21 @@
             this.checkBoxInfoPanelSavePosition.AutoSize = true;
             this.checkBoxInfoPanelSavePosition.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBoxInfoPanelSavePosition.FontSize = MetroFramework.MetroCheckBoxSize.Medium;
-            this.checkBoxInfoPanelSavePosition.Location = new System.Drawing.Point(240, 63);
+            this.checkBoxInfoPanelSavePosition.Location = new System.Drawing.Point(240, 62);
             this.checkBoxInfoPanelSavePosition.Name = "checkBoxInfoPanelSavePosition";
             this.checkBoxInfoPanelSavePosition.Size = new System.Drawing.Size(166, 20);
             this.checkBoxInfoPanelSavePosition.TabIndex = 34;
             this.checkBoxInfoPanelSavePosition.Text = "Save position on exit:";
-            this.checkBoxInfoPanelSavePosition.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.checkBoxInfoPanelSavePosition.UseSelectable = true;
             // 
             // comboBoxInfoPanelDockingLocation
             // 
             this.comboBoxInfoPanelDockingLocation.FormattingEnabled = true;
             this.comboBoxInfoPanelDockingLocation.ItemHeight = 24;
-            this.comboBoxInfoPanelDockingLocation.Location = new System.Drawing.Point(240, 12);
+            this.comboBoxInfoPanelDockingLocation.Location = new System.Drawing.Point(240, 11);
             this.comboBoxInfoPanelDockingLocation.Name = "comboBoxInfoPanelDockingLocation";
             this.comboBoxInfoPanelDockingLocation.Size = new System.Drawing.Size(298, 30);
             this.comboBoxInfoPanelDockingLocation.TabIndex = 31;
-            this.comboBoxInfoPanelDockingLocation.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.comboBoxInfoPanelDockingLocation.UseSelectable = true;
             this.comboBoxInfoPanelDockingLocation.SelectedIndexChanged += new System.EventHandler(this.comboBoxInfoPanelDockingLocation_SelectedIndexChanged);
             // 
@@ -858,7 +852,6 @@
             this.metroLabel19.Size = new System.Drawing.Size(181, 20);
             this.metroLabel19.TabIndex = 32;
             this.metroLabel19.Text = "Default Docking Location:";
-            this.metroLabel19.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // textBoxDefaultDataFile
             // 
@@ -888,7 +881,6 @@
             this.textBoxDefaultDataFile.ShowButton = true;
             this.textBoxDefaultDataFile.Size = new System.Drawing.Size(446, 30);
             this.textBoxDefaultDataFile.TabIndex = 30;
-            this.textBoxDefaultDataFile.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.textBoxDefaultDataFile.UseSelectable = true;
             this.textBoxDefaultDataFile.WaterMark = "Default Data File";
             this.textBoxDefaultDataFile.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
@@ -902,9 +894,10 @@
             this.metroLabel6.Location = new System.Drawing.Point(3, 23);
             this.metroLabel6.Name = "metroLabel6";
             this.metroLabel6.Size = new System.Drawing.Size(124, 20);
+            this.metroLabel6.Style = MetroFramework.MetroColorStyle.Teal;
             this.metroLabel6.TabIndex = 29;
             this.metroLabel6.Text = "Default Data File:";
-            this.metroLabel6.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.metroLabel6.UseStyleColors = true;
             // 
             // metroLabel2
             // 
@@ -915,7 +908,6 @@
             this.metroLabel2.Size = new System.Drawing.Size(130, 20);
             this.metroLabel2.TabIndex = 28;
             this.metroLabel2.Text = "Display Info Panel:";
-            this.metroLabel2.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // metroLabel1
             // 
@@ -926,13 +918,12 @@
             this.metroLabel1.Size = new System.Drawing.Size(195, 20);
             this.metroLabel1.TabIndex = 27;
             this.metroLabel1.Text = "Display Data Points In Chart:";
-            this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // checkBoxShowDataCoordinates
             // 
             this.checkBoxShowDataCoordinates.AutoSize = true;
             this.checkBoxShowDataCoordinates.DisplayStatus = false;
-            this.checkBoxShowDataCoordinates.Location = new System.Drawing.Point(267, 74);
+            this.checkBoxShowDataCoordinates.Location = new System.Drawing.Point(267, 73);
             this.checkBoxShowDataCoordinates.Name = "checkBoxShowDataCoordinates";
             this.checkBoxShowDataCoordinates.Size = new System.Drawing.Size(50, 21);
             this.checkBoxShowDataCoordinates.TabIndex = 25;
@@ -944,13 +935,33 @@
             // 
             this.checkBoxShowInfoPanel.AutoSize = true;
             this.checkBoxShowInfoPanel.DisplayStatus = false;
-            this.checkBoxShowInfoPanel.Location = new System.Drawing.Point(267, 123);
+            this.checkBoxShowInfoPanel.Location = new System.Drawing.Point(267, 122);
             this.checkBoxShowInfoPanel.Name = "checkBoxShowInfoPanel";
             this.checkBoxShowInfoPanel.Size = new System.Drawing.Size(50, 21);
             this.checkBoxShowInfoPanel.TabIndex = 26;
             this.checkBoxShowInfoPanel.Text = "Off";
             this.checkBoxShowInfoPanel.UseSelectable = true;
             this.checkBoxShowInfoPanel.Click += new System.EventHandler(this.checkBoxShowInfoPanel_Click);
+            // 
+            // labelUITheme
+            // 
+            this.labelUITheme.AutoSize = true;
+            this.labelUITheme.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.labelUITheme.Location = new System.Drawing.Point(3, 317);
+            this.labelUITheme.Name = "labelUITheme";
+            this.labelUITheme.Size = new System.Drawing.Size(75, 20);
+            this.labelUITheme.TabIndex = 33;
+            this.labelUITheme.Text = "UI Theme:";
+            // 
+            // comboBoxUITheme
+            // 
+            this.comboBoxUITheme.FormattingEnabled = true;
+            this.comboBoxUITheme.ItemHeight = 24;
+            this.comboBoxUITheme.Location = new System.Drawing.Point(267, 317);
+            this.comboBoxUITheme.Name = "comboBoxUITheme";
+            this.comboBoxUITheme.Size = new System.Drawing.Size(235, 30);
+            this.comboBoxUITheme.TabIndex = 35;
+            this.comboBoxUITheme.UseSelectable = true;
             // 
             // SkylineSettingsManagerForm
             // 
@@ -959,7 +970,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(790, 500);
+            this.ClientSize = new System.Drawing.Size(790, 550);
             this.Controls.Add(this.metroTabControl);
             this.Controls.Add(this.buttonCancel);
             this.ForeColor = System.Drawing.SystemColors.ActiveCaption;
@@ -972,7 +983,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Style = MetroFramework.MetroColorStyle.Lime;
             this.Text = "Manage Settings";
-            this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.Theme = MetroFramework.MetroThemeStyle.Default;
             this.metroTabControl.ResumeLayout(false);
             this.metroTabSkyline.ResumeLayout(false);
             this.metroTabSkyline.PerformLayout();
@@ -1067,5 +1078,9 @@
         private MetroFramework.Controls.MetroComboBox comboBoxInfoPanelDockingLocation;
         private MetroFramework.Controls.MetroLabel metroLabel19;
         private MetroFramework.Controls.MetroCheckBox checkBoxInfoPanelSavePosition;
+        private MetroFramework.Controls.MetroLabel metroLabel20;
+        private MetroFramework.Controls.MetroToggle toggleTopMost;
+        private MetroFramework.Controls.MetroLabel labelUITheme;
+        private MetroFramework.Controls.MetroComboBox comboBoxUITheme;
     }
 }
