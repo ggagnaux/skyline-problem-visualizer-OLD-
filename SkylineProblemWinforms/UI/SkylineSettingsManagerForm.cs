@@ -405,7 +405,7 @@ namespace SkylineProblemWinforms
                 text = (string)selectedVal.GetPropertyValue("Description");
                 Debug.Assert(text.Length > 0);
             }
-            LogHelper.LogMessage($"Changing InfoPanel docking location to '{text}' - [{selectedIndex}]");
+            LogHelper.LogInfo($"Changing InfoPanel docking location to '{text}' - [{selectedIndex}]");
 
             //int selectedIndex = comboBoxInfoPanelDockingLocation.SelectedIndex;
             //UserSettings.InfoPanelDockingLocation = selectedIndex;

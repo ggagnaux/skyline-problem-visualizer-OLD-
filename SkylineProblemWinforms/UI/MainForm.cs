@@ -594,12 +594,32 @@ namespace SkylineProblemWinforms
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new SkylineSettingsManagerForm(this, Controller).ShowDialogTopMost();
+            try
+            {
+                using (var dlg = new SkylineSettingsManagerForm(this, Controller))
+                {
+                    dlg.ShowDialogTopMost();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new AboutBox(this, Controller).ShowDialogTopMost();
+            try
+            {
+                using (var dlg = new AboutBox(this, Controller))
+                {
+                    dlg.ShowDialogTopMost();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -786,6 +806,21 @@ namespace SkylineProblemWinforms
             return rectList;
         }
         #endregion
+
+        private void logViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var dlg = new LogViewer(this, Controller))
+                {
+                    dlg.ShowDialogTopMost();
+                }
+            }
+            catch (ArgumentNullException ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK);
+            }
+        }
     }
 
 

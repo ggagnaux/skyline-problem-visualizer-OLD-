@@ -68,6 +68,12 @@
     <Compile Include="Interfaces\IFormController.cs" />
     <Compile Include="Interfaces\ILoggable.cs" />
     <Compile Include="Interfaces\ILogTarget.cs" />
+    <Compile Include="UI\LogViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LogViewer.Designer.cs">
+      <DependentUpon>LogViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,6 +121,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ControlExtensions.cs" />
+    <Compile Include="Utilities\FileEx.cs" />
+    <Compile Include="Utilities\Log4NetConfiguration.cs" />
+    <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Utilities\PropertyExtension.cs" />
     <Compile Include="Utilities\DataManager.cs" />
     <Compile Include="Utilities\FlickerFreePanel.cs">
@@ -123,6 +132,9 @@
     <Compile Include="Utilities\LogHelper.cs" />
     <Compile Include="Utilities\RectangleWithText.cs" />
     <Compile Include="Utilities\UserSettings.cs" />
+    <EmbeddedResource Include="UI\LogViewer.resx">
+      <DependentUpon>LogViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -163,7 +175,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SkylineProblemVisualizerLogo.gif" />

@@ -77,7 +77,7 @@ namespace SkylineProblemWinforms.UI
             //    System.Diagnostics.Process.Start(_thirdpartyLink);
             //};
 
-            SetTheme(((MainFormController)Controller).UserSettings.ActiveTheme);
+            //SetTheme(((MainFormController)Controller).UserSettings.ActiveTheme);
         }
 
         // TODO - Need to get rid of border still.

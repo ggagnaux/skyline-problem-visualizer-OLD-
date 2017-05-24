@@ -53,6 +53,7 @@ namespace SkylineProblemWinforms
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxToggleInfoPanel = new MetroFramework.Controls.MetroToggle();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
+            this.logViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelCanvas.SuspendLayout();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -118,12 +119,13 @@ namespace SkylineProblemWinforms
             this.fileToolStripMenuItem,
             this.optionsToolStripMenuItem,
             this.quickFlagsToolStripMenuItem,
+            this.logViewerToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.menuStrip1.Location = new System.Drawing.Point(15, 75);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(266, 31);
+            this.menuStrip1.Size = new System.Drawing.Size(487, 31);
             this.menuStrip1.TabIndex = 14;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -265,7 +267,6 @@ namespace SkylineProblemWinforms
             this.checkBoxToggleInfoPanel.Size = new System.Drawing.Size(50, 24);
             this.checkBoxToggleInfoPanel.TabIndex = 15;
             this.checkBoxToggleInfoPanel.Text = "Off";
-            this.checkBoxToggleInfoPanel.Theme = MetroFramework.MetroThemeStyle.Default;
             this.checkBoxToggleInfoPanel.UseSelectable = true;
             this.checkBoxToggleInfoPanel.Click += new System.EventHandler(this.checkBoxToggleInfoPanel_Click);
             // 
@@ -279,6 +280,13 @@ namespace SkylineProblemWinforms
             this.metroLabel1.Size = new System.Drawing.Size(89, 25);
             this.metroLabel1.TabIndex = 16;
             this.metroLabel1.Text = "Info Panel";
+            // 
+            // logViewerToolStripMenuItem
+            // 
+            this.logViewerToolStripMenuItem.Name = "logViewerToolStripMenuItem";
+            this.logViewerToolStripMenuItem.Size = new System.Drawing.Size(106, 27);
+            this.logViewerToolStripMenuItem.Text = "&Log Viewer";
+            this.logViewerToolStripMenuItem.Click += new System.EventHandler(this.logViewerToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -342,6 +350,7 @@ namespace SkylineProblemWinforms
         private MetroFramework.Controls.MetroToggle checkBoxToggleInfoPanel;
         private MetroFramework.Controls.MetroLabel metroLabel1;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem logViewerToolStripMenuItem;
     }
 }
 

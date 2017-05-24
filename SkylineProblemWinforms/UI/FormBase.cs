@@ -51,7 +51,9 @@ namespace SkylineProblemWinforms.UI
         {
             if (_controller == null)
             {
-                throw new ArgumentNullException("The FormBase() constructor requires an IFormController object.");
+                string msg = "The FormBase() constructor requires an IFormController object.";
+                LogHelper.LogFatal(msg);
+                throw new ArgumentNullException(msg);
             } 
 
             this.Controller = _controller as MainFormController;

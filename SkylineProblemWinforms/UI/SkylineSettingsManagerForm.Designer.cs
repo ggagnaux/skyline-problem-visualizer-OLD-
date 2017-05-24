@@ -302,6 +302,7 @@
             // 
             // buttonCancel
             // 
+            this.buttonCancel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.FontSize = MetroFramework.MetroButtonSize.Medium;
             this.buttonCancel.FontWeight = MetroFramework.MetroButtonWeight.Regular;
@@ -630,7 +631,7 @@
             this.metroTabAxis.HorizontalScrollbarSize = 10;
             this.metroTabAxis.Location = new System.Drawing.Point(4, 38);
             this.metroTabAxis.Name = "metroTabAxis";
-            this.metroTabAxis.Size = new System.Drawing.Size(735, 360);
+            this.metroTabAxis.Size = new System.Drawing.Size(735, 371);
             this.metroTabAxis.TabIndex = 2;
             this.metroTabAxis.Text = "Axis";
             this.metroTabAxis.VerticalScrollbarBarColor = true;

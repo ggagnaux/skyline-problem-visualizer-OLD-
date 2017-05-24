@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using MetroFramework.Controls;
 using MetroFramework.Forms;
 using SkylineProblemWinforms.Controllers;
 using SkylineProblemWinforms.Interfaces;
@@ -78,6 +79,8 @@ namespace SkylineProblemWinforms.UI
         private InfoPanel(Form parent, IFormController _controller) : base(_controller)
         {
             Init(parent);
+
+            Initialize();
         }
         #endregion
 
@@ -137,8 +140,11 @@ namespace SkylineProblemWinforms.UI
 
         private void textBoxProgramLog_TextChanged(object sender, EventArgs e)
         {
+            //ScrollBars txtProgress.ScrollToLine(txtProgress.LineCount - 1);
+            var scrollBars = textBoxProgramLog.ScrollBars;
+
             textBoxProgramLog.SelectionStart = textBoxProgramLog.Text.Length;
-            textBoxProgramLog.ScrollToCaret();
+            //textBoxProgramLog.ScrollToCaret();
         }
 
         private void InfoPanel_FormClosing(object sender, FormClosingEventArgs e)
@@ -155,13 +161,15 @@ namespace SkylineProblemWinforms.UI
         {
             this.Data = data;
 
+            ListView lv = listViewData;
+
             // Clear old data and load new data
-            listViewData.Clear();
+            lv.Clear();
 
             // Create the columns
-            listViewData.Columns.Add("Left");
-            listViewData.Columns.Add("Height");
-            listViewData.Columns.Add("Right");
+            lv.Columns.Add("Left");
+            lv.Columns.Add("Height");
+            lv.Columns.Add("Right");
 
             // Populate Listbox
             foreach (var a in Data)
@@ -169,7 +177,7 @@ namespace SkylineProblemWinforms.UI
                 string[] output = {a.Left.ToString(),
                                    a.Height.ToString(),
                                    a.Right.ToString()};
-                listViewData.Items.Add(new ListViewItem(output));
+                lv.Items.Add(new ListViewItem(output));
             }
         }
 

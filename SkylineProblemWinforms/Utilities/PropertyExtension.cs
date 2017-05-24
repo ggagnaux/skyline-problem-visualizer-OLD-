@@ -13,9 +13,9 @@ namespace SkylineProblemWinforms.Utilities
             obj.GetType().GetProperty(propName).SetValue(obj, value, null);
         }
 
-        //and call it like this:
-        //myObject.SetPropertyValue("myProperty", "myValue");
-        //For good measure, let's add a method to get a property value:
+        // call it like this:
+        // myObject.SetPropertyValue("myProperty", "myValue");
+        // For good measure, let's add a method to get a property value:
 
         public static object GetPropertyValue(this object obj, string propName)
         {

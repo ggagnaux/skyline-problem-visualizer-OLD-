@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Windows.Forms;
 using SkylineProblemWinforms.Controllers;
 using SkylineProblemWinforms.Interfaces;
@@ -17,34 +16,71 @@ namespace SkylineProblemWinforms
         [STAThread]
         static void Main()
         {
-            //Application.ThreadException += new ThreadExceptionEventHandler(new ThreadExceptionHandler().ApplicationThreadException);
-
             try
             {
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+                Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(OnGuiUnhandedException);
+                AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-
-                //controller = MainFormController.GetInstance();//new MainFormController();
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
                 controller = new MainFormController();
-                var form = new MainForm(controller);
-
-                Application.Run(form);
+                using (var form = new MainForm(controller))
+                {
+                    Application.Run(form);
+                }
             }
             catch (Exception e)
             {
-                LogHelper.Log(e.Message);
-                MessageBox.Show(e.Message, "An exception occurred:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                HandleUnhandledException(e);
+            }
+            finally
+            {
+                // Cleanup
             }
         }
+
+        private static void HandleUnhandledException(Object o)
+        {
+            Exception e = o as Exception;
+            if (e != null)
+            {
+                LogHelper.LogException(e);
+
+                var result = ShowThreadExceptionDialog("An error has occurred", e);
+                if (result == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
+                else if (result == DialogResult.No)
+                {
+                    // Just continue on with application
+                    // We've logged it.
+                }
+            }
+        }
+
+        private static DialogResult ShowThreadExceptionDialog(string title, Exception e)
+        {
+            string errorMsg = "An application error occurred. \n\n" +
+                              "Press 'Yes' to abort application.\n" +
+                              "Press 'No' to ignore this error and continue.\n\n";
+            errorMsg = errorMsg + e.Message + "\n\nStack Trace:\n" + e.StackTrace;
+            return MessageBox.Show(errorMsg, title, MessageBoxButtons.YesNo, MessageBoxIcon.Stop);
+        }
+
+
+        private static void OnUnhandledException(Object sender, UnhandledExceptionEventArgs e)
+        {
+            HandleUnhandledException(e.ExceptionObject);
+        }
+
+        private static void OnGuiUnhandedException(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            HandleUnhandledException(e.Exception);
+        }
     }
-    //public class ThreadExceptionHandler
-    //{
-    //    public void ApplicationThreadException(object sender, ThreadExceptionEventArgs e)
-    //    {
-    //        LogHelper.Log(e.Exception.Message);
-    //        MessageBox.Show(e.Exception.Message, "An exception occurred:", MessageBoxButtons.OK, MessageBoxIcon.Error);
-    //    }
-    //}
 }
 
 

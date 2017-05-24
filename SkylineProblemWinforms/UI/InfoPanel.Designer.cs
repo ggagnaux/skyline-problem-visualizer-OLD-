@@ -32,11 +32,11 @@
             this.labelMousePosition = new MetroFramework.Controls.MetroLabel();
             this.labelZoomLevel = new MetroFramework.Controls.MetroLabel();
             this.labelZoomLevelLabel = new MetroFramework.Controls.MetroLabel();
-            this.listViewData = new System.Windows.Forms.ListView();
             this.tabControl = new MetroFramework.Controls.MetroTabControl();
             this.tabPageSourceData = new MetroFramework.Controls.MetroTabPage();
+            this.listViewData = new MetroFramework.Controls.MetroListView();
             this.tabPageLog = new MetroFramework.Controls.MetroTabPage();
-            this.textBoxProgramLog = new System.Windows.Forms.TextBox();
+            this.textBoxProgramLog = new MetroFramework.Controls.MetroTextBox();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.tabControl.SuspendLayout();
             this.tabPageSourceData.SuspendLayout();
@@ -58,7 +58,7 @@
             // 
             this.labelMousePosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelMousePosition.AutoSize = true;
-            this.labelMousePosition.Location = new System.Drawing.Point(173, 73);
+            this.labelMousePosition.Location = new System.Drawing.Point(233, 73);
             this.labelMousePosition.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelMousePosition.Name = "labelMousePosition";
             this.labelMousePosition.Size = new System.Drawing.Size(81, 20);
@@ -70,7 +70,7 @@
             // 
             this.labelZoomLevel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelZoomLevel.AutoSize = true;
-            this.labelZoomLevel.Location = new System.Drawing.Point(221, 97);
+            this.labelZoomLevel.Location = new System.Drawing.Point(281, 97);
             this.labelZoomLevel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelZoomLevel.Name = "labelZoomLevel";
             this.labelZoomLevel.Size = new System.Drawing.Size(42, 20);
@@ -88,23 +88,6 @@
             this.labelZoomLevelLabel.TabIndex = 2;
             this.labelZoomLevelLabel.Text = "Zoom Level:";
             // 
-            // listViewData
-            // 
-            this.listViewData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewData.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.listViewData.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listViewData.ForeColor = System.Drawing.SystemColors.MenuBar;
-            this.listViewData.Location = new System.Drawing.Point(4, 17);
-            this.listViewData.Margin = new System.Windows.Forms.Padding(4);
-            this.listViewData.MultiSelect = false;
-            this.listViewData.Name = "listViewData";
-            this.listViewData.Size = new System.Drawing.Size(552, 320);
-            this.listViewData.TabIndex = 4;
-            this.listViewData.UseCompatibleStateImageBehavior = false;
-            this.listViewData.View = System.Windows.Forms.View.Details;
-            // 
             // tabControl
             // 
             this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -114,8 +97,8 @@
             this.tabControl.Controls.Add(this.tabPageLog);
             this.tabControl.Location = new System.Drawing.Point(8, 120);
             this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 1;
-            this.tabControl.Size = new System.Drawing.Size(287, 420);
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(347, 507);
             this.tabControl.TabIndex = 6;
             this.tabControl.UseSelectable = true;
             // 
@@ -127,12 +110,25 @@
             this.tabPageSourceData.HorizontalScrollbarSize = 2;
             this.tabPageSourceData.Location = new System.Drawing.Point(4, 38);
             this.tabPageSourceData.Name = "tabPageSourceData";
-            this.tabPageSourceData.Size = new System.Drawing.Size(279, 378);
+            this.tabPageSourceData.Size = new System.Drawing.Size(339, 465);
             this.tabPageSourceData.TabIndex = 0;
             this.tabPageSourceData.Text = "Source Data";
             this.tabPageSourceData.VerticalScrollbarBarColor = true;
             this.tabPageSourceData.VerticalScrollbarHighlightOnWheel = false;
             this.tabPageSourceData.VerticalScrollbarSize = 2;
+            // 
+            // listViewData
+            // 
+            this.listViewData.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.listViewData.FullRowSelect = true;
+            this.listViewData.Location = new System.Drawing.Point(0, 3);
+            this.listViewData.Name = "listViewData";
+            this.listViewData.OwnerDraw = true;
+            this.listViewData.Size = new System.Drawing.Size(339, 459);
+            this.listViewData.TabIndex = 5;
+            this.listViewData.UseCompatibleStateImageBehavior = false;
+            this.listViewData.UseSelectable = true;
+            this.listViewData.View = System.Windows.Forms.View.Details;
             // 
             // tabPageLog
             // 
@@ -142,30 +138,48 @@
             this.tabPageLog.HorizontalScrollbarSize = 2;
             this.tabPageLog.Location = new System.Drawing.Point(4, 38);
             this.tabPageLog.Name = "tabPageLog";
-            this.tabPageLog.Size = new System.Drawing.Size(279, 378);
+            this.tabPageLog.Size = new System.Drawing.Size(339, 465);
             this.tabPageLog.TabIndex = 1;
-            this.tabPageLog.Text = "Program Log";
+            this.tabPageLog.Text = "Live Log";
             this.tabPageLog.VerticalScrollbarBarColor = true;
             this.tabPageLog.VerticalScrollbarHighlightOnWheel = false;
             this.tabPageLog.VerticalScrollbarSize = 2;
             // 
             // textBoxProgramLog
             // 
-            this.textBoxProgramLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBoxProgramLog.BackColor = System.Drawing.SystemColors.InfoText;
-            this.textBoxProgramLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxProgramLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxProgramLog.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.textBoxProgramLog.Location = new System.Drawing.Point(3, 3);
-            this.textBoxProgramLog.Margin = new System.Windows.Forms.Padding(10);
-            this.textBoxProgramLog.MaxLength = 1000000;
+            // 
+            // 
+            // 
+            this.textBoxProgramLog.CustomButton.Image = null;
+            this.textBoxProgramLog.CustomButton.Location = new System.Drawing.Point(-100, 1);
+            this.textBoxProgramLog.CustomButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxProgramLog.CustomButton.Name = "";
+            this.textBoxProgramLog.CustomButton.Size = new System.Drawing.Size(370, 370);
+            this.textBoxProgramLog.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.textBoxProgramLog.CustomButton.TabIndex = 1;
+            this.textBoxProgramLog.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.textBoxProgramLog.CustomButton.UseSelectable = true;
+            this.textBoxProgramLog.CustomButton.Visible = false;
+            this.textBoxProgramLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxProgramLog.FontSize = MetroFramework.MetroTextBoxSize.Medium;
+            this.textBoxProgramLog.Lines = new string[] {
+        "metroTextBox1"};
+            this.textBoxProgramLog.Location = new System.Drawing.Point(0, 0);
+            this.textBoxProgramLog.MaxLength = 32767;
             this.textBoxProgramLog.Multiline = true;
             this.textBoxProgramLog.Name = "textBoxProgramLog";
+            this.textBoxProgramLog.PasswordChar = '\0';
             this.textBoxProgramLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxProgramLog.Size = new System.Drawing.Size(272, 394);
+            this.textBoxProgramLog.SelectedText = "";
+            this.textBoxProgramLog.SelectionLength = 0;
+            this.textBoxProgramLog.SelectionStart = 0;
+            this.textBoxProgramLog.ShortcutsEnabled = true;
+            this.textBoxProgramLog.Size = new System.Drawing.Size(339, 465);
             this.textBoxProgramLog.TabIndex = 2;
-            this.textBoxProgramLog.TextChanged += new System.EventHandler(this.textBoxProgramLog_TextChanged);
+            this.textBoxProgramLog.Text = "metroTextBox1";
+            this.textBoxProgramLog.UseSelectable = true;
+            this.textBoxProgramLog.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
+            this.textBoxProgramLog.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
             // 
             // fileSystemWatcher1
             // 
@@ -177,7 +191,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle;
-            this.ClientSize = new System.Drawing.Size(301, 551);
+            this.ClientSize = new System.Drawing.Size(361, 638);
             this.ControlBox = false;
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.labelZoomLevel);
@@ -204,7 +218,6 @@
             this.tabControl.ResumeLayout(false);
             this.tabPageSourceData.ResumeLayout(false);
             this.tabPageLog.ResumeLayout(false);
-            this.tabPageLog.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -217,11 +230,11 @@
         private MetroFramework.Controls.MetroLabel labelMousePosition;
         private MetroFramework.Controls.MetroLabel labelZoomLevel;
         private MetroFramework.Controls.MetroLabel labelZoomLevelLabel;
-        private System.Windows.Forms.ListView listViewData;
         private MetroFramework.Controls.MetroTabControl tabControl;
         private MetroFramework.Controls.MetroTabPage tabPageSourceData;
         private MetroFramework.Controls.MetroTabPage tabPageLog;
         private System.IO.FileSystemWatcher fileSystemWatcher1;
-        private System.Windows.Forms.TextBox textBoxProgramLog;
+        private MetroFramework.Controls.MetroTextBox textBoxProgramLog;
+        private MetroFramework.Controls.MetroListView listViewData;
     }
 }
